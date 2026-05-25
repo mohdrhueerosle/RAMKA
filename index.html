@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RAMKA Family</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,500;0,700;1,300;1,500&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#faf8f5;
+  --bg2:#f3f0eb;
+  --bg3:#ece8e0;
+  --surface:#ffffff;
+  --border:#e8e3d9;
+  --border2:#d9d2c5;
+  --ink:#1a1714;
+  --ink2:#6b6359;
+  --ink3:#a09589;
+  --amber:#b8860b;
+  --amber2:#d4a017;
+  --amber-light:#fdf3d7;
+  --amber-mid:#f5e5a0;
+  --green:#3d6b3a;
+  --green-light:#edf5ec;
+  --red:#b53a2a;
+  --red-light:#fdf0ee;
+  --blue:#2a5a8c;
+  --blue-light:#eef4fb;
+  --radius:4px;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font-weight:300;min-height:100vh;overflow-x:hidden;line-height:1.5;}
+
+/* ── TOPBAR ── */
+.topbar{
+  position:sticky;top:0;z-index:100;
+  background:rgba(250,248,245,.95);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--border);
+  padding:0 2rem;
+  display:flex;align-items:center;gap:0;
+  box-shadow:0 1px 12px rgba(26,23,20,.05);
+}
+.topbar-logo{
+  font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;
+  color:var(--ink);letter-spacing:.08em;
+  padding:.9rem 1.5rem .9rem 0;
+  border-right:1px solid var(--border);
+  margin-right:1.5rem;
+  white-space:nowrap;
+}
+.topbar-logo span{color:var(--amber);}
+.tabs{display:flex;gap:0;flex:1;}
+.tab{
+  font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.18em;
+  text-transform:uppercase;color:var(--ink2);
+  padding:1rem 1.2rem;cursor:pointer;
+  border-bottom:2px solid transparent;
+  transition:color .2s,border-color .2s;
+  white-space:nowrap;user-select:none;
+}
+.tab:hover{color:var(--ink);}
+.tab.active{color:var(--amber);border-bottom-color:var(--amber);}
+.topbar-time{
+  margin-left:auto;
+  font-family:'DM Mono',monospace;font-size:.6rem;
+  color:var(--ink3);letter-spacing:.1em;white-space:nowrap;
+}
+
+/* ── PAGES ── */
+.page{display:none;padding:2rem;max-width:1100px;margin:0 auto;}
+.page.active{display:block;animation:fadeIn .3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+
+/* ── DASH HEADER ── */
+.dash-header{
+  margin-bottom:2rem;padding-bottom:1.5rem;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+}
+.dash-greeting{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(1.8rem,4vw,2.6rem);
+  font-weight:500;line-height:1.1;color:var(--ink);
+}
+.dash-greeting em{font-style:italic;color:var(--amber);}
+.dash-date{
+  font-family:'DM Mono',monospace;font-size:.62rem;
+  color:var(--ink3);letter-spacing:.12em;margin-top:.3rem;
+}
+.dash-location{
+  font-family:'DM Mono',monospace;font-size:.6rem;
+  color:var(--ink3);letter-spacing:.14em;text-align:right;
+}
+
+/* ── GRID ── */
+.dash-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:1rem;
+}
+@media(max-width:900px){.dash-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:580px){.dash-grid{grid-template-columns:1fr;}}
+
+.card{
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:1.4rem;
+  position:relative;overflow:hidden;
+}
+.card.span2{grid-column:span 2;}
+.card.span3{grid-column:span 3;}
+@media(max-width:900px){.card.span3{grid-column:span 2;}.card.span2{grid-column:span 2;}}
+@media(max-width:580px){.card.span2,.card.span3{grid-column:span 1;}}
+
+.card-label{
+  font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--ink3);margin-bottom:1rem;
+  display:flex;align-items:center;gap:.6rem;
+}
+.card-label::after{content:'';flex:1;height:1px;background:var(--border);max-width:40px;}
+
+/* ── WEATHER ── */
+.weather-main{display:flex;align-items:center;gap:.8rem;margin-bottom:.6rem;}
+.weather-icon{font-size:2.2rem;line-height:1;}
+.weather-temp{font-family:'Cormorant Garamond',serif;font-size:2.8rem;font-weight:500;line-height:1;color:var(--ink);}
+.weather-desc{font-size:.8rem;color:var(--ink2);margin-top:.2rem;}
+.weather-row{display:flex;gap:1.2rem;margin-top:.6rem;padding-top:.6rem;border-top:1px solid var(--border);}
+.w-stat{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.08em;color:var(--ink3);}
+.w-stat strong{color:var(--ink2);display:block;font-size:.72rem;margin-bottom:.1rem;}
+
+/* ── COUNTDOWN ── */
+.cd-dest{font-family:'Cormorant Garamond',serif;font-size:1.05rem;font-style:italic;color:var(--ink2);margin-bottom:.8rem;}
+.cd-nums{display:flex;align-items:flex-end;gap:.5rem;}
+.cd-block{text-align:center;}
+.cd-num{
+  font-family:'Cormorant Garamond',serif;font-size:2.4rem;font-weight:700;
+  line-height:1;color:var(--amber);
+}
+.cd-unit{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.15em;color:var(--ink3);margin-top:.1rem;}
+.cd-sep{font-size:1.5rem;color:var(--border2);padding-bottom:.25rem;}
+.cd-note{margin-top:.7rem;font-size:.75rem;color:var(--ink3);padding-top:.7rem;border-top:1px solid var(--border);}
+
+/* ── QUICK STATS ── */
+.qstat-row{display:flex;justify-content:space-between;align-items:center;padding:.55rem 0;border-bottom:1px solid var(--border);}
+.qstat-row:last-child{border-bottom:none;}
+.qstat-label{font-size:.82rem;color:var(--ink2);}
+.qstat-val{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--amber);}
+
+/* ── EVENTS ── */
+.events-list{display:flex;flex-direction:column;gap:.5rem;}
+.event-item{
+  display:flex;align-items:center;gap:.8rem;
+  padding:.65rem .8rem;
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+  background:var(--bg);
+  transition:border-color .2s,background .2s;cursor:default;
+}
+.event-item:hover{background:var(--bg2);}
+.event-item.urgent{border-left:3px solid var(--red);background:var(--red-light);}
+.event-item.soon{border-left:3px solid var(--amber);background:var(--amber-light);}
+.event-item.normal{border-left:3px solid var(--green);background:var(--green-light);}
+.event-item.trip{border-left:3px solid var(--blue);background:var(--blue-light);}
+.event-info{flex:1;min-width:0;}
+.event-title{font-size:.84rem;font-weight:400;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.event-who{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.1em;color:var(--ink3);margin-top:.1rem;}
+.event-meta{text-align:right;flex-shrink:0;}
+.event-date{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--ink2);}
+.event-days{font-size:.6rem;color:var(--ink3);}
+
+/* ── TASKS ── */
+.tasks-list{display:flex;flex-direction:column;gap:.4rem;}
+.task-item{
+  display:flex;align-items:center;gap:.7rem;
+  padding:.55rem .7rem;border-radius:var(--radius);
+  border:1px solid var(--border);background:var(--bg);
+  cursor:pointer;transition:background .15s;
+}
+.task-item:hover{background:var(--bg2);}
+.task-item.done{opacity:.5;}
+.task-item.done .task-text{text-decoration:line-through;}
+.task-check{
+  width:16px;height:16px;border:1.5px solid var(--border2);
+  border-radius:3px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.65rem;transition:all .15s;color:#fff;
+}
+.task-item.done .task-check{background:var(--green);border-color:var(--green);}
+.task-text{font-size:.82rem;flex:1;}
+.task-tag{
+  font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.1em;
+  color:var(--ink3);background:var(--bg2);
+  padding:.15rem .4rem;border-radius:2px;white-space:nowrap;
+}
+
+/* ── BIRTHDAYS ── */
+.bday-list{display:flex;flex-direction:column;gap:0;}
+.bday-item{
+  display:flex;align-items:center;gap:.8rem;
+  padding:.6rem 0;border-bottom:1px solid var(--border);
+}
+.bday-item:last-child{border-bottom:none;}
+.bday-initial{
+  width:30px;height:30px;border-radius:50%;
+  background:linear-gradient(135deg,var(--amber),var(--amber2));
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant Garamond',serif;font-size:.9rem;font-weight:700;
+  color:#fff;flex-shrink:0;
+}
+.bday-item.anniversary .bday-initial{background:linear-gradient(135deg,#c0392b,#e74c3c);font-size:.75rem;}
+.bday-name{font-size:.84rem;flex:1;}
+.bday-date-label{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--ink3);}
+.bday-countdown{font-size:.7rem;color:var(--amber);font-weight:500;}
+
+/* ── SCHOOL EVENTS ── */
+/* reuses event-item styles */
+
+/* ── ADD ROW ── */
+.add-row{display:flex;gap:.5rem;margin-top:.8rem;}
+.add-input{
+  flex:1;background:var(--bg);border:1px solid var(--border);
+  color:var(--ink);font-family:'DM Sans',sans-serif;font-size:.82rem;
+  padding:.5rem .7rem;border-radius:var(--radius);outline:none;
+  transition:border-color .2s;
+}
+.add-input:focus{border-color:var(--amber);}
+.add-input::placeholder{color:var(--ink3);}
+.add-btn{
+  background:var(--amber);color:#fff;
+  border:none;padding:.5rem 1rem;border-radius:var(--radius);
+  font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;
+  text-transform:uppercase;cursor:pointer;transition:background .2s;white-space:nowrap;
+}
+.add-btn:hover{background:var(--amber2);}
+
+/* ── TRIPS PAGE ── */
+.page-header{margin-bottom:2rem;padding-bottom:1.2rem;border-bottom:1px solid var(--border);}
+.page-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:500;color:var(--ink);}
+.page-title em{font-style:italic;color:var(--amber);}
+.page-sub{font-size:.85rem;color:var(--ink2);margin-top:.3rem;}
+
+.trips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem;margin-bottom:2rem;}
+
+.trip-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.6rem;cursor:default;transition:box-shadow .2s,border-color .2s;
+  position:relative;overflow:hidden;
+}
+.trip-card:hover{box-shadow:0 4px 20px rgba(26,23,20,.08);border-color:var(--border2);}
+.trip-card::after{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  opacity:0;transition:opacity .2s;
+}
+.trip-card:hover::after{opacity:1;}
+.trip-card.georgia::after{background:linear-gradient(90deg,var(--green),transparent);}
+.trip-card.malaysia::after{background:linear-gradient(90deg,var(--red),transparent);}
+.trip-card.future::after{background:linear-gradient(90deg,var(--ink3),transparent);}
+
+.trip-flag{font-size:1.8rem;display:block;margin-bottom:.8rem;}
+.trip-year{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.18em;color:var(--ink3);margin-bottom:.3rem;}
+.trip-name{font-family:'Cormorant Garamond',serif;font-size:1.7rem;font-weight:500;margin-bottom:.3rem;color:var(--ink);}
+.trip-places{font-size:.78rem;color:var(--ink2);margin-bottom:1rem;line-height:1.6;}
+.trip-divider{height:1px;background:var(--border);margin-bottom:.8rem;}
+.trip-stats{display:flex;gap:1.5rem;margin-bottom:.8rem;}
+.trip-stat strong{font-family:'DM Mono',monospace;font-size:.7rem;color:var(--ink);display:block;}
+.trip-stat span{font-family:'DM Mono',monospace;font-size:.55rem;color:var(--ink3);letter-spacing:.1em;text-transform:uppercase;}
+.trip-tags{display:flex;flex-wrap:wrap;gap:.3rem;}
+.trip-tag{
+  font-family:'DM Mono',monospace;font-size:.53rem;letter-spacing:.1em;text-transform:uppercase;
+  padding:.2rem .5rem;border-radius:2px;
+  background:var(--bg2);color:var(--ink2);border:1px solid var(--border);
+}
+.trip-card.georgia .trip-tag.hi{background:var(--green-light);color:var(--green);border-color:rgba(61,107,58,.2);}
+.trip-card.malaysia .trip-tag.hi{background:var(--red-light);color:var(--red);border-color:rgba(181,58,42,.2);}
+.trip-card.future{opacity:.45;}
+.trip-card.future:hover{opacity:.65;}
+
+/* DNA */
+.section-label{
+  font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--ink3);margin-bottom:1rem;margin-top:2rem;
+  display:flex;align-items:center;gap:.8rem;
+}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.dna-grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}
+@media(max-width:580px){.dna-grid{grid-template-columns:1fr;}}
+.dna-item{
+  padding:1rem;background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);border-left:3px solid var(--amber);
+}
+.dna-num{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:700;color:var(--amber);opacity:.35;line-height:1;margin-bottom:.3rem;}
+.dna-text{font-size:.8rem;color:var(--ink2);line-height:1.6;}
+
+/* ── FAMILY PAGE ── */
+.family-stats{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;
+  margin-bottom:2rem;
+}
+@media(max-width:580px){.family-stats{grid-template-columns:repeat(2,1fr);}}
+.fstat{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.2rem;text-align:center;
+}
+.fstat-num{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:700;color:var(--amber);}
+.fstat-label{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ink3);margin-top:.2rem;}
+
+.family-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:1rem;margin-bottom:2rem;}
+.member-card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:1.5rem;transition:box-shadow .2s,border-color .2s;
+}
+.member-card:hover{box-shadow:0 4px 16px rgba(26,23,20,.07);border-color:var(--border2);}
+.member-letter{
+  font-family:'Cormorant Garamond',serif;font-size:3rem;font-weight:700;
+  color:var(--amber);opacity:.18;line-height:1;margin-bottom:.4rem;
+}
+.member-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:500;margin-bottom:.15rem;}
+.member-role{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ink3);margin-bottom:.8rem;}
+.member-detail{font-size:.78rem;color:var(--ink2);padding:.25rem 0;border-bottom:1px solid var(--border);}
+.member-detail:last-child{border-bottom:none;}
+.member-detail span{color:var(--ink3);font-size:.72rem;}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(26,23,20,.4);z-index:200;display:none;align-items:center;justify-content:center;padding:1rem;}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+  padding:2rem;width:100%;max-width:400px;
+  box-shadow:0 20px 60px rgba(26,23,20,.15);
+}
+.modal h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;margin-bottom:1.2rem;}
+.modal-fields{display:flex;flex-direction:column;gap:.8rem;}
+.field-label{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--ink3);margin-bottom:.3rem;}
+.modal select{
+  width:100%;background:var(--bg);border:1px solid var(--border);
+  color:var(--ink);font-family:'DM Sans',sans-serif;font-size:.82rem;
+  padding:.55rem .7rem;border-radius:var(--radius);outline:none;
+}
+.modal-actions{display:flex;gap:.5rem;margin-top:1.2rem;}
+.btn-cancel{flex:1;background:transparent;border:1px solid var(--border);color:var(--ink2);font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;padding:.6rem;border-radius:var(--radius);cursor:pointer;}
+.btn-cancel:hover{background:var(--bg2);}
+.btn-save{flex:2;background:var(--amber);border:none;color:#fff;font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;padding:.6rem;border-radius:var(--radius);cursor:pointer;}
+.btn-save:hover{background:var(--amber2);}
+
+/* ── EMPTY STATE ── */
+.empty{color:var(--ink3);font-size:.8rem;font-style:italic;padding:.4rem 0;}
+
+/* ── NAV MOBILE ── */
+@media(max-width:500px){
+  .topbar{padding:0 1rem;}
+  .topbar-logo{padding:.8rem .8rem .8rem 0;margin-right:.8rem;}
+  .tab{padding:.9rem .7rem;font-size:.58rem;}
+  .topbar-time{display:none;}
+  .page{padding:1.2rem;}
+}
+
+/* ── PASSWORD SCREEN ── */
+.lock-screen{
+  position:fixed;inset:0;
+  background:var(--bg);
+  z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  padding:2rem;
+}
+.lock-box{
+  width:100%;max-width:360px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:2.5rem 2rem;
+  box-shadow:0 8px 40px rgba(26,23,20,.08);
+  text-align:center;
+}
+.lock-logo{
+  font-family:'Cormorant Garamond',serif;font-size:2.2rem;font-weight:700;
+  color:var(--ink);letter-spacing:.08em;margin-bottom:.3rem;
+}
+.lock-logo span{color:var(--amber);}
+.lock-tagline{font-size:.78rem;color:var(--ink3);margin-bottom:2rem;font-style:italic;}
+.lock-label{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink3);text-align:left;margin-bottom:.4rem;}
+.lock-input{
+  width:100%;background:var(--bg);border:1px solid var(--border);
+  color:var(--ink);font-family:'DM Sans',sans-serif;font-size:1rem;
+  padding:.7rem .9rem;border-radius:var(--radius);outline:none;
+  transition:border-color .2s;letter-spacing:.15em;text-align:center;
+  margin-bottom:.8rem;
+}
+.lock-input:focus{border-color:var(--amber);}
+.lock-btn{
+  width:100%;background:var(--amber);color:#fff;border:none;
+  font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.18em;
+  text-transform:uppercase;padding:.75rem;border-radius:var(--radius);
+  cursor:pointer;transition:background .2s;margin-bottom:.8rem;
+}
+.lock-btn:hover{background:var(--amber2);}
+.lock-error{
+  font-size:.75rem;color:var(--red);
+  opacity:0;transition:opacity .2s;
+  font-family:'DM Mono',monospace;letter-spacing:.08em;
+}
+.lock-error.show{opacity:1;}
+.lock-footer{margin-top:1.5rem;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;color:var(--ink3);}
+
+</style>
+</head>
+<body>
+
+
+<!-- LOCK SCREEN -->
+<div class="lock-screen" id="lockScreen">
+  <div class="lock-box">
+    <div class="lock-logo">RAM<span>KA</span></div>
+    <div class="lock-tagline">Family · Adventures · Memories</div>
+    <div class="lock-label">Password</div>
+    <input class="lock-input" type="password" id="lockInput" placeholder="••••••••"
+      onkeydown="if(event.key==='Enter')checkPassword()"/>
+    <button class="lock-btn" onclick="checkPassword()">Enter</button>
+    <div class="lock-error" id="lockError">Incorrect password. Try again.</div>
+    <div class="lock-footer">🔒 Private family site</div>
+  </div>
+</div>
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <div class="topbar-logo">RAM<span>KA</span></div>
+  <div class="tabs">
+    <div class="tab active" onclick="switchTab('dashboard')">Dashboard</div>
+    <div class="tab" onclick="switchTab('trips')">Trips</div>
+    <div class="tab" onclick="switchTab('family')">Family</div>
+  </div>
+  <div class="topbar-time" id="liveTime"></div>
+</div>
+
+<!-- ══════════════ DASHBOARD ══════════════ -->
+<div class="page active" id="page-dashboard">
+
+  <div class="dash-header">
+    <div>
+      <div class="dash-greeting">Good <em id="timeOfDay">morning</em>, Rhuee 👋</div>
+      <div class="dash-date" id="todayDate"></div>
+    </div>
+    <div class="dash-location">📍 Doha, Qatar</div>
+  </div>
+
+  <div class="dash-grid">
+
+    <!-- Weather -->
+    <div class="card">
+      <div class="card-label">Weather · Doha</div>
+      <div class="weather-main">
+        <div class="weather-icon" id="weatherIcon">☀️</div>
+        <div>
+          <div class="weather-temp" id="weatherTemp">—°C</div>
+          <div class="weather-desc" id="weatherDesc">Loading…</div>
+        </div>
+      </div>
+      <div class="weather-row">
+        <div class="w-stat"><strong id="wHumidity">—%</strong>Humidity</div>
+        <div class="w-stat"><strong id="wWind">— km/h</strong>Wind</div>
+        <div class="w-stat"><strong id="wFeels">—°C</strong>Feels like</div>
+      </div>
+    </div>
+
+    <!-- Malaysia Countdown -->
+    <div class="card">
+      <div class="card-label">Next Trip</div>
+      <div class="cd-dest">Malaysia 🇲🇾 · Jun–Jul 2026</div>
+      <div class="cd-nums">
+        <div class="cd-block"><div class="cd-num" id="cdDays">—</div><div class="cd-unit">Days</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-block"><div class="cd-num" id="cdHours">—</div><div class="cd-unit">Hours</div></div>
+        <div class="cd-sep">:</div>
+        <div class="cd-block"><div class="cd-num" id="cdMins">—</div><div class="cd-unit">Mins</div></div>
+      </div>
+      <div class="cd-note">✈️ EY668 · Departing Doha 17:35 · 29 June 2026</div>
+    </div>
+
+    <!-- Quick Stats -->
+    <div class="card">
+      <div class="card-label">RAMKA at a Glance</div>
+      <div class="qstat-row"><span class="qstat-label">Countries visited</span><span class="qstat-val">2</span></div>
+      <div class="qstat-row"><span class="qstat-label">Total trip days</span><span class="qstat-val">36</span></div>
+      <div class="qstat-row"><span class="qstat-label">KM driven</span><span class="qstat-val">2,500+</span></div>
+      <div class="qstat-row"><span class="qstat-label">Adventurers</span><span class="qstat-val">5</span></div>
+    </div>
+
+    <!-- Upcoming Events -->
+    <div class="card span2">
+      <div class="card-label">Upcoming Events</div>
+      <div class="events-list" id="eventsList"></div>
+      <div class="add-row">
+        <button class="add-btn" onclick="openModal()">+ Add Event</button>
+      </div>
+    </div>
+
+    <!-- Tasks -->
+    <div class="card">
+      <div class="card-label">Tasks & Reminders</div>
+      <div class="tasks-list" id="tasksList"></div>
+      <div class="add-row">
+        <input class="add-input" id="taskInput" placeholder="Add a task…" onkeydown="if(event.key==='Enter')addTask()"/>
+        <button class="add-btn" onclick="addTask()">+</button>
+      </div>
+    </div>
+
+    <!-- Birthdays -->
+    <div class="card span2">
+      <div class="card-label">Birthdays & Anniversaries</div>
+      <div class="bday-list" id="bdayList"></div>
+    </div>
+
+    <!-- School -->
+    <div class="card">
+      <div class="card-label">School & Milestones</div>
+      <div class="events-list" id="schoolList"></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══════════════ TRIPS ══════════════ -->
+<div class="page" id="page-trips">
+  <div class="page-header">
+    <h1 class="page-title">RAMKA <em>Adventures</em></h1>
+    <p class="page-sub">Every road we've taken. Every place we've breathed in.</p>
+  </div>
+
+  <div class="trips-grid">
+
+    <div class="trip-card georgia">
+      <span class="trip-flag">🇬🇪</span>
+      <div class="trip-year">August 2025 · 5 Days</div>
+      <div class="trip-name">Georgia</div>
+      <div class="trip-places">Achkhoti · Tbilisi · Mtskheta · Sighnaghi · Gergeti Trinity · Gveleti Waterfalls · Dariali Gorge</div>
+      <div class="trip-divider"></div>
+      <div class="trip-stats">
+        <div class="trip-stat"><strong>QAR 15,319</strong><span>Total Cost</span></div>
+        <div class="trip-stat"><strong>USD 574</strong><span>Car Rental</span></div>
+        <div class="trip-stat"><strong>5</strong><span>Travelers</span></div>
+      </div>
+      <div class="trip-tags">
+        <span class="trip-tag hi">Mountains</span>
+        <span class="trip-tag hi">Horse riding</span>
+        <span class="trip-tag hi">Scenic drives</span>
+        <span class="trip-tag">Slow travel</span>
+        <span class="trip-tag">Family first</span>
+      </div>
+    </div>
+
+    <div class="trip-card malaysia">
+      <span class="trip-flag">🇲🇾</span>
+      <div class="trip-year">Jun – Jul 2026 · 31 Days</div>
+      <div class="trip-name">Malaysia</div>
+      <div class="trip-places">KL · Sg Petani · Ipoh · Lost World of Tambun · Legoland · Desaru · Mersing · Kuantan</div>
+      <div class="trip-divider"></div>
+      <div class="trip-stats">
+        <div class="trip-stat"><strong>QAR 16,760</strong><span>Flights</span></div>
+        <div class="trip-stat"><strong>MYR 4,700</strong><span>Car Rental</span></div>
+        <div class="trip-stat"><strong>31</strong><span>Days</span></div>
+      </div>
+      <div class="trip-tags">
+        <span class="trip-tag hi">Road trip</span>
+        <span class="trip-tag hi">Theme parks</span>
+        <span class="trip-tag hi">Beach days</span>
+        <span class="trip-tag">Family roots</span>
+        <span class="trip-tag">Kampung life</span>
+      </div>
+    </div>
+
+    <div class="trip-card future">
+      <span class="trip-flag">🌍</span>
+      <div class="trip-year">Future</div>
+      <div class="trip-name">Next Adventure</div>
+      <div class="trip-places">Norway · Kazakhstan · Albania · Pakistan · Tunisia…</div>
+      <div class="trip-divider"></div>
+      <div class="trip-stats">
+        <div class="trip-stat"><strong>TBD</strong><span>Dates</span></div>
+        <div class="trip-stat"><strong>∞</strong><span>Possibilities</span></div>
+      </div>
+      <div class="trip-tags">
+        <span class="trip-tag">Dreaming</span>
+        <span class="trip-tag">Mountains</span>
+        <span class="trip-tag">Halal food</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="section-label">RAMKA Travel DNA</div>
+  <div class="dna-grid">
+    <div class="dna-item"><div class="dna-num">01</div><div class="dna-text">Scenic base outside the city + short day trips beats constant hotel changes</div></div>
+    <div class="dna-item"><div class="dna-num">02</div><div class="dna-text">Nature over attractions — mountains, villages and atmosphere beat museums and checklists</div></div>
+    <div class="dna-item"><div class="dna-num">03</div><div class="dna-text">Flexible over rigid — no fixed timing, spontaneous stops, "see how the day feels"</div></div>
+    <div class="dna-item"><div class="dna-num">04</div><div class="dna-text">Children's energy shapes the day — manageable hikes, rest time is sacred</div></div>
+    <div class="dna-item" style="grid-column:span 2;"><div class="dna-num">05</div><div class="dna-text">Halal food planning is essential — plan ahead, it affects stress, comfort and the whole family vibe</div></div>
+  </div>
+</div>
+
+<!-- ══════════════ FAMILY ══════════════ -->
+<div class="page" id="page-family">
+  <div class="page-header">
+    <h1 class="page-title">The <em>RAMKA</em> Family</h1>
+    <p class="page-sub">Qatar is home. The world is our playground.</p>
+  </div>
+
+  <div class="family-stats">
+    <div class="fstat"><div class="fstat-num">5</div><div class="fstat-label">Members</div></div>
+    <div class="fstat"><div class="fstat-num">2</div><div class="fstat-label">Countries</div></div>
+    <div class="fstat"><div class="fstat-num">36</div><div class="fstat-label">Days Travelled</div></div>
+    <div class="fstat"><div class="fstat-num">2025</div><div class="fstat-label">First Trip</div></div>
+  </div>
+
+  <div class="section-label">The Crew</div>
+  <div class="family-grid">
+    <div class="member-card">
+      <div class="member-letter">R</div>
+      <div class="member-name">Rhuee</div>
+      <div class="member-role">Walid · Driver · Photographer</div>
+      <div class="member-detail"><span>Full name · </span>Mohd Rhuee Rosle</div>
+      <div class="member-detail"><span>Camera · </span>Fujifilm X-T30 II</div>
+      <div class="member-detail"><span>Birthday · </span>8 April 1990</div>
+      <div class="member-detail"><span>Nikah · </span>8 April 2015 💍</div>
+    </div>
+    <div class="member-card">
+      <div class="member-letter">A</div>
+      <div class="member-name">Afiqah</div>
+      <div class="member-role">Mama · Trip Planner</div>
+      <div class="member-detail"><span>Full name · </span>Nor Afiqah Baharudin</div>
+      <div class="member-detail"><span>Superpower · </span>Finding the best Airbnbs</div>
+      <div class="member-detail"><span>Birthday · </span>8 April 1990</div>
+      <div class="member-detail"><span>Nikah · </span>8 April 2015 💍</div>
+    </div>
+    <div class="member-card">
+      <div class="member-letter">M</div>
+      <div class="member-name">Maryam</div>
+      <div class="member-role">Kakak · Age 10</div>
+      <div class="member-detail"><span>Born · </span>29 December 2015</div>
+      <div class="member-detail"><span>Loves · </span>Exploring & adventures</div>
+    </div>
+    <div class="member-card">
+      <div class="member-letter">K</div>
+      <div class="member-name">Khadeeja</div>
+      <div class="member-role">Tengah · Age 8</div>
+      <div class="member-detail"><span>Born · </span>24 June 2018</div>
+      <div class="member-detail"><span>Pick · </span>Lost World of Tambun 🎢</div>
+    </div>
+    <div class="member-card">
+      <div class="member-letter">A</div>
+      <div class="member-name">Aeesya</div>
+      <div class="member-role">Adik · Age 6</div>
+      <div class="member-detail"><span>Born · </span>15 January 2020</div>
+      <div class="member-detail"><span>Loves · </span>Beach days & waterfalls</div>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal">
+    <h3>Add Event</h3>
+    <div class="modal-fields">
+      <div><div class="field-label">Event Name</div><input class="add-input" id="evtTitle" placeholder="e.g. Maryam dental appointment" style="width:100%;"/></div>
+      <div><div class="field-label">Date</div><input class="add-input" id="evtDate" type="date" style="width:100%;"/></div>
+      <div><div class="field-label">Who</div><input class="add-input" id="evtWho" placeholder="e.g. Maryam · All" style="width:100%;"/></div>
+      <div><div class="field-label">Type</div>
+        <select class="add-input" id="evtType" style="width:100%;">
+          <option value="normal">General</option>
+          <option value="urgent">Urgent / Medical</option>
+          <option value="soon">School / Education</option>
+          <option value="trip">Trip Related</option>
+        </select>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveEvent()">Save Event</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── TABS ──
+function switchTab(name){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelector(`.tab[onclick*="${name}"]`).classList.add('active');
+  document.getElementById('page-'+name).classList.add('active');
+}
+
+// ── CLOCK ──
+function updateClock(){
+  const n=new Date();
+  document.getElementById('liveTime').textContent=n.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'})+' AST';
+  const h=n.getHours();
+  document.getElementById('timeOfDay').textContent=h<12?'morning':h<17?'afternoon':'evening';
+}
+setInterval(updateClock,1000);updateClock();
+
+// ── DATE ──
+document.getElementById('todayDate').textContent=
+  new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();
+
+// ── COUNTDOWN ──
+function updateCountdown(){
+  const dep=new Date('2026-06-29T17:35:00+03:00');
+  const diff=dep-new Date();
+  if(diff<=0){document.getElementById('cdDays').closest('.cd-nums').innerHTML='<span style="color:var(--green);font-family:Cormorant Garamond,serif;font-size:1.2rem;font-style:italic;">🇲🇾 Trip is on!</span>';return;}
+  document.getElementById('cdDays').textContent=String(Math.floor(diff/86400000)).padStart(2,'0');
+  document.getElementById('cdHours').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+  document.getElementById('cdMins').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+}
+setInterval(updateCountdown,60000);updateCountdown();
+
+// ── WEATHER ──
+async function loadWeather(){
+  try{
+    const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=25.2854&longitude=51.5310&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&wind_speed_unit=kmh&timezone=Asia%2FQatar');
+    const d=await r.json();const c=d.current;
+    document.getElementById('weatherTemp').textContent=Math.round(c.temperature_2m)+'°C';
+    document.getElementById('wFeels').textContent=Math.round(c.apparent_temperature)+'°C';
+    document.getElementById('wHumidity').textContent=c.relative_humidity_2m+'%';
+    document.getElementById('wWind').textContent=Math.round(c.wind_speed_10m)+' km/h';
+    const wc=c.weather_code;
+    const icons={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',51:'🌦️',61:'🌧️',80:'🌦️',95:'⛈️'};
+    const descs={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',51:'Light drizzle',61:'Rain',80:'Showers',95:'Thunderstorm'};
+    const key=Object.keys(icons).reverse().find(k=>wc>=+k)||0;
+    document.getElementById('weatherIcon').textContent=icons[key]||'🌡️';
+    document.getElementById('weatherDesc').textContent=descs[key]||'Doha weather';
+  }catch(e){document.getElementById('weatherDesc').textContent='Weather unavailable';}
+}
+loadWeather();
+
+// ── STORAGE ──
+const S={
+  get:k=>{try{return JSON.parse(localStorage.getItem('ramka_'+k))||null;}catch{return null;}},
+  set:(k,v)=>localStorage.setItem('ramka_'+k,JSON.stringify(v))
+};
+
+// ── EVENTS ──
+const defaultEvents=[
+  {id:0,title:"Khadeeja — Dr. Nathalie Abou Samra (Aman Hospital)",date:'2026-05-25',who:'Khadeeja',type:'urgent'},
+  {id:1,title:'Depart Doha — Malaysia Trip ✈️',date:'2026-06-29',who:'All Family',type:'trip'},
+  {id:2,title:'Arrive KL · Luksal delivers Honda CRV',date:'2026-06-30',who:'All Family',type:'trip'},
+  {id:3,title:"🎂 Khadeeja's Birthday — turning 8!",date:'2026-06-24',who:'Khadeeja',type:'soon'},
+  {id:4,title:'Legoland — Water Park + Theme Park 🧱',date:'2026-07-08',who:'All Family',type:'trip'},
+  {id:5,title:'Island Hopping with Epu — Mersing 🏝️',date:'2026-07-15',who:'All Family',type:'trip'},
+  {id:6,title:'Fly home to Doha ✈️',date:'2026-07-29',who:'All Family',type:'trip'},
+];
+function getEvents(){return S.get('events')||defaultEvents;}
+function saveEvents(e){S.set('events',e);}
+function daysUntil(ds){
+  const d=new Date(ds);d.setHours(0,0,0,0);
+  const t=new Date();t.setHours(0,0,0,0);
+  return Math.ceil((d-t)/86400000);
+}
+function renderEvents(){
+  const ev=getEvents().sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const list=document.getElementById('eventsList');
+  list.innerHTML='';
+  const up=ev.filter(e=>daysUntil(e.date)>=0).slice(0,8);
+  if(!up.length){list.innerHTML='<div class="empty">No upcoming events. Add one!</div>';return;}
+  up.forEach(e=>{
+    const d=daysUntil(e.date);
+    const ds=d===0?'Today!':d===1?'Tomorrow':`in ${d} days`;
+    list.innerHTML+=`<div class="event-item ${e.type}">
+      <div class="event-info">
+        <div class="event-title">${e.title}</div>
+        <div class="event-who">${e.who}</div>
+      </div>
+      <div class="event-meta">
+        <div class="event-date">${new Date(e.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</div>
+        <div class="event-days">${ds}</div>
+      </div>
+    </div>`;
+  });
+}
+
+// ── SCHOOL ──
+const schoolEvents=[
+  {title:"Maryam — Year 6",date:'2026-09-01',who:'Maryam',type:'soon'},
+  {title:"Khadeeja — Year 4",date:'2026-09-01',who:'Khadeeja',type:'soon'},
+  {title:"Aeesya — Year 2",date:'2026-09-01',who:'Aeesya',type:'soon'},
+];
+function renderSchool(){
+  const list=document.getElementById('schoolList');list.innerHTML='';
+  schoolEvents.forEach(e=>{
+    const d=daysUntil(e.date);if(d<0)return;
+    list.innerHTML+=`<div class="event-item ${e.type}">
+      <div class="event-info"><div class="event-title">${e.title}</div><div class="event-who">${e.who}</div></div>
+      <div class="event-meta"><div class="event-date">${new Date(e.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</div><div class="event-days">in ${d} days</div></div>
+    </div>`;
+  });
+}
+
+// ── BIRTHDAYS ──
+const birthdays=[
+  {name:'Rhuee',initial:'R',month:4,day:8},
+  {name:'Afiqah',initial:'A',month:4,day:8},
+  {name:'Rhuee & Afiqah — Nikah 💍',initial:'♥',month:4,day:8,anniversary:true},
+  {name:'Maryam',initial:'M',month:12,day:29},
+  {name:'Khadeeja',initial:'K',month:6,day:24},
+  {name:'Aeesya',initial:'A',month:1,day:15},
+];
+function nextBday(m,d){
+  const n=new Date();let nx=new Date(n.getFullYear(),m-1,d);
+  if(nx<=n)nx.setFullYear(n.getFullYear()+1);
+  return Math.ceil((nx-n)/86400000);
+}
+function renderBdays(){
+  const list=document.getElementById('bdayList');list.innerHTML='';
+  [...birthdays].sort((a,b)=>nextBday(a.month,a.day)-nextBday(b.month,b.day)).forEach(b=>{
+    const d=nextBday(b.month,b.day);
+    const dl=new Date(2000,b.month-1,b.day).toLocaleDateString('en-GB',{day:'numeric',month:'long'});
+    const ds=d===0?'🎂 Today!':d===1?'Tomorrow!':d<=7?`in ${d} days 🎉`:`in ${d} days`;
+    list.innerHTML+=`<div class="bday-item ${b.anniversary?'anniversary':''}">
+      <div class="bday-initial">${b.initial}</div>
+      <div style="flex:1;"><div class="bday-name">${b.name}</div><div class="bday-date-label">${dl}</div></div>
+      <div class="bday-countdown">${ds}</div>
+    </div>`;
+  });
+}
+
+// ── TASKS ──
+const defaultTasks=[
+  {id:1,text:"Book Lost World Hotel (MYR 824)",tag:'Malaysia',done:false},
+  {id:2,text:"Buy Legoland tickets online",tag:'Malaysia',done:false},
+  {id:3,text:"Get Touch 'n Go card at KLIA",tag:'Malaysia',done:false},
+  {id:4,text:"Check all 5 passport expiry dates",tag:'Travel',done:false},
+  {id:5,text:"Install Grab app",tag:'Malaysia',done:false},
+  {id:6,text:"Download Malaysia offline maps",tag:'Malaysia',done:false},
+];
+function getTasks(){return S.get('tasks')||defaultTasks;}
+function saveTasks(t){S.set('tasks',t);}
+function renderTasks(){
+  const tasks=getTasks();
+  document.getElementById('tasksList').innerHTML=tasks.slice(0,8).map(t=>`
+    <div class="task-item ${t.done?'done':''}" onclick="toggleTask(${t.id})">
+      <div class="task-check">${t.done?'✓':''}</div>
+      <div class="task-text">${t.text}</div>
+      <div class="task-tag">${t.tag}</div>
+    </div>`).join('');
+}
+function toggleTask(id){
+  const t=getTasks();const i=t.find(x=>x.id===id);if(i)i.done=!i.done;
+  saveTasks(t);renderTasks();
+}
+function addTask(){
+  const inp=document.getElementById('taskInput');const txt=inp.value.trim();if(!txt)return;
+  const t=getTasks();t.push({id:Date.now(),text:txt,tag:'General',done:false});
+  saveTasks(t);renderTasks();inp.value='';
+}
+
+// ── MODAL ──
+function openModal(){
+  document.getElementById('modalOverlay').classList.add('open');
+  const tmr=new Date();tmr.setDate(tmr.getDate()+1);
+  document.getElementById('evtDate').value=tmr.toISOString().split('T')[0];
+}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+function saveEvent(){
+  const title=document.getElementById('evtTitle').value.trim();
+  const date=document.getElementById('evtDate').value;
+  const who=document.getElementById('evtWho').value.trim()||'Family';
+  const type=document.getElementById('evtType').value;
+  if(!title||!date)return;
+  const ev=getEvents();ev.push({id:Date.now(),title,date,who,type});
+  saveEvents(ev);renderEvents();closeModal();
+  document.getElementById('evtTitle').value='';document.getElementById('evtWho').value='';
+}
+document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+
+// ── PASSWORD LOCK ──
+const PASS = 'ramka2025';
+const SESSION_KEY = 'ramka_auth';
+
+function checkPassword() {
+  const input = document.getElementById('lockInput').value;
+  const error = document.getElementById('lockError');
+  if (input === PASS) {
+    sessionStorage.setItem(SESSION_KEY, 'true');
+    document.getElementById('lockScreen').style.display = 'none';
+    error.classList.remove('show');
+  } else {
+    error.classList.add('show');
+    document.getElementById('lockInput').value = '';
+    document.getElementById('lockInput').focus();
+    // shake animation
+    const box = document.querySelector('.lock-box');
+    box.style.transform = 'translateX(-6px)';
+    setTimeout(() => box.style.transform = 'translateX(6px)', 80);
+    setTimeout(() => box.style.transform = 'translateX(-4px)', 160);
+    setTimeout(() => box.style.transform = 'translateX(0)', 240);
+  }
+}
+
+// Check if already authenticated this session
+if (sessionStorage.getItem(SESSION_KEY) === 'true') {
+  document.getElementById('lockScreen').style.display = 'none';
+}
+
+// ── INIT ──
+renderEvents();renderTasks();renderBdays();renderSchool();
+</script>
+</body>
+</html>
