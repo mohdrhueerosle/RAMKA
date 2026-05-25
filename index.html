@@ -530,6 +530,13 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 }
 .dna-t{font-size:.82rem;color:var(--ink2);line-height:1.6;}
 
+
+/* Turkey card */
+.trip-card.turkey::after{background:linear-gradient(90deg,#2a5a8c,transparent);}
+.trip-card.turkey{background:#f5f8fc;}
+.trip-card.turkey .trip-name{color:var(--ink2);}
+.trip-tag.turkey-hi{background:#eef4fb;color:#2a5a8c;border:1px solid rgba(42,90,140,.2);}
+
 </style>
 </head>
 <body>
@@ -723,6 +730,25 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
         <span class="trip-tag">Kampung life</span>
       </div>
     </div>
+    <div class="trip-card turkey" onclick="showTrip('turkey')" style="cursor:pointer;">
+      <div class="trip-status" style="background:#eef4fb;color:#2a5a8c;border:1px solid rgba(42,90,140,.2);">✦ Planned · InsyaAllah</div>
+      <div class="trip-year">Dec 2025 · Postponed · Coming Soon</div>
+      <div class="trip-name"><span style="font-family:sans-serif;">🇹🇷</span> Turkey</div>
+      <div class="trip-places">Istanbul · Uludağ · Snow · Cottage Life · Winter Family Experience</div>
+      <div class="trip-divider"></div>
+      <div class="trip-stats">
+        <div class="trip-stat"><strong>QAR 10,210</strong><span>Flights Booked</span></div>
+        <div class="trip-stat"><strong>6 Nights</strong><span>Planned</span></div>
+        <div class="trip-stat"><strong>❄️ Snow</strong><span>For the Girls</span></div>
+      </div>
+      <div class="trip-tags">
+        <span class="trip-tag turkey-hi">First Snow</span>
+        <span class="trip-tag turkey-hi">Cottage life</span>
+        <span class="trip-tag turkey-hi">Uludağ</span>
+        <span class="trip-tag">Fireplace nights</span>
+        <span class="trip-tag">Istanbul</span>
+      </div>
+    </div>
 
     <div class="trip-card future future-trip" onclick="showTrip('future')" style="cursor:pointer;">
       <div class="trip-status">✦ Dreaming</div>
@@ -753,53 +779,60 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
       <div class="trip-detail-grid">
         <div>
           <div class="trip-detail-section">
-            <h4>Flights · Qatar Airways</h4>
-            <div class="trip-detail-row"><span>Outbound</span><strong>17 Jul · QR1188 · DOH→JED · 18:35</strong></div>
-            <div class="trip-detail-row"><span>Return</span><strong>19 Jul · QR1179 · MED→DOH · 11:15</strong></div>
-            <div class="trip-detail-row"><span>Total Flights</span><strong>QAR 8,978.78</strong></div>
+            <h4>✈️ Flights · Qatar Airways</h4>
+            <div class="trip-detail-row"><span>Outbound</span><strong>Thu 17 Jul · QR1188 · DOH→JED</strong></div>
+            <div class="trip-detail-row"><span>Departs</span><strong>18:35 Doha → 21:05 Jeddah</strong></div>
+            <div class="trip-detail-row"><span>Return</span><strong>Sat 19 Jul · QR1179 · MED→DOH</strong></div>
+            <div class="trip-detail-row"><span>Departs</span><strong>11:15 Madinah → 13:30 Doha</strong></div>
+            <div class="trip-detail-row"><span>Total Airfare</span><strong>QAR 8,978.78</strong></div>
           </div>
           <div class="trip-detail-section">
-            <h4>Accommodation</h4>
-            <div class="trip-detail-row"><span>Makkah</span><strong>Al Marwa Rayhaan by Rotana · QAR 2,113</strong></div>
-            <div class="trip-detail-row"><span>Madinah</span><strong>Nozol Royal Inn · QAR 1,133</strong></div>
+            <h4>🏨 Accommodation</h4>
+            <div class="trip-detail-row"><span>Makkah · 17–18 Jul</span><strong>Al Marwa Rayhaan by Rotana · QAR 2,113</strong></div>
+            <div class="trip-detail-row"><span>Why</span><strong>Directly connected to Haram · perfect for late-night Umrah</strong></div>
+            <div class="trip-detail-row"><span>Madinah · 18–19 Jul</span><strong>Nozol Royal Inn · QAR 1,133</strong></div>
+            <div class="trip-detail-row"><span>Why</span><strong>Close to Masjid Nabawi · easy Raudhah access</strong></div>
           </div>
           <div class="trip-detail-section">
-            <h4>Transport</h4>
-            <div class="trip-detail-row"><span>Jeddah → Makkah</span><strong>Uber · ~QAR 240</strong></div>
-            <div class="trip-detail-row"><span>Makkah → Madinah</span><strong>Haramain Train · 15:00 → 17:25 · QAR 842</strong></div>
-            <div class="trip-detail-row"><span>Madinah → Airport</span><strong>Uber · depart 07:15</strong></div>
+            <h4>🚗 Transport</h4>
+            <div class="trip-detail-row"><span>JED Airport → Makkah</span><strong>Uber · ~1.5–2 hrs · ~QAR 240</strong></div>
+            <div class="trip-detail-row"><span>Makkah → Madinah</span><strong>Haramain High-Speed Train · departs 15:00 · arrives 17:25</strong></div>
+            <div class="trip-detail-row"><span>Train Cost</span><strong>QAR 842</strong></div>
+            <div class="trip-detail-row"><span>Madinah → MED Airport</span><strong>Uber · depart hotel 07:15</strong></div>
           </div>
           <div class="trip-detail-section">
-            <h4>Full Budget</h4>
+            <h4>💰 Full Budget</h4>
             <div class="trip-detail-row"><span>Flights</span><strong>QAR 8,978.78</strong></div>
             <div class="trip-detail-row"><span>Hotels</span><strong>QAR 3,246</strong></div>
-            <div class="trip-detail-row"><span>Train</span><strong>QAR 842</strong></div>
-            <div class="trip-detail-row"><span>Uber</span><strong>QAR 240</strong></div>
-            <div class="trip-detail-row"><span>Visa + Insurance</span><strong>QAR 1,944</strong></div>
-            <div class="trip-detail-row"><span>Grand Total</span><strong>QAR 15,250.78</strong></div>
+            <div class="trip-detail-row"><span>Haramain Train</span><strong>QAR 842</strong></div>
+            <div class="trip-detail-row"><span>Uber (x2)</span><strong>QAR ~240</strong></div>
+            <div class="trip-detail-row"><span>Visa + Insurance</span><strong>QAR 1,944 (SAR 400/pax × 5)</strong></div>
+            <div class="trip-detail-row" style="background:var(--amber-light);"><span>Grand Total</span><strong>QAR 15,250.78</strong></div>
           </div>
         </div>
         <div>
           <div class="trip-detail-section">
-            <h4>Nusuk Slots</h4>
-            <div class="trip-detail-row"><span>🕋 Umrah</span><strong>18 Jul · 12:00 AM – 2:00 AM</strong></div>
-            <div class="trip-detail-row"><span>🌹 Raudhah</span><strong>19 Jul · ~3:00 AM</strong></div>
-            <div class="trip-detail-row"><span>Goal</span><strong>Pray Fajr in Raudhah 🤲</strong></div>
+            <h4>🕌 Nusuk Slots</h4>
+            <div class="trip-detail-row"><span>🕋 Umrah Slot</span><strong>18 Jul · 12:00 AM – 2:00 AM</strong></div>
+            <div class="trip-detail-row"><span>Why good</span><strong>Cooler temps · lighter crowds · manageable Tawaf for family</strong></div>
+            <div class="trip-detail-row"><span>🌹 Raudhah Slot</span><strong>19 Jul · ~3:00 AM</strong></div>
+            <div class="trip-detail-row"><span>Goal</span><strong>Stay until Fajr · pray in Raudhah 🤲</strong></div>
+            <div class="trip-detail-row"><span>Crowd forecast</span><strong>Post-Hajj · moderate · July heat keeps numbers low</strong></div>
           </div>
           <div class="trip-detail-section">
-            <h4>Day by Day</h4>
-            <div class="trip-detail-row"><span>17 Jul Thu</span><strong>Fly DOH→JED · Uber to Makkah · Check in</strong></div>
-            <div class="trip-detail-row"><span>18 Jul Fri</span><strong>Umrah 12AM · Jumu'ah · Haramain Train to Madinah</strong></div>
-            <div class="trip-detail-row"><span>19 Jul Sat</span><strong>Raudhah 3AM · Fajr · Fly MED→DOH</strong></div>
+            <h4>🗓️ Day by Day</h4>
+            <div class="trip-detail-row"><span>Thu 17 Jul</span><strong>15:30 leave home · 18:35 fly DOH→JED · Uber to Makkah · check in Al Marwa</strong></div>
+            <div class="trip-detail-row"><span>Fri 18 Jul</span><strong>12AM–2AM Umrah · rest · Fajr · Jumu'ah · 15:00 Haramain train → Madinah · check in Nozol</strong></div>
+            <div class="trip-detail-row"><span>Sat 19 Jul</span><strong>2:30AM walk to Nabawi · 3AM Raudhah · Fajr in Raudhah · breakfast · 7:15 leave for airport · 11:15 fly home</strong></div>
           </div>
           <div class="trip-detail-section">
-            <h4>Checklist Highlights</h4>
-            <div class="trip-detail-row"><span>📄 Docs</span><strong>Passports · Visas · Vaccination certs · Nusuk QR</strong></div>
-            <div class="trip-detail-row"><span>🕌 Ibadah</span><strong>Ihram · Telekung · Sejadah · Sandals</strong></div>
-            <div class="trip-detail-row"><span>👨‍👩‍👧 Family</span><strong>Snacks · Water · Wet wipes · Power bank</strong></div>
+            <h4>🎒 Checklist</h4>
+            <div class="trip-detail-row"><span>📄 Documents</span><strong>Passports · Visas · Vaccination certs (meningococcal) · Nusuk QR codes · Flight & hotel bookings · Train tickets</strong></div>
+            <div class="trip-detail-row"><span>🕌 Ibadah</span><strong>Ihram · Telekung · Sejadah · Comfortable sandals</strong></div>
+            <div class="trip-detail-row"><span>👨‍👩‍👧 Family</span><strong>Snacks · Water · Wet wipes · Chargers · Power bank</strong></div>
           </div>
           <div class="highlight-box">
-            اللَّهُمَّ اجْعَلْنِي مِن جِيرَانِ نَبِيِّكَ فِي الْجَنَّةِ<br><br>
+            <div style="font-size:1.1rem;margin-bottom:.5rem;text-align:center;">اللَّهُمَّ اجْعَلْنِي مِن جِيرَانِ نَبِيِّكَ فِي الْجَنَّةِ</div>
             <em>"O Allah, make me among the neighbors of Your Prophet in Paradise."</em>
           </div>
         </div>
@@ -816,30 +849,38 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
       <div class="trip-detail-grid">
         <div>
           <div class="trip-detail-section">
-            <h4>Flights</h4>
-            <div class="trip-detail-row"><span>Outbound</span><strong>DOH → TBS · 3 Aug · 08:20</strong></div>
-            <div class="trip-detail-row"><span>Return</span><strong>TBS → DOH · 8 Aug · 21:35</strong></div>
-            <div class="trip-detail-row"><span>Duration</span><strong>5 Days</strong></div>
+            <h4>✈️ Flights</h4>
+            <div class="trip-detail-row"><span>Outbound</span><strong>Sun 3 Aug · DOH→TBS · departs 08:20</strong></div>
+            <div class="trip-detail-row"><span>Arrives</span><strong>12:40 Tbilisi International</strong></div>
+            <div class="trip-detail-row"><span>Return</span><strong>Fri 8 Aug · TBS→DOH · departs 21:35</strong></div>
+            <div class="trip-detail-row"><span>Arrives</span><strong>23:45 Doha</strong></div>
             <div class="trip-detail-row"><span>Total Airfare</span><strong>QAR 12,769.01</strong></div>
           </div>
           <div class="trip-detail-section">
-            <h4>Accommodation</h4>
-            <div class="trip-detail-row"><span>3–5 Aug</span><strong>Achkhoti · QAR 1,173</strong></div>
-            <div class="trip-detail-row"><span>5–8 Aug</span><strong>Tbilisi · QAR 831</strong></div>
+            <h4>🏨 Accommodation</h4>
+            <div class="trip-detail-row"><span>Achkhoti · 3–5 Aug</span><strong>Mountain Airbnb · QAR 1,173</strong></div>
+            <div class="trip-detail-row"><span>Vibe</span><strong>Quiet village · mountain scenery · fresh air · no rush — became the heart of the trip</strong></div>
+            <div class="trip-detail-row"><span>Tbilisi · 5–8 Aug</span><strong>City Airbnb · QAR 831</strong></div>
           </div>
           <div class="trip-detail-section">
-            <h4>Budget</h4>
-            <div class="trip-detail-row"><span>Flights</span><strong>QAR 12,769</strong></div>
-            <div class="trip-detail-row"><span>Accommodation</span><strong>QAR 2,004</strong></div>
-            <div class="trip-detail-row"><span>Car Rental</span><strong>USD 574</strong></div>
+            <h4>🚗 Transport</h4>
+            <div class="trip-detail-row"><span>Car Rental</span><strong>Self-drive · USD 574</strong></div>
+            <div class="trip-detail-row"><span>Why</span><strong>Flexibility · scenic stops · kids comfort · no rush · no tours</strong></div>
+          </div>
+          <div class="trip-detail-section">
+            <h4>💰 Full Budget</h4>
+            <div class="trip-detail-row"><span>Flights</span><strong>QAR 12,769.01</strong></div>
+            <div class="trip-detail-row"><span>Achkhoti Airbnb</span><strong>QAR 1,173</strong></div>
+            <div class="trip-detail-row"><span>Tbilisi Airbnb</span><strong>QAR 831</strong></div>
             <div class="trip-detail-row"><span>Horse Riding</span><strong>QAR 546</strong></div>
-            <div class="trip-detail-row"><span>Total</span><strong>~QAR 15,319 + USD 574</strong></div>
+            <div class="trip-detail-row"><span>Car Rental</span><strong>USD 574</strong></div>
+            <div class="trip-detail-row" style="background:var(--amber-light);"><span>Grand Total</span><strong>~QAR 15,319 + USD 574</strong></div>
           </div>
         </div>
         <div>
           <div class="trip-detail-section">
-            <h4>Places Visited</h4>
-            <div>
+            <h4>📍 Places Visited</h4>
+            <div style="margin-bottom:.8rem;">
               <span class="place-pill">Achkhoti</span>
               <span class="place-pill">Tbilisi</span>
               <span class="place-pill">Mtskheta</span>
@@ -850,16 +891,24 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
               <span class="place-pill">Juta Valley</span>
             </div>
           </div>
-          <div class="trip-detail-section" style="margin-top:1rem;">
-            <h4>Activities</h4>
-            <div class="trip-detail-row"><span>4 Aug</span><strong>🐴 Horse Riding — Achkhoti</strong></div>
-            <div class="trip-detail-row"><span>Mountain</span><strong>Gergeti Trinity Church hike</strong></div>
-            <div class="trip-detail-row"><span>Nature</span><strong>Gveleti Waterfalls walk</strong></div>
-            <div class="trip-detail-row"><span>Scenic</span><strong>Dariali Gorge drive</strong></div>
-            <div class="trip-detail-row"><span>Day trip</span><strong>Mtskheta + Sighnaghi</strong></div>
+          <div class="trip-detail-section">
+            <h4>🗓️ Day by Day</h4>
+            <div class="trip-detail-row"><span>Sun 3 Aug</span><strong>Fly DOH→TBS · arrive 12:40 · drive to Achkhoti · settle in</strong></div>
+            <div class="trip-detail-row"><span>Mon 4 Aug</span><strong>🐴 Horse riding · Gergeti Trinity Church · Dariali Gorge drive</strong></div>
+            <div class="trip-detail-row"><span>Tue 5 Aug</span><strong>Gveleti Waterfalls · drive to Tbilisi · check in</strong></div>
+            <div class="trip-detail-row"><span>Wed 6 Aug</span><strong>Tbilisi city · cable cars · old town · flexible exploration</strong></div>
+            <div class="trip-detail-row"><span>Thu 7 Aug</span><strong>Day trip → Mtskheta + Sighnaghi · scenic charming towns</strong></div>
+            <div class="trip-detail-row"><span>Fri 8 Aug</span><strong>Last Tbilisi morning · 21:35 fly home → Doha 23:45</strong></div>
+          </div>
+          <div class="trip-detail-section">
+            <h4>💡 RAMKA Travel Insights from Georgia</h4>
+            <div class="trip-detail-row"><span>Key lesson</span><strong>Achkhoti-type vibes = RAMKA DNA. Quiet · mountain · slow · no rush.</strong></div>
+            <div class="trip-detail-row"><span>Tbilisi feeling</span><strong>"Tbilisi, Kutaisi and Telavi felt stressful compared to Achkhoti"</strong></div>
+            <div class="trip-detail-row"><span>Halal food</span><strong>Harder than expected — now a key criterion for future trips</strong></div>
+            <div class="trip-detail-row"><span>Photography</span><strong>Georgia matched Fujifilm aesthetic perfectly — misty mountains, village life, cinematic roads</strong></div>
           </div>
           <div class="highlight-box">
-            "Achkhoti became the emotional heart of the trip — quiet village, mountain scenery, fresh air, no rush. The benchmark for all future RAMKA trips."
+            This trip became RAMKA's foundational reference. The benchmark every future adventure is measured against. 🏔️
           </div>
         </div>
       </div>
@@ -875,55 +924,200 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
       <div class="trip-detail-grid">
         <div>
           <div class="trip-detail-section">
-            <h4>Flights · Etihad Airways</h4>
-            <div class="trip-detail-row"><span>Outbound</span><strong>29 Jun · EY668+EY488 · DOH→AUH→KUL</strong></div>
-            <div class="trip-detail-row"><span>Departs</span><strong>17:35 DOH → Arrives 08:25+1 KUL</strong></div>
-            <div class="trip-detail-row"><span>Return</span><strong>29 Jul · EY489+EY667 · KUL→AUH→DOH</strong></div>
+            <h4>✈️ Flights · Etihad Airways</h4>
             <div class="trip-detail-row"><span>Booking Ref</span><strong>7FOU7G</strong></div>
-            <div class="trip-detail-row"><span>Total Airfare</span><strong>QAR 16,760</strong></div>
+            <div class="trip-detail-row"><span>Outbound · 29 Jun</span><strong>EY668 · DOH 17:35 → AUH 19:40</strong></div>
+            <div class="trip-detail-row"><span>Layover AUH</span><strong>1hr 20min · then EY488 · AUH 21:00 → KUL 08:25+1</strong></div>
+            <div class="trip-detail-row"><span>Return · 29 Jul</span><strong>EY489 · KUL 09:50 → AUH 12:50</strong></div>
+            <div class="trip-detail-row"><span>Layover AUH</span><strong>3hr 45min · then EY667 · AUH 16:35 → DOH 16:40</strong></div>
+            <div class="trip-detail-row"><span>Class</span><strong>Economy L · 40kg baggage each</strong></div>
+            <div class="trip-detail-row" style="background:var(--amber-light);"><span>Total Flights</span><strong>QAR 16,760</strong></div>
           </div>
           <div class="trip-detail-section">
-            <h4>Car Rental</h4>
-            <div class="trip-detail-row"><span>Company</span><strong>Luksal Services</strong></div>
+            <h4>💺 Seat Assignments</h4>
+            <div class="trip-detail-row"><span>Rhuee</span><strong>EY668: 09A · EY488: 20D · EY489: 20E · EY667: 09E</strong></div>
+            <div class="trip-detail-row"><span>Afiqah</span><strong>EY668: 09E · EY488: 20C · EY489: 20C · EY667: 09C</strong></div>
+            <div class="trip-detail-row"><span>Khadeeja</span><strong>EY668: 09B · EY488: 20A · EY489: 20A · EY667: 09B</strong></div>
+            <div class="trip-detail-row"><span>Aeesya</span><strong>EY668: 09C · EY488: 20B · EY489: 20B · EY667: 09A</strong></div>
+            <div class="trip-detail-row"><span>Maryam</span><strong>EY668: 09D · EY488: 20E · EY489: 20D · EY667: 09D</strong></div>
+          </div>
+          <div class="trip-detail-section">
+            <h4>🚗 Car Rental · Luksal Services</h4>
             <div class="trip-detail-row"><span>Vehicle</span><strong>Honda CRV 2023</strong></div>
             <div class="trip-detail-row"><span>Plan</span><strong>Monthly · Unlimited mileage</strong></div>
             <div class="trip-detail-row"><span>Cost</span><strong>MYR 4,700 (~QAR 3,615)</strong></div>
+            <div class="trip-detail-row"><span>Delivery</span><strong>KLIA on arrival 30 Jun</strong></div>
+            <div class="trip-detail-row"><span>Return</span><strong>KLIA on 29 Jul</strong></div>
           </div>
           <div class="trip-detail-section">
-            <h4>Budget (Ground)</h4>
+            <h4>🏨 Accommodation</h4>
+            <div class="trip-detail-row"><span>30 Jun + 18–29 Jul</span><strong>Afiqah's parents' house · KL (free)</strong></div>
+            <div class="trip-detail-row"><span>1–4 Jul</span><strong>Nenek's house · Sg Petani (free)</strong></div>
+            <div class="trip-detail-row"><span>5 Jul</span><strong>Opah's house · Ipoh (free)</strong></div>
+            <div class="trip-detail-row"><span>6 Jul</span><strong>Lost World Hotel · MYR 824 (includes park tickets!) ⚠️ Book</strong></div>
+            <div class="trip-detail-row"><span>7–10 Jul</span><strong>Legoland Airbnb · Iskandar Puteri · Ref: HMBTJRAE92 ✅</strong></div>
+            <div class="trip-detail-row"><span>10–14 Jul</span><strong>Desaru Airbnb · Bandar Penawar · Ref: HMTR59EDK9 ✅</strong></div>
+            <div class="trip-detail-row"><span>14–16 Jul</span><strong>KK's Airbnb · Mersing · ~MYR 500 ⚠️ Book with KK</strong></div>
+            <div class="trip-detail-row"><span>16–18 Jul</span><strong>Kuantan Airbnb · ~MYR 300–600 ⚠️ Book closer to date</strong></div>
+          </div>
+          <div class="trip-detail-section">
+            <h4>💰 Budget (Ground Only)</h4>
             <div class="trip-detail-row"><span>Transport</span><strong>QAR ~4,230</strong></div>
             <div class="trip-detail-row"><span>Accommodation</span><strong>QAR ~3,650</strong></div>
-            <div class="trip-detail-row"><span>Food</span><strong>QAR ~7,500</strong></div>
+            <div class="trip-detail-row"><span>Food & Dining</span><strong>QAR ~7,500</strong></div>
             <div class="trip-detail-row"><span>Activities</span><strong>QAR ~1,700</strong></div>
             <div class="trip-detail-row"><span>Shopping</span><strong>QAR ~4,500</strong></div>
-            <div class="trip-detail-row"><span>Est. Total</span><strong>~QAR 23,500</strong></div>
+            <div class="trip-detail-row"><span>Buffer</span><strong>QAR ~1,500</strong></div>
+            <div class="trip-detail-row" style="background:var(--amber-light);"><span>Est. Ground Total</span><strong>~QAR 23,500 (buffer ~QAR 6,500)</strong></div>
           </div>
         </div>
         <div>
           <div class="trip-detail-section">
-            <h4>Destinations</h4>
-            <div>
+            <h4>📍 Destinations</h4>
+            <div style="margin-bottom:.8rem;">
               <span class="place-pill">Kuala Lumpur</span>
               <span class="place-pill">Sg Petani</span>
+              <span class="place-pill">Penang (day trip)</span>
               <span class="place-pill">Ipoh</span>
               <span class="place-pill">Lost World of Tambun</span>
-              <span class="place-pill">Legoland</span>
+              <span class="place-pill">Legoland Nusajaya</span>
               <span class="place-pill">Desaru</span>
               <span class="place-pill">Mersing</span>
               <span class="place-pill">Kuantan</span>
+              <span class="place-pill">Teluk Cempedak</span>
             </div>
           </div>
-          <div class="trip-detail-section" style="margin-top:1rem;">
-            <h4>Key Highlights</h4>
-            <div class="trip-detail-row"><span>6 Jul</span><strong>🎢 Lost World of Tambun (Khadeeja's pick!)</strong></div>
-            <div class="trip-detail-row"><span>8–9 Jul</span><strong>🧱 Legoland Water Park + Theme Park</strong></div>
-            <div class="trip-detail-row"><span>11–13 Jul</span><strong>🏖️ Desaru Beach Days</strong></div>
-            <div class="trip-detail-row"><span>15 Jul</span><strong>🏝️ Island Hopping with Epu — Mersing</strong></div>
-            <div class="trip-detail-row"><span>17 Jul</span><strong>🌊 Teluk Cempedak — Kuantan</strong></div>
-            <div class="trip-detail-row"><span>19–28 Jul</span><strong>🏙️ KL — Shopping, family, food</strong></div>
+          <div class="trip-detail-section">
+            <h4>🗓️ Full Itinerary</h4>
+            <div class="trip-detail-row"><span>29 Jun Mon</span><strong>Depart Doha 17:35 · EY668+EY488 via AUH</strong></div>
+            <div class="trip-detail-row"><span>30 Jun Tue</span><strong>Arrive KUL 08:25 · Luksal delivers CRV · Drive to KL</strong></div>
+            <div class="trip-detail-row"><span>1 Jul Wed</span><strong>KL → Sg Petani (~360km · ~3.5hrs · PLUS E1)</strong></div>
+            <div class="trip-detail-row"><span>2–4 Jul</span><strong>Sg Petani — kampung life · family time · optional Penang day trip</strong></div>
+            <div class="trip-detail-row"><span>5 Jul Sun</span><strong>Sg Petani → Ipoh (~165km · ~1.5hrs) · Opah's house</strong></div>
+            <div class="trip-detail-row"><span>6 Jul Mon</span><strong>🎢 Lost World of Tambun (Khadeeja's pick!) · Lost World Hotel</strong></div>
+            <div class="trip-detail-row"><span>7 Jul Tue</span><strong>Tambun → Nusajaya (~340km · ~3.5hrs) · Legoland Airbnb</strong></div>
+            <div class="trip-detail-row"><span>8 Jul Wed</span><strong>💧 Legoland Water Park (Theme Park closed Wed)</strong></div>
+            <div class="trip-detail-row"><span>9 Jul Thu</span><strong>🧱 Legoland Theme Park + Water Park</strong></div>
+            <div class="trip-detail-row"><span>10 Jul Fri</span><strong>Nusajaya → Desaru (~110km · ~1.5hrs) · Desaru Airbnb</strong></div>
+            <div class="trip-detail-row"><span>11–13 Jul</span><strong>🏖️ Desaru beach days · optional Desaru Coast Waterpark</strong></div>
+            <div class="trip-detail-row"><span>14 Jul Tue</span><strong>Desaru → Mersing (~120km · ~1.5hrs) · KK's Airbnb</strong></div>
+            <div class="trip-detail-row"><span>15 Jul Wed</span><strong>🏝️ Island hopping with Epu (boat owner friend)</strong></div>
+            <div class="trip-detail-row"><span>16 Jul Thu</span><strong>Mersing → Kuantan (~195km · ~2.5hrs)</strong></div>
+            <div class="trip-detail-row"><span>17 Jul Fri</span><strong>Explore Kuantan · Jumaat prayers · Teluk Cempedak beach</strong></div>
+            <div class="trip-detail-row"><span>18 Jul Sat</span><strong>Kuantan → KL (~250km · ~2.5hrs · Karak Highway E8)</strong></div>
+            <div class="trip-detail-row"><span>19–28 Jul</span><strong>🏙️ Kuala Lumpur — 10 days · shopping · family · food</strong></div>
+            <div class="trip-detail-row"><span>29 Jul Wed</span><strong>Return CRV to Luksal at KLIA · EY489 departs 09:50 · home!</strong></div>
+          </div>
+          <div class="trip-detail-section">
+            <h4>🎟️ Activities</h4>
+            <div class="trip-detail-row"><span>Lost World of Tambun</span><strong>Included in hotel (MYR 824) ✅</strong></div>
+            <div class="trip-detail-row"><span>Legoland Triple Park</span><strong>2A+3C · MYR 1,330 total · Buy on Legoland website ⚠️</strong></div>
+            <div class="trip-detail-row"><span>Island Hopping</span><strong>With friend Epu · pay on arrival ✅</strong></div>
+            <div class="trip-detail-row"><span>Desaru Waterpark</span><strong>Optional · on-site</strong></div>
+          </div>
+          <div class="trip-detail-section">
+            <h4>📋 Practical Notes</h4>
+            <div class="trip-detail-row"><span>Touch 'n Go</span><strong>Get at KLIA or 7-Eleven for highway tolls</strong></div>
+            <div class="trip-detail-row"><span>Cash</span><strong>Withdraw MYR at KLIA (family has Malaysian bank accounts)</strong></div>
+            <div class="trip-detail-row"><span>Apps</span><strong>Install Grab · download Malaysia offline maps on Google Maps</strong></div>
+            <div class="trip-detail-row"><span>SIM</span><strong>Buy Maxis/Celcom/Digi tourist SIM at KLIA or Airalo eSIM</strong></div>
+            <div class="trip-detail-row"><span>Insurance</span><strong>QLM global coverage via QatarEnergy — all 5 covered ✅</strong></div>
+            <div class="trip-detail-row"><span>School holidays</span><strong>Mid-year hols ended 7 Jun · next break 29 Aug · theme parks = normal weekdays ✅</strong></div>
+            <div class="trip-detail-row"><span>Khadeeja's birthday</span><strong>🎂 24 June — 5 days before departure! Celebrate before flying!</strong></div>
           </div>
           <div class="highlight-box">
-            31 days · ~2,500km in a Honda CRV · 3 theme parks · beaches · kampung life · family roots. The biggest RAMKA adventure yet.
+            31 days · ~2,500km in a Honda CRV · 3 theme parks · beaches · kampung life · island hopping · family roots. The biggest RAMKA adventure yet. 🇲🇾
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="trip-detail" id="detail-turkey">
+    <div class="trip-detail-header">
+      <div class="trip-detail-title">🇹🇷 Turkey — Winter 2025/2027</div>
+      <div class="trip-detail-close" onclick="closeTrip()">✕ Close</div>
+    </div>
+    <div class="trip-detail-body">
+      <div class="trip-detail-grid">
+        <div>
+          <div class="trip-detail-section">
+            <h4>✈️ Flights · Qatar Airways</h4>
+            <div class="trip-detail-row"><span>Booking Ref</span><strong>77LPIP</strong></div>
+            <div class="trip-detail-row"><span>Outbound · 18 Dec</span><strong>QR239 · DOH 07:45 → IST 12:20 (4hr 35min)</strong></div>
+            <div class="trip-detail-row"><span>Return · 24 Dec</span><strong>QR246 · IST 20:10 → DOH 00:10+1</strong></div>
+            <div class="trip-detail-row"><span>Total Flights</span><strong>QAR 10,210</strong></div>
+            <div class="trip-detail-row"><span>Baggage</span><strong>30kg each · 150kg total</strong></div>
+          </div>
+          <div class="trip-detail-section">
+            <h4>💺 Seats — All Together in Row 21!</h4>
+            <div class="trip-detail-row"><span>Aeesya</span><strong>21A (window 🪟)</strong></div>
+            <div class="trip-detail-row"><span>Khadeeja</span><strong>21B</strong></div>
+            <div class="trip-detail-row"><span>Afiqah</span><strong>21C (middle)</strong></div>
+            <div class="trip-detail-row"><span>Maryam</span><strong>21D</strong></div>
+            <div class="trip-detail-row"><span>Rhuee</span><strong>21E (aisle)</strong></div>
+            <div class="trip-detail-row"><span>Why great</span><strong>Entire family in one row · no strangers · easier with kids</strong></div>
+          </div>
+          <div class="trip-detail-section">
+            <h4>🛡️ Travel Insurance</h4>
+            <div class="trip-detail-row"><span>Provider</span><strong>Travel Guard® · AIG · QGIRCO Qatar</strong></div>
+            <div class="trip-detail-row"><span>Plan</span><strong>Travel Guard Worldwide Qatar — Silver Plan</strong></div>
+            <div class="trip-detail-row"><span>Policy No.</span><strong>992055797</strong></div>
+            <div class="trip-detail-row"><span>24/7 Emergency</span><strong>+1 817 826 7276</strong></div>
+            <div class="trip-detail-row"><span>Claims</span><strong>MyClaim@qgirco.com</strong></div>
+          </div>
+          <div class="trip-detail-section">
+            <h4>🚗 Transport</h4>
+            <div class="trip-detail-row"><span>Decision</span><strong>Self-drive rental car</strong></div>
+            <div class="trip-detail-row"><span>Airport</span><strong>IST (Istanbul Airport) — both arrival & departure</strong></div>
+            <div class="trip-detail-row"><span>Why drive</span><strong>Spontaneous stops · family freedom · prayer stops · scenic detours · no tour schedule</strong></div>
+            <div class="trip-detail-row"><span>Est. Car Cost</span><strong>QAR 2,000–4,000</strong></div>
+          </div>
+          <div class="trip-detail-section">
+            <h4>💰 Estimated Budget</h4>
+            <div class="trip-detail-row"><span>Flights</span><strong>QAR 10,210 ✅ Booked</strong></div>
+            <div class="trip-detail-row"><span>Accommodation</span><strong>QAR 5,000–10,000</strong></div>
+            <div class="trip-detail-row"><span>Car Rental</span><strong>QAR 2,000–4,000</strong></div>
+            <div class="trip-detail-row"><span>Fuel/Tolls</span><strong>QAR 500–1,000</strong></div>
+            <div class="trip-detail-row"><span>Food</span><strong>QAR 2,000–4,000</strong></div>
+            <div class="trip-detail-row"><span>Activities</span><strong>QAR 1,000–3,000</strong></div>
+            <div class="trip-detail-row" style="background:var(--amber-light);"><span>Est. Total</span><strong>~QAR 20,000–30,000+</strong></div>
+          </div>
+        </div>
+        <div>
+          <div class="trip-detail-section">
+            <h4>🌨️ The Mission — Snow for the Girls</h4>
+            <div class="trip-detail-row"><span>Priority #1</span><strong>Girls touching snow for the first time ❄️</strong></div>
+            <div class="trip-detail-row"><span>Vibe</span><strong>Cozy cottage · fireplace nights · slow mornings · hot drinks in cold weather</strong></div>
+            <div class="trip-detail-row"><span>NOT this trip</span><strong>Rushed tourist sprint · city hopping · shopping checklist</strong></div>
+            <div class="trip-detail-row"><span>YES this trip</span><strong>Snow play · family bonding · scenic drives · freedom to stop anywhere</strong></div>
+          </div>
+          <div class="trip-detail-section">
+            <h4>📍 Snow Destination — Uludağ ✅ Best Fit</h4>
+            <div class="trip-detail-row"><span>Location</span><strong>Near Bursa · drivable from Istanbul (~2.5hrs)</strong></div>
+            <div class="trip-detail-row"><span>Snow</span><strong>Reliable snow by mid-Dec ✅</strong></div>
+            <div class="trip-detail-row"><span>Activities</span><strong>Sledding · ski lessons · cable cars · snowmobiles · snow play · cafes · fireplaces</strong></div>
+            <div class="trip-detail-row"><span>Halal food</span><strong>Easy — Bursa area well served ✅</strong></div>
+            <div class="trip-detail-row"><span>Also considered</span><strong>Palandöken/Erzurum (guaranteed snow but needs domestic flight) · Erciyes/Kayseri (can combine Cappadocia)</strong></div>
+          </div>
+          <div class="trip-detail-section">
+            <h4>🗓️ Planned Itinerary</h4>
+            <div class="trip-detail-row"><span>18 Dec Thu</span><strong>Fly DOH→IST · pick up rental car · drive to snow base · check in cottage</strong></div>
+            <div class="trip-detail-row"><span>19 Dec Fri</span><strong>❄️ Uludağ snow day — sledding · snow play · hot chocolate · family photos in snow</strong></div>
+            <div class="trip-detail-row"><span>20 Dec Sat</span><strong>Slow cottage morning · kids play in snow · optional Masukiye waterfalls</strong></div>
+            <div class="trip-detail-row"><span>21 Dec Sun</span><strong>Bursa day trip — Cumalıkızık village · cable car · Uludağ sightseeing</strong></div>
+            <div class="trip-detail-row"><span>22 Dec Mon</span><strong>Snow base → Istanbul · Bosphorus evening</strong></div>
+            <div class="trip-detail-row"><span>23 Dec Tue</span><strong>Istanbul highlights — Blue Mosque · Hagia Sophia · Grand Bazaar · Taksim</strong></div>
+            <div class="trip-detail-row"><span>24 Dec Wed</span><strong>Last Istanbul morning · QR246 departs 20:10 → home</strong></div>
+          </div>
+          <div class="trip-detail-section">
+            <h4>📋 Notes</h4>
+            <div class="trip-detail-row"><span>Qatar National Day</span><strong>18 Dec = National Day · leave home early · add 60–90min buffer · traffic expected</strong></div>
+            <div class="trip-detail-row"><span>Accommodation style</span><strong>Cottage/chalet · cozy · snow outside · fireplace · family comfort</strong></div>
+            <div class="trip-detail-row"><span>Istanbul area</span><strong>Sultanahmet (historical) or Taksim (lively) — TBD</strong></div>
+          </div>
+          <div class="highlight-box">
+            Snow falling outside. Girls touching snow for the first time. Fireplace warmth. Slow breakfasts. Cozy winter clothes. Hot drinks. Snowy family photos. This trip is a winter memory — not just tourism. ❄️🤍
           </div>
         </div>
       </div>
@@ -932,24 +1126,33 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 
   <div class="trip-detail" id="detail-future">
     <div class="trip-detail-header">
-      <div class="trip-detail-title">🌍 Future Adventures</div>
+      <div class="trip-detail-title">🌍 Future RAMKA Adventures</div>
       <div class="trip-detail-close" onclick="closeTrip()">✕ Close</div>
     </div>
     <div class="trip-detail-body">
       <div class="trip-detail-section">
-        <h4>On the RAMKA Radar</h4>
-        <div class="trip-detail-row"><span>🇳🇴 Norway</span><strong>Fjords, mountains, slow drives — perfect RAMKA DNA</strong></div>
-        <div class="trip-detail-row"><span>🇰🇿 Kazakhstan</span><strong>Almaty mountains, steppes, unique landscapes</strong></div>
-        <div class="trip-detail-row"><span>🇦🇱 Albania</span><strong>Hidden gem — mountains, coast, affordable, halal food</strong></div>
-        <div class="trip-detail-row"><span>🇵🇰 Pakistan</span><strong>Chunda Valley — dramatic scenery, family-friendly</strong></div>
-        <div class="trip-detail-row"><span>🇹🇳 Tunisia</span><strong>North Africa — culture, beaches, halal, close to Qatar</strong></div>
+        <h4>🗺️ On the RAMKA Radar</h4>
+        <div class="trip-detail-row"><span>🇳🇴 Norway</span><strong>Fjords · mountain drives · slow scenic roads · perfect RAMKA DNA · halal food improving</strong></div>
+        <div class="trip-detail-row"><span>🇰🇿 Kazakhstan</span><strong>Almaty mountains · dramatic steppes · Charyn Canyon · unique landscapes · affordable</strong></div>
+        <div class="trip-detail-row"><span>🇦🇱 Albania</span><strong>Hidden gem · Albanian Alps · turquoise rivers · affordable · halal food available</strong></div>
+        <div class="trip-detail-row"><span>🇵🇰 Pakistan</span><strong>Chunda Valley · Swat · Hunza · dramatic Karakoram · halal naturally · family-friendly</strong></div>
+        <div class="trip-detail-row"><span>🇹🇳 Tunisia</span><strong>North Africa · culture · Sahara · beaches · halal · close to Qatar · budget-friendly</strong></div>
+        <div class="trip-detail-row"><span>🇲🇦 Morocco</span><strong>Atlas Mountains · Chefchaouen · Fes medina · halal · scenic · rich culture</strong></div>
+      </div>
+      <div class="trip-detail-section">
+        <h4>✅ The Perfect RAMKA Trip Formula</h4>
+        <div class="trip-detail-row"><span>Base</span><strong>One scenic peaceful base outside the city</strong></div>
+        <div class="trip-detail-row"><span>Driving</span><strong>Short scenic self-drive day trips · no fixed timing</strong></div>
+        <div class="trip-detail-row"><span>Nature</span><strong>Mountain or village setting · nature-heavy</strong></div>
+        <div class="trip-detail-row"><span>Pace</span><strong>Family pace · no rushing · kids happy · rest time sacred</strong></div>
+        <div class="trip-detail-row"><span>Food</span><strong>Good halal food access — non-negotiable</strong></div>
+        <div class="trip-detail-row"><span>Vibe</span><strong>Achkhoti energy — quiet · scenic · cinematic · breathing space</strong></div>
       </div>
       <div class="highlight-box">
-        The perfect RAMKA trip formula: one scenic base · short day trips · nature-heavy · family pace · good halal food · kids happy. Wherever that is — we'll find it. 🤍
+        The next chapter hasn't been written yet. But wherever RAMKA goes next — it will have mountains, open roads, halal food, and five people laughing together. 🤍
       </div>
     </div>
   </div>
-
 </div>
 </div>
 
