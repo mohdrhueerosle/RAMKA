@@ -150,7 +150,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 .qstat-val{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;color:var(--amber);}
 
 /* ── EVENTS ── */
-.events-list{display:flex;flex-direction:column;gap:.5rem;}
+.events-list{display:flex;flex-direction:column;gap:.5rem;max-height:280px;overflow-y:auto;padding-right:.3rem;}
 .event-item{
   display:flex;align-items:center;gap:.8rem;
   padding:.65rem .8rem;
@@ -172,7 +172,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 .event-days{font-size:.6rem;color:var(--ink3);}
 
 /* ── TASKS ── */
-.tasks-list{display:flex;flex-direction:column;gap:.4rem;}
+.tasks-list{display:flex;flex-direction:column;gap:.4rem;max-height:280px;overflow-y:auto;padding-right:.3rem;}
 .task-item{
   display:flex;align-items:center;gap:.7rem;
   padding:.55rem .7rem;border-radius:var(--radius);
@@ -204,12 +204,14 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 }
 .bday-item:last-child{border-bottom:none;}
 .bday-initial{
-  width:30px;height:30px;border-radius:50%;
+  width:36px;height:36px;border-radius:50%;
   background:linear-gradient(135deg,var(--amber),var(--amber2));
   display:flex;align-items:center;justify-content:center;
   font-family:'Cormorant Garamond',serif;font-size:.9rem;font-weight:700;
   color:#fff;flex-shrink:0;
+  overflow:hidden;
 }
+.bday-initial img{width:100%;height:100%;object-fit:cover;border-radius:50%;}
 .bday-item.anniversary .bday-initial{background:linear-gradient(135deg,#c0392b,#e74c3c);font-size:.75rem;}
 .bday-name{font-size:.84rem;flex:1;}
 .bday-date-label{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--ink3);}
@@ -281,7 +283,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 /* DNA */
 .section-label{
   font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;
-  color:var(--ink3);margin-bottom:1rem;margin-top:2rem;
+  color:var(--ink3);margin-bottom:1rem;margin-top:1.5rem;
   display:flex;align-items:center;gap:.8rem;
 }
 .section-label::after{content:'';flex:1;height:1px;background:var(--border);}
@@ -471,6 +473,63 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 }
 .trip-card.active-card{border-color:var(--amber);box-shadow:0 4px 20px rgba(184,134,11,.12);}
 
+
+/* Scrollbar styling */
+.tasks-list::-webkit-scrollbar{width:4px;}
+.tasks-list::-webkit-scrollbar-track{background:var(--bg2);border-radius:2px;}
+.tasks-list::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+.tasks-list::-webkit-scrollbar-thumb:hover{background:var(--ink3);}
+.events-list::-webkit-scrollbar{width:4px;}
+.events-list::-webkit-scrollbar-track{background:var(--bg2);border-radius:2px;}
+.events-list::-webkit-scrollbar-thumb{background:var(--border2);border-radius:2px;}
+.events-list::-webkit-scrollbar-thumb:hover{background:var(--ink3);}
+
+
+/* Trip card status */
+.trip-card .trip-status{
+  display:inline-block;
+  font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.12em;
+  text-transform:uppercase;padding:.2rem .6rem;border-radius:2px;
+  margin-bottom:.6rem;
+}
+.trip-card.past .trip-status{background:#e8f5e9;color:var(--green);border:1px solid rgba(61,107,58,.2);}
+.trip-card.upcoming .trip-status{background:var(--amber-light);color:var(--amber);border:1px solid rgba(184,134,11,.2);}
+.trip-card.future-trip .trip-status{background:var(--bg2);color:var(--ink3);border:1px solid var(--border);}
+
+/* Past trip — slightly muted */
+.trip-card.past{background:#fafcfa;}
+.trip-card.past .trip-name{color:var(--ink2);}
+
+/* Upcoming trip — slightly warm */
+.trip-card.upcoming{background:#fffdf5;border-color:rgba(184,134,11,.2);}
+
+/* Future trip — more muted */
+.trip-card.future-trip{background:var(--bg2);opacity:.7;}
+.trip-card.future-trip:hover{opacity:.9;}
+
+
+/* Umrah card */
+.trip-card.umrah::after{background:linear-gradient(90deg,#1a6b3a,transparent);}
+.trip-card.umrah{background:#f7fdf9;}
+.trip-card.umrah .trip-name{color:var(--ink2);}
+.trip-tag.umrah-hi{background:#e8f5e9;color:#1a6b3a;border:1px solid rgba(26,107,58,.2);}
+
+
+.dna-box{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);overflow:hidden;margin-bottom:1.5rem;
+}
+.dna-row{
+  display:flex;align-items:baseline;gap:1.2rem;
+  padding:.9rem 1.2rem;border-bottom:1px solid var(--border);
+}
+.dna-row:last-child{border-bottom:none;}
+.dna-n{
+  font-family:'Cormorant Garamond',serif;font-size:1.1rem;font-weight:700;
+  color:var(--amber);opacity:.5;flex-shrink:0;width:24px;
+}
+.dna-t{font-size:.82rem;color:var(--ink2);line-height:1.6;}
+
 </style>
 </head>
 <body>
@@ -479,7 +538,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 <!-- LOCK SCREEN -->
 <div class="lock-screen" id="lockScreen">
   <div class="lock-box">
-    <div class="lock-logo">RAM<span>KA</span></div>
+    <div class="lock-logo"><span style="color:var(--ink);">RA</span><span style="color:var(--amber);">MKA</span></div>
     <div class="lock-tagline">Family · Adventures · Memories</div>
     <div class="lock-label">Password</div>
     <input class="lock-input" type="password" id="lockInput" placeholder="••••••••"
@@ -492,7 +551,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 
 <!-- TOPBAR -->
 <div class="topbar">
-  <div class="topbar-logo" onclick="switchTab('dashboard')" style="cursor:pointer;">RAM<span>KA</span></div>
+  <div class="topbar-logo" onclick="switchTab('dashboard')" style="cursor:pointer;"><span style="-webkit-text-fill-color:var(--ink);">RA</span><span style="-webkit-text-fill-color:var(--amber);">MKA</span></div>
   <div class="tabs">
     <div class="tab active" onclick="switchTab('dashboard')">Dashboard</div>
     <div class="tab" onclick="switchTab('trips')">Trips</div>
@@ -547,8 +606,8 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
     <!-- Quick Stats -->
     <div class="card">
       <div class="card-label">RAMKA at a Glance</div>
-      <div class="qstat-row"><span class="qstat-label">Countries visited</span><span class="qstat-val">2</span></div>
-      <div class="qstat-row"><span class="qstat-label">Total trip days</span><span class="qstat-val">36</span></div>
+      <div class="qstat-row"><span class="qstat-label">Countries visited</span><span class="qstat-val">3</span></div>
+      <div class="qstat-row"><span class="qstat-label">Total trip days</span><span class="qstat-val">39</span></div>
       <div class="qstat-row"><span class="qstat-label">KM driven</span><span class="qstat-val">2,500+</span></div>
       <div class="qstat-row"><span class="qstat-label">Adventurers</span><span class="qstat-val">5</span></div>
     </div>
@@ -594,9 +653,19 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
     <p class="page-sub">Every road we've taken. Every place we've breathed in.</p>
   </div>
 
+  <div class="section-label">RAMKA Travel DNA</div>
+  <div class="dna-box">
+    <div class="dna-row"><span class="dna-n">01</span><span class="dna-t">Scenic base outside the city + short day trips beats constant hotel changes</span></div>
+    <div class="dna-row"><span class="dna-n">02</span><span class="dna-t">Nature over attractions — mountains, villages and atmosphere beat museums and checklists</span></div>
+    <div class="dna-row"><span class="dna-n">03</span><span class="dna-t">Flexible over rigid — no fixed timing, spontaneous stops, "see how the day feels"</span></div>
+    <div class="dna-row"><span class="dna-n">04</span><span class="dna-t">Children's energy shapes the day — manageable hikes, rest time is sacred</span></div>
+    <div class="dna-row"><span class="dna-n">05</span><span class="dna-t">Halal food planning is essential — plan ahead, it affects stress, comfort and the whole family vibe</span></div>
+  </div>
+
   <div class="trips-grid">
 
-    <div class="trip-card georgia" onclick="showTrip('georgia')" style="cursor:pointer;">
+    <div class="trip-card georgia past" onclick="showTrip('georgia')" style="cursor:pointer;">
+      <div class="trip-status">✓ Completed</div>
       <div class="trip-year">August 2025 · 5 Days</div>
       <div class="trip-name"><span style="font-family:sans-serif;">🇬🇪</span> Georgia</div>
       <div class="trip-places">Achkhoti · Tbilisi · Mtskheta · Sighnaghi · Gergeti Trinity · Gveleti Waterfalls · Dariali Gorge</div>
@@ -615,7 +684,28 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
       </div>
     </div>
 
-    <div class="trip-card malaysia" onclick="showTrip('malaysia')" style="cursor:pointer;">
+    <div class="trip-card umrah past" onclick="showTrip('umrah')" style="cursor:pointer;">
+      <div class="trip-status">✓ Completed</div>
+      <div class="trip-year">July 2025 · 3 Days</div>
+      <div class="trip-name"><span style="font-family:sans-serif;">🕋</span> Umrah</div>
+      <div class="trip-places">Doha → Jeddah → Makkah → Madinah → Doha</div>
+      <div class="trip-divider"></div>
+      <div class="trip-stats">
+        <div class="trip-stat"><strong>QAR 15,250</strong><span>Total Cost</span></div>
+        <div class="trip-stat"><strong>3</strong><span>Days</span></div>
+        <div class="trip-stat"><strong>5</strong><span>Travelers</span></div>
+      </div>
+      <div class="trip-tags">
+        <span class="trip-tag umrah-hi">Tawaf</span>
+        <span class="trip-tag umrah-hi">Raudhah</span>
+        <span class="trip-tag umrah-hi">Fajr in Madinah</span>
+        <span class="trip-tag">Family ibadah</span>
+        <span class="trip-tag">Midnight Umrah</span>
+      </div>
+    </div>
+
+    <div class="trip-card malaysia upcoming" onclick="showTrip('malaysia')" style="cursor:pointer;">
+      <div class="trip-status">✈ Confirmed</div>
       <div class="trip-year">Jun – Jul 2026 · 31 Days</div>
       <div class="trip-name"><span style="font-family:sans-serif;">🇲🇾</span> Malaysia</div>
       <div class="trip-places">KL · Sg Petani · Ipoh · Lost World of Tambun · Legoland · Desaru · Mersing · Kuantan</div>
@@ -634,7 +724,8 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
       </div>
     </div>
 
-    <div class="trip-card future" onclick="showTrip('future')" style="cursor:pointer;">
+    <div class="trip-card future future-trip" onclick="showTrip('future')" style="cursor:pointer;">
+      <div class="trip-status">✦ Dreaming</div>
       <div class="trip-year">Future</div>
       <div class="trip-name"><span style="font-family:sans-serif;">🌍</span> Next Adventure</div>
       <div class="trip-places">Norway · Kazakhstan · Albania · Pakistan · Tunisia…</div>
@@ -652,15 +743,70 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 
   </div>
 
-  <div class="section-label">RAMKA Travel DNA</div>
-  <div class="dna-grid">
-    <div class="dna-item"><div class="dna-num">01</div><div class="dna-text">Scenic base outside the city + short day trips beats constant hotel changes</div></div>
-    <div class="dna-item"><div class="dna-num">02</div><div class="dna-text">Nature over attractions — mountains, villages and atmosphere beat museums and checklists</div></div>
-    <div class="dna-item"><div class="dna-num">03</div><div class="dna-text">Flexible over rigid — no fixed timing, spontaneous stops, "see how the day feels"</div></div>
-    <div class="dna-item"><div class="dna-num">04</div><div class="dna-text">Children's energy shapes the day — manageable hikes, rest time is sacred</div></div>
-    <div class="dna-item" style="grid-column:span 2;"><div class="dna-num">05</div><div class="dna-text">Halal food planning is essential — plan ahead, it affects stress, comfort and the whole family vibe</div></div>
-  
   <!-- TRIP DETAIL PANELS -->
+  <div class="trip-detail" id="detail-umrah">
+    <div class="trip-detail-header">
+      <div class="trip-detail-title">🕋 Umrah — July 2025</div>
+      <div class="trip-detail-close" onclick="closeTrip()">✕ Close</div>
+    </div>
+    <div class="trip-detail-body">
+      <div class="trip-detail-grid">
+        <div>
+          <div class="trip-detail-section">
+            <h4>Flights · Qatar Airways</h4>
+            <div class="trip-detail-row"><span>Outbound</span><strong>17 Jul · QR1188 · DOH→JED · 18:35</strong></div>
+            <div class="trip-detail-row"><span>Return</span><strong>19 Jul · QR1179 · MED→DOH · 11:15</strong></div>
+            <div class="trip-detail-row"><span>Total Flights</span><strong>QAR 8,978.78</strong></div>
+          </div>
+          <div class="trip-detail-section">
+            <h4>Accommodation</h4>
+            <div class="trip-detail-row"><span>Makkah</span><strong>Al Marwa Rayhaan by Rotana · QAR 2,113</strong></div>
+            <div class="trip-detail-row"><span>Madinah</span><strong>Nozol Royal Inn · QAR 1,133</strong></div>
+          </div>
+          <div class="trip-detail-section">
+            <h4>Transport</h4>
+            <div class="trip-detail-row"><span>Jeddah → Makkah</span><strong>Uber · ~QAR 240</strong></div>
+            <div class="trip-detail-row"><span>Makkah → Madinah</span><strong>Haramain Train · 15:00 → 17:25 · QAR 842</strong></div>
+            <div class="trip-detail-row"><span>Madinah → Airport</span><strong>Uber · depart 07:15</strong></div>
+          </div>
+          <div class="trip-detail-section">
+            <h4>Full Budget</h4>
+            <div class="trip-detail-row"><span>Flights</span><strong>QAR 8,978.78</strong></div>
+            <div class="trip-detail-row"><span>Hotels</span><strong>QAR 3,246</strong></div>
+            <div class="trip-detail-row"><span>Train</span><strong>QAR 842</strong></div>
+            <div class="trip-detail-row"><span>Uber</span><strong>QAR 240</strong></div>
+            <div class="trip-detail-row"><span>Visa + Insurance</span><strong>QAR 1,944</strong></div>
+            <div class="trip-detail-row"><span>Grand Total</span><strong>QAR 15,250.78</strong></div>
+          </div>
+        </div>
+        <div>
+          <div class="trip-detail-section">
+            <h4>Nusuk Slots</h4>
+            <div class="trip-detail-row"><span>🕋 Umrah</span><strong>18 Jul · 12:00 AM – 2:00 AM</strong></div>
+            <div class="trip-detail-row"><span>🌹 Raudhah</span><strong>19 Jul · ~3:00 AM</strong></div>
+            <div class="trip-detail-row"><span>Goal</span><strong>Pray Fajr in Raudhah 🤲</strong></div>
+          </div>
+          <div class="trip-detail-section">
+            <h4>Day by Day</h4>
+            <div class="trip-detail-row"><span>17 Jul Thu</span><strong>Fly DOH→JED · Uber to Makkah · Check in</strong></div>
+            <div class="trip-detail-row"><span>18 Jul Fri</span><strong>Umrah 12AM · Jumu'ah · Haramain Train to Madinah</strong></div>
+            <div class="trip-detail-row"><span>19 Jul Sat</span><strong>Raudhah 3AM · Fajr · Fly MED→DOH</strong></div>
+          </div>
+          <div class="trip-detail-section">
+            <h4>Checklist Highlights</h4>
+            <div class="trip-detail-row"><span>📄 Docs</span><strong>Passports · Visas · Vaccination certs · Nusuk QR</strong></div>
+            <div class="trip-detail-row"><span>🕌 Ibadah</span><strong>Ihram · Telekung · Sejadah · Sandals</strong></div>
+            <div class="trip-detail-row"><span>👨‍👩‍👧 Family</span><strong>Snacks · Water · Wet wipes · Power bank</strong></div>
+          </div>
+          <div class="highlight-box">
+            اللَّهُمَّ اجْعَلْنِي مِن جِيرَانِ نَبِيِّكَ فِي الْجَنَّةِ<br><br>
+            <em>"O Allah, make me among the neighbors of Your Prophet in Paradise."</em>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="trip-detail" id="detail-georgia">
     <div class="trip-detail-header">
       <div class="trip-detail-title">🇬🇪 Georgia — August 2025</div>
@@ -816,8 +962,8 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 
   <div class="family-stats">
     <div class="fstat"><div class="fstat-num">5</div><div class="fstat-label">Members</div></div>
-    <div class="fstat"><div class="fstat-num">2</div><div class="fstat-label">Countries</div></div>
-    <div class="fstat"><div class="fstat-num">36</div><div class="fstat-label">Days Travelled</div></div>
+    <div class="fstat"><div class="fstat-num">3</div><div class="fstat-label">Countries</div></div>
+    <div class="fstat"><div class="fstat-num">39</div><div class="fstat-label">Days Travelled</div></div>
     <div class="fstat"><div class="fstat-num">2025</div><div class="fstat-label">First Trip</div></div>
   </div>
 
@@ -848,6 +994,8 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
       <div class="member-name">Maryam</div>
       <div class="member-role">Kakak · Age 10</div>
       <div class="member-detail"><span>Born · </span>29 December 2015</div>
+      <div class="member-detail"><span>School · </span>GEMS American Academy Qatar</div>
+      <div class="member-detail"><span>Grade · </span>Grade 4 · Al Wakra</div>
       <div class="member-detail"><span>Loves · </span>Exploring & adventures</div>
     </div>
     <div class="member-card">
@@ -864,6 +1012,8 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
       <div class="member-name">Aeesya</div>
       <div class="member-role">Adik · Age 6</div>
       <div class="member-detail"><span>Born · </span>15 January 2020</div>
+      <div class="member-detail"><span>School · </span>GEMS American Academy Qatar</div>
+      <div class="member-detail"><span>Grade · </span>KG2 · Al Wakra</div>
       <div class="member-detail"><span>Loves · </span>Beach days & waterfalls</div>
     </div>
   </div>
