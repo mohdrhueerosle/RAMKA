@@ -1614,22 +1614,35 @@ function openEditModal(id) {
   editKeepPhotos = entry.photos ? entry.photos.slice() : [];
   document.getElementById('editText').value = entry.text;
   document.getElementById('editTag').value = entry.tag;
-  document.getElementById('editAuthor').value = entry.author || 'Walid';
+  if (document.getElementById('editAuthor')) document.getElementById('editAuthor').value = entry.author || 'Walid';
   document.getElementById('editPhotoCount').textContent = '';
   document.getElementById('editPhotoInput').value = '';
   renderEditPhotos();
-  document.getElementById('editModalOverlay').classList.add('open');
+  var emo = document.getElementById('editModalOverlay'); if(emo){ emo.style.display='flex'; }
 }
 
 function renderEditPhotos() {
   var container = document.getElementById('editExistingPhotos');
+  if (!container) return;
+  container.innerHTML = '';
   if (!editKeepPhotos.length) {
     container.innerHTML = '<span style="font-size:.75rem;color:var(--ink3);font-style:italic;">No photos yet</span>';
     return;
   }
-  container.innerHTML = editKeepPhotos.map(function(p, i) {
-    return '<div class="edit-photo-thumb"><img src="' + p + '" onclick="openLightbox(this.src)"/><button class="edit-photo-remove" onclick="removeEditPhoto(' + i + ')">✕</button></div>';
-  }).join('');
+  editKeepPhotos.forEach(function(p, i) {
+    var wrap = document.createElement('div');
+    wrap.style.cssText = 'position:relative;border-radius:4px;overflow:hidden;';
+    var img = document.createElement('img');
+    img.src = p;
+    img.style.cssText = 'width:100%;aspect-ratio:1;object-fit:cover;display:block;cursor:pointer;';
+    img.onclick = function(){ openLightbox(this.src); };
+    var btn = document.createElement('button');
+    btn.textContent = '✕';
+    btn.style.cssText = 'position:absolute;top:2px;right:2px;background:rgba(181,58,42,.9);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:.6rem;cursor:pointer;';
+    btn.onclick = function(){ removeEditPhoto(i); };
+    wrap.appendChild(img); wrap.appendChild(btn);
+    container.appendChild(wrap);
+  });
 }
 
 function removeEditPhoto(idx) {
@@ -1664,7 +1677,7 @@ function saveEditedEntry() {
   if (idx === -1) return;
   entries[idx].text = text;
   entries[idx].tag = tag;
-  entries[idx].author = document.getElementById('editAuthor').value;
+  if (document.getElementById('editAuthor')) entries[idx].author = document.getElementById('editAuthor').value;
   entries[idx].photos = editKeepPhotos.concat(editNewPhotos);
   entries[idx].edited = true;
   saveDiary(entries);
@@ -1673,7 +1686,8 @@ function saveEditedEntry() {
 }
 
 function closeEditModal() {
-  document.getElementById('editModalOverlay').classList.remove('open');
+  var emo = document.getElementById('editModalOverlay');
+  if (emo) { emo.style.display='none'; }
   editingId = null;
   editNewPhotos = [];
   editKeepPhotos = [];
@@ -2009,5 +2023,53 @@ function initDashboard() {
   if (emo) emo.addEventListener('click', function(e){ if(e.target===this) closeEditModal(); });
 }
 </script>
+
+<!-- EDIT DIARY MODAL -->
+<div id="editModalOverlay" style="position:fixed;inset:0;background:rgba(26,23,20,.5);z-index:300;display:none;align-items:center;justify-content:center;padding:1rem;">
+  <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(26,23,20,.2);">
+    <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;margin-bottom:1.2rem;">Edit Entry</h3>
+    <div style="display:flex;flex-direction:column;gap:.8rem;">
+      <div>
+        <div class="field-label">Posted by</div>
+        <select class="add-input" id="editAuthor" style="width:100%;">
+          <option value="Walid">Walid</option>
+          <option value="Afiqah">Afiqah (Ummi)</option>
+        </select>
+      </div>
+      <div>
+        <div class="field-label">Tag</div>
+        <select class="add-input" id="editTag" style="width:100%;">
+          <option value="daily">📝 Daily</option>
+          <option value="health">🏥 Health</option>
+          <option value="milestone">⭐ Milestone</option>
+          <option value="school">🏫 School</option>
+          <option value="travel">✈️ Travel</option>
+          <option value="family">👨‍👩‍👧 Family</option>
+        </select>
+      </div>
+      <div>
+        <div class="field-label">Entry Text</div>
+        <textarea class="diary-textarea" id="editText" style="min-height:120px;width:100%;"></textarea>
+      </div>
+      <div>
+        <div class="field-label">Current Photos</div>
+        <div id="editExistingPhotos" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:.5rem;margin-top:.5rem;"></div>
+      </div>
+      <div>
+        <div class="field-label">Add More Photos</div>
+        <div style="display:flex;align-items:center;gap:.5rem;">
+          <label class="add-btn" for="editPhotoInput" style="cursor:pointer;">📷 Choose Photos</label>
+          <input type="file" id="editPhotoInput" accept="image/*" multiple style="display:none;" onchange="handleEditPhotos(this)"/>
+          <span id="editPhotoCount" style="font-size:.72rem;color:var(--ink3);"></span>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;gap:.5rem;margin-top:1.2rem;">
+      <button class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+      <button class="btn-save" onclick="saveEditedEntry()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
