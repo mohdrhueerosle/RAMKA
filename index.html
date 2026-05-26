@@ -271,6 +271,100 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 .edit-photo-remove{position:absolute;top:2px;right:2px;background:rgba(181,58,42,.9);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
 .edit-modal-actions{display:flex;gap:.5rem;margin-top:1.2rem;}
 
+
+/* ── SCHOOL TAB ── */
+.school-hero{
+  background:linear-gradient(135deg,#1a3a5c 0%,#2a5a8c 100%);
+  border-radius:var(--radius);padding:1.5rem 2rem;margin-bottom:1.5rem;
+  color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+}
+.school-hero-left h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500;margin-bottom:.2rem;}
+.school-hero-left p{font-size:.8rem;opacity:.7;letter-spacing:.05em;}
+.school-hero-right{text-align:right;}
+.pickup-display{
+  background:rgba(255,255,255,.1);border-radius:var(--radius);
+  padding:.8rem 1.2rem;text-align:center;
+}
+.pickup-label{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;opacity:.6;margin-bottom:.3rem;}
+.pickup-time{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;line-height:1;}
+.pickup-note{font-size:.7rem;opacity:.6;margin-top:.2rem;}
+
+/* Today's schedule banner */
+.today-banner{
+  background:var(--amber-light);border:1px solid var(--amber-mid);
+  border-radius:var(--radius);padding:1rem 1.5rem;margin-bottom:1.5rem;
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+}
+.today-banner-icon{font-size:1.5rem;}
+.today-banner-text{flex:1;}
+.today-banner-title{font-size:.9rem;font-weight:500;color:var(--ink);}
+.today-banner-sub{font-size:.78rem;color:var(--ink2);margin-top:.1rem;}
+
+/* Child tabs */
+.child-tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;flex-wrap:wrap;}
+.child-tab{
+  display:flex;align-items:center;gap:.6rem;
+  padding:.6rem 1.2rem;border-radius:20px;
+  border:1px solid var(--border);background:var(--surface);
+  cursor:pointer;transition:all .2s;
+}
+.child-tab:hover{border-color:var(--amber);}
+.child-tab.active{background:var(--amber);border-color:var(--amber);color:#fff;}
+.child-tab img{width:28px;height:28px;border-radius:50%;object-fit:cover;}
+.child-tab-name{font-family:'DM Mono',monospace;font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;}
+
+/* Child detail panel */
+.child-panel{display:none;}
+.child-panel.active{display:block;animation:fadeIn .3s ease;}
+
+.child-panel-header{
+  display:flex;align-items:center;gap:1.2rem;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:1.2rem 1.5rem;margin-bottom:1rem;
+}
+.child-panel-photo{width:60px;height:60px;border-radius:50%;object-fit:cover;border:2px solid var(--border);}
+.child-panel-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;}
+.child-panel-grade{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.15em;color:var(--ink3);text-transform:uppercase;margin-top:.1rem;}
+.child-panel-teacher{font-size:.8rem;color:var(--ink2);margin-top:.3rem;}
+
+.school-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
+@media(max-width:650px){.school-grid{grid-template-columns:1fr;}}
+
+.school-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;}
+.school-card h4{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-bottom:.8rem;padding-bottom:.5rem;border-bottom:1px solid var(--border);}
+.subject-pills{display:flex;flex-wrap:wrap;gap:.4rem;}
+.subject-pill{font-size:.75rem;color:var(--ink2);background:var(--bg2);border:1px solid var(--border);padding:.25rem .7rem;border-radius:20px;}
+.subject-pill.highlight{background:var(--blue-light);color:var(--blue);border-color:rgba(42,90,140,.2);}
+
+.timing-row{display:flex;justify-content:space-between;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--border);font-size:.83rem;}
+.timing-row:last-child{border-bottom:none;}
+.timing-day{color:var(--ink2);}
+.timing-time{font-family:'DM Mono',monospace;font-size:.72rem;font-weight:500;color:var(--ink);}
+.timing-badge{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;text-transform:uppercase;padding:.15rem .4rem;border-radius:2px;margin-left:.4rem;}
+.timing-badge.asa{background:var(--blue-light);color:var(--blue);}
+.timing-badge.early{background:var(--amber-light);color:var(--amber);}
+
+.achievement-item{display:flex;align-items:flex-start;gap:.7rem;padding:.6rem 0;border-bottom:1px solid var(--border);}
+.achievement-item:last-child{border-bottom:none;}
+.achievement-icon{font-size:1.1rem;flex-shrink:0;margin-top:.1rem;}
+.achievement-text{font-size:.82rem;color:var(--ink2);line-height:1.5;}
+.achievement-text strong{color:var(--ink);}
+
+/* School calendar events */
+.cal-section{margin-bottom:1.5rem;}
+.cal-section h4{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);margin-bottom:.8rem;padding-bottom:.5rem;border-top:1px solid var(--border);padding-top:.8rem;}
+.cal-events{display:flex;flex-direction:column;gap:.5rem;}
+.cal-event{display:flex;align-items:center;gap:.8rem;padding:.65rem .8rem;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg);}
+.cal-event.urgent{border-left:3px solid var(--red);background:var(--red-light);}
+.cal-event.soon{border-left:3px solid var(--amber);background:var(--amber-light);}
+.cal-event.normal{border-left:3px solid var(--green);background:var(--green-light);}
+.cal-event.holiday{border-left:3px solid var(--blue);background:var(--blue-light);}
+.cal-event-info{flex:1;}
+.cal-event-title{font-size:.84rem;color:var(--ink);}
+.cal-event-who{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.1em;color:var(--ink3);margin-top:.1rem;}
+.cal-event-date{font-family:'DM Mono',monospace;font-size:.6rem;color:var(--ink2);text-align:right;white-space:nowrap;}
+.cal-event-days{font-size:.6rem;color:var(--ink3);text-align:right;}
+
 </style>
 </head>
 <body>
@@ -283,6 +377,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
     <div class="tab" data-tab="trips" onclick="switchTab('trips')">Trips</div>
     <div class="tab" data-tab="family" onclick="switchTab('family')">Family</div>
     <div class="tab" data-tab="diary" onclick="switchTab('diary')">Diary</div>
+    <div class="tab" data-tab="school" onclick="switchTab('school')">School</div>
   </div>
   <div class="topbar-time">📍 Doha &nbsp;|&nbsp; <span id="liveTime"></span></div>
 </div>
@@ -828,6 +923,228 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
   </div>
 </div>
 
+<!-- SCHOOL -->
+<div class="page" id="page-school">
+  <div class="page-header">
+    <h1 class="page-title">GEMS <em>School</em></h1>
+    <p class="page-sub">GEMS American Academy Qatar · Al Wakrah · Maryam · Khadeeja · Aeesya</p>
+  </div>
+
+  <!-- School Hero with today's pickup -->
+  <div class="school-hero">
+    <div class="school-hero-left">
+      <h2>GEMS American Academy Qatar</h2>
+      <p>Al Wakrah · #WeAreGAAQ · Raptors 🦅</p>
+      <div style="margin-top:.8rem;font-size:.75rem;opacity:.75;">
+        📧 Absences: attendance_aaq@gemsedu.com &nbsp;·&nbsp; Early Release: reception_aaq@gemsedu.com
+      </div>
+    </div>
+    <div class="school-hero-right">
+      <div class="pickup-display">
+        <div class="pickup-label">Today's Pickup</div>
+        <div class="pickup-time" id="pickupTime">—</div>
+        <div class="pickup-note" id="pickupNote">Loading…</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Today's Banner -->
+  <div class="today-banner" id="todaySchoolBanner" style="display:none;">
+    <div class="today-banner-icon" id="todayBannerIcon">📅</div>
+    <div class="today-banner-text">
+      <div class="today-banner-title" id="todayBannerTitle"></div>
+      <div class="today-banner-sub" id="todayBannerSub"></div>
+    </div>
+  </div>
+
+  <!-- Child Tabs -->
+  <div class="child-tabs">
+    <div class="child-tab active" data-child="maryam" onclick="switchChild('maryam', this)">
+      <img id="ctMaryam" src="" alt="Maryam"/>
+      <span class="child-tab-name">Maryam</span>
+    </div>
+    <div class="child-tab" data-child="khadeeja" onclick="switchChild('khadeeja', this)">
+      <img id="ctKhadeeja" src="" alt="Khadeeja"/>
+      <span class="child-tab-name">Khadeeja</span>
+    </div>
+    <div class="child-tab" data-child="aeesya" onclick="switchChild('aeesya', this)">
+      <img id="ctAeesya" src="" alt="Aeesya"/>
+      <span class="child-tab-name">Aeesya</span>
+    </div>
+  </div>
+
+  <!-- MARYAM PANEL -->
+  <div class="child-panel active" id="panel-maryam">
+    <div class="child-panel-header">
+      <img class="child-panel-photo" id="cpMaryam" src="" alt="Maryam"/>
+      <div>
+        <div class="child-panel-name">Maryam</div>
+        <div class="child-panel-grade">Grade 4B · Upper Elementary</div>
+        <div class="child-panel-teacher">🏫 Homeroom: Ms. Erizana Hacker &nbsp;·&nbsp; (previously Mr. Anthony June)</div>
+        <div class="child-panel-teacher">👭 BFF: Maryam Anastasia</div>
+      </div>
+    </div>
+    <div class="school-grid">
+      <div class="school-card">
+        <h4>📚 Subjects</h4>
+        <div class="subject-pills">
+          <span class="subject-pill highlight">English</span>
+          <span class="subject-pill highlight">Math</span>
+          <span class="subject-pill">Non-native Arabic</span>
+          <span class="subject-pill">Islamic Studies</span>
+          <span class="subject-pill">World Language — French (1st half)</span>
+          <span class="subject-pill">World Language — Spanish (2nd half)</span>
+        </div>
+      </div>
+      <div class="school-card">
+        <h4>⏰ School Timings</h4>
+        <div class="timing-row"><span class="timing-day">Sunday – Tuesday</span><span class="timing-time">7:30AM – 2:15PM</span></div>
+        <div class="timing-row"><span class="timing-day">Wednesday <span class="timing-badge asa">ASA</span></span><span class="timing-time">7:30AM – 3:15PM</span></div>
+        <div class="timing-row"><span class="timing-day">Thursday <span class="timing-badge early">Early</span></span><span class="timing-time">7:30AM – 1:30PM</span></div>
+      </div>
+      <div class="school-card">
+        <h4>🏆 Achievements</h4>
+        <div class="achievement-item"><div class="achievement-icon">🎓</div><div class="achievement-text"><strong>Upper Elementary End-of-Year Awards</strong> — 24 June 2026 (G3–G5)</div></div>
+        <div class="achievement-item"><div class="achievement-icon">🎵</div><div class="achievement-text"><strong>Upper Elementary Music Concert</strong> — 10 June 2026</div></div>
+        <div class="achievement-item"><div class="achievement-icon">🔬</div><div class="achievement-text"><strong>G4 Student-Parent Science Event</strong> — 31 May 2026</div></div>
+        <div class="achievement-item"><div class="achievement-icon">🏛️</div><div class="achievement-text">Eligible for <strong>GEMS Youth Parliament</strong> (Grade 4 position available Sep 2026)</div></div>
+      </div>
+      <div class="school-card">
+        <h4>📅 Upcoming Events</h4>
+        <div class="achievement-item"><div class="achievement-icon">🔬</div><div class="achievement-text"><strong>31 May</strong> — G4 Student-Parent Science Event</div></div>
+        <div class="achievement-item"><div class="achievement-icon">💙</div><div class="achievement-text"><strong>1 Jun</strong> — World Children's Day · Wear Blue</div></div>
+        <div class="achievement-item"><div class="achievement-icon">🎵</div><div class="achievement-text"><strong>10 Jun</strong> — Upper Elementary Music Concert</div></div>
+        <div class="achievement-item"><div class="achievement-icon">📝</div><div class="achievement-text"><strong>16–24 Jun</strong> — End of Year Exams</div></div>
+        <div class="achievement-item"><div class="achievement-icon">🏆</div><div class="achievement-text"><strong>24 Jun</strong> — Upper Elementary Awards Ceremony (G3–G5)</div></div>
+        <div class="achievement-item"><div class="achievement-icon">📋</div><div class="achievement-text"><strong>28 Jun</strong> — Final Report Cards · Last Day of School</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KHADEEJA PANEL -->
+  <div class="child-panel" id="panel-khadeeja">
+    <div class="child-panel-header">
+      <img class="child-panel-photo" id="cpKhadeeja" src="" alt="Khadeeja"/>
+      <div>
+        <div class="child-panel-name">Khadeeja</div>
+        <div class="child-panel-grade">Grade 1C · Lower Elementary</div>
+        <div class="child-panel-teacher">🏫 Homeroom: Ms. Angela Premiela (Ms. Angie) &nbsp;·&nbsp; TA: Ms. Maryam</div>
+      </div>
+    </div>
+    <div class="school-grid">
+      <div class="school-card">
+        <h4>📚 Subjects</h4>
+        <div class="subject-pills">
+          <span class="subject-pill highlight">English (Phonics · Reading · Writing)</span>
+          <span class="subject-pill highlight">Math</span>
+          <span class="subject-pill">Science</span>
+          <span class="subject-pill">Non-native Arabic</span>
+          <span class="subject-pill">Islamic Studies</span>
+          <span class="subject-pill">PE</span>
+          <span class="subject-pill">Art</span>
+          <span class="subject-pill">Music</span>
+          <span class="subject-pill">Qatar History</span>
+        </div>
+      </div>
+      <div class="school-card">
+        <h4>⏰ School Timings</h4>
+        <div class="timing-row"><span class="timing-day">Sunday – Tuesday</span><span class="timing-time">7:30AM – 2:15PM</span></div>
+        <div class="timing-row"><span class="timing-day">Wednesday <span class="timing-badge asa">ASA</span></span><span class="timing-time">7:30AM – 3:15PM</span></div>
+        <div class="timing-row"><span class="timing-day">Thursday <span class="timing-badge early">Early</span></span><span class="timing-time">7:30AM – 1:30PM</span></div>
+      </div>
+      <div class="school-card">
+        <h4>🏆 Achievements</h4>
+        <div class="achievement-item"><div class="achievement-icon">🏀</div><div class="achievement-text"><strong>Basketball Competition vs Wellington</strong> — played and competed! So proud 🏀</div></div>
+        <div class="achievement-item"><div class="achievement-icon">🎓</div><div class="achievement-text"><strong>Lower Elementary End-of-Year Awards</strong> — 23 June 2026 (G1–G2)</div></div>
+        <div class="achievement-item"><div class="achievement-icon">🎵</div><div class="achievement-text"><strong>Lower Elementary Music Concert</strong> — 9 June 2026</div></div>
+      </div>
+      <div class="school-card">
+        <h4>📅 Upcoming Events</h4>
+        <div class="achievement-item"><div class="achievement-icon">💙</div><div class="achievement-text"><strong>1 Jun</strong> — World Children's Day · Wear Blue</div></div>
+        <div class="achievement-item"><div class="achievement-icon">🎵</div><div class="achievement-text"><strong>9 Jun</strong> — Lower Elementary Music Concert</div></div>
+        <div class="achievement-item"><div class="achievement-icon">📝</div><div class="achievement-text"><strong>16–24 Jun</strong> — End of Year Exams</div></div>
+        <div class="achievement-item"><div class="achievement-icon">🏆</div><div class="achievement-text"><strong>23 Jun</strong> — Lower Elementary Awards (G1–G2)</div></div>
+        <div class="achievement-item"><div class="achievement-icon">🎂</div><div class="achievement-text"><strong>24 Jun</strong> — Khadeeja's 8th Birthday! 🎉</div></div>
+        <div class="achievement-item"><div class="achievement-icon">📋</div><div class="achievement-text"><strong>28 Jun</strong> — Final Report Cards · Last Day of School</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- AEESYA PANEL -->
+  <div class="child-panel" id="panel-aeesya">
+    <div class="child-panel-header">
+      <img class="child-panel-photo" id="cpAeesya" src="" alt="Aeesya"/>
+      <div>
+        <div class="child-panel-name">Aeesya</div>
+        <div class="child-panel-grade">Grade KG2B · Early Childhood</div>
+        <div class="child-panel-teacher">🏫 Homeroom: Ms. Roci &nbsp;·&nbsp; TA: Ms. Mary</div>
+      </div>
+    </div>
+    <div class="school-grid">
+      <div class="school-card">
+        <h4>📚 Subjects</h4>
+        <div class="subject-pills">
+          <span class="subject-pill highlight">English (Phonics · Reading · Writing)</span>
+          <span class="subject-pill highlight">Math</span>
+          <span class="subject-pill">Science</span>
+          <span class="subject-pill">Non-native Arabic</span>
+          <span class="subject-pill">Islamic Studies</span>
+          <span class="subject-pill">PE</span>
+          <span class="subject-pill">Art</span>
+          <span class="subject-pill">Music</span>
+          <span class="subject-pill">Qatar History</span>
+        </div>
+      </div>
+      <div class="school-card">
+        <h4>⏰ School Timings</h4>
+        <div class="timing-row"><span class="timing-day">Sunday – Tuesday</span><span class="timing-time">7:30AM – 2:15PM</span></div>
+        <div class="timing-row"><span class="timing-day">Wednesday <span class="timing-badge asa">ASA</span></span><span class="timing-time">7:30AM – 3:15PM</span></div>
+        <div class="timing-row"><span class="timing-day">Thursday <span class="timing-badge early">Early</span></span><span class="timing-time">7:30AM – 1:30PM</span></div>
+      </div>
+      <div class="school-card">
+        <h4>🏆 Milestones</h4>
+        <div class="achievement-item"><div class="achievement-icon">🎓</div><div class="achievement-text"><strong>KG2 Graduation!</strong> — 23 June 2026 🎉 Moving up to Grade 1 next year!</div></div>
+        <div class="achievement-item"><div class="achievement-icon">🎵</div><div class="achievement-text"><strong>Lower Elementary Music Concert</strong> — 9 June 2026</div></div>
+        <div class="achievement-item"><div class="achievement-icon">❤️‍🩹</div><div class="achievement-text"><strong>26 May 2026</strong> — 9 stitches on forehead after a fall. So brave, our Adik.</div></div>
+      </div>
+      <div class="school-card">
+        <h4>📅 Upcoming Events</h4>
+        <div class="achievement-item"><div class="achievement-icon">💙</div><div class="achievement-text"><strong>1 Jun</strong> — World Children's Day · Wear Blue</div></div>
+        <div class="achievement-item"><div class="achievement-icon">🎵</div><div class="achievement-text"><strong>9 Jun</strong> — Lower Elementary Music Concert</div></div>
+        <div class="achievement-item"><div class="achievement-icon">🎓</div><div class="achievement-text"><strong>23 Jun</strong> — KG2 GRADUATION 🎉🎓</div></div>
+        <div class="achievement-item"><div class="achievement-icon">📋</div><div class="achievement-text"><strong>28 Jun</strong> — Final Report Cards · Last Day of School</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FULL SCHOOL CALENDAR -->
+  <div class="section-label" style="margin-top:2rem;">2026–2027 School Calendar</div>
+  <div class="school-card" style="margin-bottom:1rem;">
+    <h4>📅 Upcoming Key Dates</h4>
+    <div class="cal-events" id="schoolCalEvents"></div>
+  </div>
+  <div class="school-card">
+    <h4>📆 Full Year Overview · GEMS AAQ 2026–2027</h4>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;">
+      <div class="timing-row"><span class="timing-day">30–31 Aug 2026</span><span class="timing-time" style="font-size:.7rem;">First Day of School</span></div>
+      <div class="timing-row"><span class="timing-day">22 Oct</span><span class="timing-time" style="font-size:.7rem;">Quarter 1 Ends</span></div>
+      <div class="timing-row"><span class="timing-day">25–29 Oct</span><span class="timing-time" style="font-size:.7rem;">October Break</span></div>
+      <div class="timing-row"><span class="timing-day">25 Nov</span><span class="timing-time" style="font-size:.7rem;">PT Conferences</span></div>
+      <div class="timing-row"><span class="timing-day">26 Nov</span><span class="timing-time" style="font-size:.7rem;">Thanksgiving Holiday</span></div>
+      <div class="timing-row"><span class="timing-day">20 Dec–7 Jan</span><span class="timing-time" style="font-size:.7rem;">Winter Break</span></div>
+      <div class="timing-row"><span class="timing-day">11 Jan 2027</span><span class="timing-time" style="font-size:.7rem;">Students Back</span></div>
+      <div class="timing-row"><span class="timing-day">28 Jan</span><span class="timing-time" style="font-size:.7rem;">Semester 1 / Q2 Ends</span></div>
+      <div class="timing-row"><span class="timing-day">9 Feb</span><span class="timing-time" style="font-size:.7rem;">Sports Day Holiday</span></div>
+      <div class="timing-row"><span class="timing-day">8 Feb–4 Mar</span><span class="timing-time" style="font-size:.7rem;">Ramadan Schedule</span></div>
+      <div class="timing-row"><span class="timing-day">7–11 Mar</span><span class="timing-time" style="font-size:.7rem;">Eid ul Fitr Break</span></div>
+      <div class="timing-row"><span class="timing-day">31 Mar</span><span class="timing-time" style="font-size:.7rem;">PT Conferences · Q3 Ends</span></div>
+      <div class="timing-row"><span class="timing-day">16–20 May</span><span class="timing-time" style="font-size:.7rem;">Eid Al Adha Break</span></div>
+      <div class="timing-row"><span class="timing-day">16–24 Jun</span><span class="timing-time" style="font-size:.7rem;">End of Year Exams</span></div>
+      <div class="timing-row"><span class="timing-day">28 Jun 2027</span><span class="timing-time" style="font-size:.7rem;">Last Day of School</span></div>
+    </div>
+  </div>
+</div>
+
 <!-- EVENT MODAL -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
@@ -865,6 +1182,7 @@ function switchTab(name) {
   if (tabEl) tabEl.classList.add('active');
   if (pageEl) pageEl.classList.add('active');
   if (name === 'diary') renderDiary();
+  if (name === 'school') initSchoolTab();
 }
 
 // ── TRIP CARDS ──
@@ -1163,8 +1481,96 @@ document.getElementById('editModalOverlay').addEventListener('click', function(e
   if (e.target === this) closeEditModal();
 });
 
+
+// ── SCHOOL TAB ──
+function switchChild(name, btn) {
+  document.querySelectorAll('.child-tab').forEach(function(t){t.classList.remove('active');});
+  document.querySelectorAll('.child-panel').forEach(function(p){p.classList.remove('active');});
+  btn.classList.add('active');
+  document.getElementById('panel-' + name).classList.add('active');
+}
+
+function initSchoolTab() {
+  // Set child tab photos
+  var photoMap = {
+    maryam: photoSrcs.maryam,
+    khadeeja: photoSrcs.khadeeja,
+    aeesya: photoSrcs.aeesya
+  };
+  ['maryam','khadeeja','aeesya'].forEach(function(n){
+    var ct = document.getElementById('ct' + n.charAt(0).toUpperCase() + n.slice(1));
+    var cp = document.getElementById('cp' + n.charAt(0).toUpperCase() + n.slice(1));
+    if (ct) ct.src = photoMap[n];
+    if (cp) cp.src = photoMap[n];
+  });
+
+  // Pickup time display
+  var now = new Date();
+  var day = now.getDay(); // 0=Sun,1=Mon,2=Tue,3=Wed,4=Thu,5=Fri,6=Sat
+  var pickupEl = document.getElementById('pickupTime');
+  var pickupNote = document.getElementById('pickupNote');
+  // Qatar week: Sun-Thu
+  if (day === 5 || day === 6) { // Fri/Sat = weekend
+    pickupEl.textContent = 'Weekend';
+    pickupNote.textContent = 'No school today 😊';
+  } else if (day === 4) { // Thursday
+    pickupEl.textContent = '1:30 PM';
+    pickupNote.textContent = 'Thursday · Early pickup';
+    showTodayBanner('⏰','Thursday — Early Pickup Day!','School ends at 1:30PM today. Pickup at 1:30PM!');
+  } else if (day === 3) { // Wednesday
+    pickupEl.textContent = '3:15 PM';
+    pickupNote.textContent = 'Wednesday · ASA day — Late!';
+    showTodayBanner('🎒','Wednesday — ASA Day!','After School Activities today. Pickup at 3:15PM — later than usual!');
+  } else { // Sun/Mon/Tue
+    var days = ['Sunday','Monday','Tuesday'];
+    pickupEl.textContent = '2:15 PM';
+    pickupNote.textContent = days[day === 0 ? 0 : day === 1 ? 1 : 2] + ' · Regular day';
+  }
+
+  // School calendar events
+  renderSchoolCalendar();
+}
+
+function showTodayBanner(icon, title, sub) {
+  var banner = document.getElementById('todaySchoolBanner');
+  if (banner) {
+    document.getElementById('todayBannerIcon').textContent = icon;
+    document.getElementById('todayBannerTitle').textContent = title;
+    document.getElementById('todayBannerSub').textContent = sub;
+    banner.style.display = 'flex';
+  }
+}
+
+function renderSchoolCalendar() {
+  var schoolDates = [
+    {date:'2026-05-31',title:'G4 Student-Parent Science Event',who:'Maryam',type:'soon'},
+    {date:'2026-06-01',title:'World Children's Day — Wear Blue 💙',who:'All',type:'normal'},
+    {date:'2026-06-03',title:'Last Day of ASA',who:'All',type:'normal'},
+    {date:'2026-06-09',title:'Lower Elementary Music Concert',who:'Khadeeja · Aeesya',type:'soon'},
+    {date:'2026-06-10',title:'Upper Elementary Music Concert',who:'Maryam',type:'soon'},
+    {date:'2026-06-16',title:'End of Year Exams Begin',who:'All',type:'urgent'},
+    {date:'2026-06-18',title:'G3 Writing Celebration with Parents',who:'School',type:'normal'},
+    {date:'2026-06-23',title:'KG2 Graduation 🎓',who:'Aeesya',type:'soon'},
+    {date:'2026-06-23',title:'Lower Elementary Awards (G1–G2)',who:'Khadeeja',type:'soon'},
+    {date:'2026-06-24',title:'Upper Elementary Awards (G3–G5)',who:'Maryam',type:'soon'},
+    {date:'2026-06-24',title:'Khadeeja 8th Birthday! 🎂',who:'Khadeeja',type:'normal'},
+    {date:'2026-06-28',title:'Final Report Cards · Last Day of School',who:'All',type:'urgent'},
+  ];
+  var container = document.getElementById('schoolCalEvents');
+  if (!container) return;
+  var upcoming = schoolDates.filter(function(e){ return daysUntil(e.date) >= 0; });
+  if (!upcoming.length) { container.innerHTML = '<div style="color:var(--ink3);font-style:italic;font-size:.8rem;">No upcoming events.</div>'; return; }
+  container.innerHTML = upcoming.map(function(e){
+    var d = daysUntil(e.date);
+    var ds = d===0?'Today!':d===1?'Tomorrow':'in '+d+' days';
+    var dt = new Date(e.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'});
+    return '<div class="cal-event '+e.type+'"><div class="cal-event-info"><div class="cal-event-title">'+e.title+'</div><div class="cal-event-who">'+e.who+'</div></div><div><div class="cal-event-date">'+dt+'</div><div class="cal-event-days">'+ds+'</div></div></div>';
+  }).join('');
+}
+
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', function(){
+  // init school tab pre-loads handled on tab switch
   renderEvents();
   renderTasks();
   renderBdays();
