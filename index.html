@@ -1253,12 +1253,12 @@ var S = {
 
 // ── EVENTS ──
 var defaultEvents = [
-  {id:1,title:'Khadeeja — Dr. Nathalie (Aman Hospital)',date:'2026-05-25',who:'Khadeeja',type:'urgent'},
-  {id:2,title:'🎂 Khadeeja Birthday — turning 8!',date:'2026-06-24',who:'Khadeeja',type:'soon'},
-  {id:3,title:'Depart Doha — Malaysia ✈️',date:'2026-06-29',who:'All Family',type:'trip'},
+  {id:1,title:'Khadeeja - Dr. Nathalie (Aman Hospital)',date:'2026-05-25',who:'Khadeeja',type:'urgent'},
+  {id:2,title:'🎂 Khadeeja Birthday - turning 8!',date:'2026-06-24',who:'Khadeeja',type:'soon'},
+  {id:3,title:'Depart Doha - Malaysia ✈️',date:'2026-06-29',who:'All Family',type:'trip'},
   {id:4,title:'Arrive KL · Luksal delivers CRV',date:'2026-06-30',who:'All Family',type:'trip'},
   {id:5,title:'🧱 Legoland',date:'2026-07-08',who:'All Family',type:'trip'},
-  {id:6,title:'🏝️ Island Hopping — Mersing',date:'2026-07-15',who:'All Family',type:'trip'},
+  {id:6,title:'Island Hopping - Mersing',date:'2026-07-15',who:'All Family',type:'trip'},
   {id:7,title:'Fly home to Doha ✈️',date:'2026-07-29',who:'All Family',type:'trip'}
 ];
 function getEvents(){ var s=S.get('events'); return (s&&s.length>0)?s:defaultEvents; }
@@ -1279,9 +1279,9 @@ function renderEvents() {
 
 // ── SCHOOL ──
 var schoolEvents = [
-  {title:'Maryam — Grade 5 · GEMS AAQ',date:'2026-09-01',who:'Maryam',type:'soon'},
-  {title:'Khadeeja — Grade 2 · GEMS AAQ',date:'2026-09-01',who:'Khadeeja',type:'soon'},
-  {title:'Aeesya — Grade 1 · GEMS AAQ',date:'2026-09-01',who:'Aeesya',type:'soon'}
+  {title:'Maryam - Grade 5 GEMS AAQ',date:'2026-09-01',who:'Maryam',type:'soon'},
+  {title:'Khadeeja - Grade 2 GEMS AAQ',date:'2026-09-01',who:'Khadeeja',type:'soon'},
+  {title:'Aeesya - Grade 1 GEMS AAQ',date:'2026-09-01',who:'Aeesya',type:'soon'}
 ];
 function renderSchool() {
   var list = document.getElementById('schoolList');
@@ -1376,7 +1376,7 @@ function tagLabel(tag){ var m={daily:'📝 Daily',health:'🏥 Health',milestone
 function seedDiary() {
   if (getDiary().length>0) return;
   saveDiary([
-    {id:2,text:'Aeesya had a bad fall around 8pm tonight. There was a big cut on her forehead — we rushed to the hospital. She was so brave throughout. The doctor gave her 9 stitches on her forehead. Ya Allah, protect our Adik. She handled it better than all of us. Get well soon baby girl.',tag:'health',photos:[],date:new Date(2026,4,26,21,30).toISOString(),author:'Walid'},
+    {id:2,text:'Aeesya had a bad fall around 8pm. Big cut on forehead - rushed to the hospital. She was so brave throughout. The doctor gave her 9 stitches on her forehead. Ya Allah, protect our Adik. She handled it better than all of us. Get well soon baby girl.',tag:'health',photos:[],date:new Date(2026,4,26,21,30).toISOString(),author:'Walid'},
     {id:1,text:"Khadeeja had her dental appointment today at Aman Hospital with Dr. Nathalie Abou Samra. She had a crown done on one of her teeth. She was such a good girl throughout the whole procedure. So proud of our Tengah!",tag:'health',photos:[],date:new Date(2026,4,26,15,30).toISOString(),author:'Walid'}
   ]);
 }
@@ -1516,11 +1516,11 @@ function initSchoolTab() {
   } else if (day === 4) { // Thursday
     pickupEl.textContent = '1:30 PM';
     pickupNote.textContent = 'Thursday · Early pickup';
-    showTodayBanner('⏰','Thursday — Early Pickup Day!','School ends at 1:30PM today. Pickup at 1:30PM!');
+    showTodayBanner('⏰','Thursday - Early Pickup Day!','School ends at 1:30PM today. Pickup at 1:30PM!');
   } else if (day === 3) { // Wednesday
     pickupEl.textContent = '3:15 PM';
-    pickupNote.textContent = 'Wednesday · ASA day — Late!';
-    showTodayBanner('🎒','Wednesday — ASA Day!','After School Activities today. Pickup at 3:15PM — later than usual!');
+    pickupNote.textContent = 'Wednesday · ASA day - Late!';
+    showTodayBanner('🎒','Wednesday - ASA Day!','After School Activities today. Pickup at 3:15PM — later than usual!');
   } else { // Sun/Mon/Tue
     var days = ['Sunday','Monday','Tuesday'];
     pickupEl.textContent = '2:15 PM';
@@ -1544,17 +1544,17 @@ function showTodayBanner(icon, title, sub) {
 function renderSchoolCalendar() {
   var schoolDates = [
     {date:'2026-05-31',title:'G4 Student-Parent Science Event',who:'Maryam',type:'soon'},
-    {date:'2026-06-01',title:'World Children's Day — Wear Blue 💙',who:'All',type:'normal'},
+    {date:'2026-06-01',title:'World Childrens Day - Wear Blue',who:'All',type:'normal'},
     {date:'2026-06-03',title:'Last Day of ASA',who:'All',type:'normal'},
     {date:'2026-06-09',title:'Lower Elementary Music Concert',who:'Khadeeja · Aeesya',type:'soon'},
     {date:'2026-06-10',title:'Upper Elementary Music Concert',who:'Maryam',type:'soon'},
     {date:'2026-06-16',title:'End of Year Exams Begin',who:'All',type:'urgent'},
     {date:'2026-06-18',title:'G3 Writing Celebration with Parents',who:'School',type:'normal'},
-    {date:'2026-06-23',title:'KG2 Graduation 🎓',who:'Aeesya',type:'soon'},
-    {date:'2026-06-23',title:'Lower Elementary Awards (G1–G2)',who:'Khadeeja',type:'soon'},
-    {date:'2026-06-24',title:'Upper Elementary Awards (G3–G5)',who:'Maryam',type:'soon'},
+    {date:'2026-06-23',title:'KG2 Graduation',who:'Aeesya',type:'soon'},
+    {date:'2026-06-23',title:'Lower Elementary Awards G1-G2',who:'Khadeeja',type:'soon'},
+    {date:'2026-06-24',title:'Upper Elementary Awards G3-G5',who:'Maryam',type:'soon'},
     {date:'2026-06-24',title:'Khadeeja 8th Birthday! 🎂',who:'Khadeeja',type:'normal'},
-    {date:'2026-06-28',title:'Final Report Cards · Last Day of School',who:'All',type:'urgent'},
+    {date:'2026-06-28',title:'Final Report Cards - Last Day of School',who:'All',type:'urgent'},
   ];
   var container = document.getElementById('schoolCalEvents');
   if (!container) return;
