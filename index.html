@@ -1544,7 +1544,7 @@ function addTask(){ var inp=document.getElementById('taskInput'); var txt=inp.va
 function openModal(){ document.getElementById('modalOverlay').classList.add('open'); var tmr=new Date(); tmr.setDate(tmr.getDate()+1); document.getElementById('evtDate').value=tmr.toISOString().split('T')[0]; }
 function closeModal(){ document.getElementById('modalOverlay').classList.remove('open'); }
 function saveEvent(){ var title=document.getElementById('evtTitle').value.trim(); var date=document.getElementById('evtDate').value; var who=document.getElementById('evtWho').value.trim()||'Family'; var type=document.getElementById('evtType').value; if(!title||!date) return; var ev=getEvents(); ev.push({id:Date.now(),title:title,date:date,who:who,type:type}); saveEvents(ev); renderEvents(); closeModal(); document.getElementById('evtTitle').value=''; document.getElementById('evtWho').value=''; }
-document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+// modalOverlay listener moved to initDashboard
 
 // ── DIARY ──
 var diaryPhotos = [];
@@ -1678,9 +1678,7 @@ function closeEditModal() {
   editKeepPhotos = [];
 }
 
-document.getElementById('editModalOverlay').addEventListener('click', function(e) {
-  if (e.target === this) closeEditModal();
-});
+// editModalOverlay listener moved to initDashboard
 
 
 // ── SCHOOL TAB ──
@@ -1974,17 +1972,40 @@ if (document.readyState === 'complete' || document.readyState === 'interactive')
 }
 
 function initDashboard() {
-  // Version check - clear stale event data if needed
+  var dbg = document.getElementById('debugBox');
+  var log = function(msg) { if(dbg){ dbg.style.display='block'; dbg.innerHTML += msg + '<br/>'; } };
+
+  // Version check
   var ver = localStorage.getItem('ramka_ver');
-  if (ver !== '3') {
-    localStorage.removeItem('ramka_events');
-    localStorage.setItem('ramka_ver', '3');
+  log('ver: ' + ver);
+  if (ver !== '4') {
+    localStorage.clear();
+    localStorage.setItem('ramka_ver', '4');
+    log('cleared localStorage');
   }
-  try { updateComposeAvatar(); } catch(e) {}
-  try { renderEvents(); } catch(e) {}
-  try { renderTasks(); } catch(e) {}
-  try { renderBdays(); } catch(e) {}
-  try { renderSchool(); } catch(e) {}
+
+  log('defaultEvents length: ' + defaultEvents.length);
+  log('getEvents length: ' + getEvents().length);
+  log('daysUntil 2026-05-31: ' + daysUntil('2026-05-31'));
+
+  var evList = document.getElementById('eventsList');
+  var taskList = document.getElementById('tasksList');
+  var bdayList = document.getElementById('bdayList');
+  log('eventsList el: ' + (evList ? 'found' : 'NOT FOUND'));
+  log('tasksList el: ' + (taskList ? 'found' : 'NOT FOUND'));
+  log('bdayList el: ' + (bdayList ? 'found' : 'NOT FOUND'));
+
+  try { updateComposeAvatar(); log('avatar ok'); } catch(e) { log('avatar err: '+e); }
+  try { renderEvents(); log('events ok, children: '+(evList?evList.children.length:0)); } catch(e) { log('events err: '+e); }
+  try { renderTasks(); log('tasks ok'); } catch(e) { log('tasks err: '+e); }
+  try { renderBdays(); log('bdays ok'); } catch(e) { log('bdays err: '+e); }
+  try { renderSchool(); log('school ok'); } catch(e) { log('school err: '+e); }
+
+  // Attach modal listeners
+  var mo = document.getElementById('modalOverlay');
+  if (mo) mo.addEventListener('click', function(e){ if(e.target===this) closeModal(); });
+  var emo = document.getElementById('editModalOverlay');
+  if (emo) emo.addEventListener('click', function(e){ if(e.target===this) closeEditModal(); });
 }
 </script>
 </body>
