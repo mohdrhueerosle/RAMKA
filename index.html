@@ -257,7 +257,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:500;display:none;align-items:center;justify-content:center;cursor:pointer;}
 .lightbox.open{display:flex;}
 .lightbox img{max-width:90vw;max-height:90vh;object-fit:contain;}
-@media(max-width:500px){.topbar{padding:0 1rem;}.topbar-logo{padding:.8rem .8rem .8rem 0;margin-right:.8rem;}.tab{padding:.9rem .7rem;font-size:.58rem;}.topbar-time{display:none;}.page{padding:1.2rem;}}
+@media(max-width:500px){.topbar{padding:0 1rem;}.topbar-logo{padding:.8rem .8rem .8rem 0;margin-right:.8rem;}.tab{padding:.9rem .7rem;font-size:.58rem;}.topbar-time{display:none;}.page{display:none;padding:1.2rem;}.page.active{display:block;}}
 
 /* ── EDIT DIARY MODAL ── */
 .edit-modal-overlay{position:fixed;inset:0;background:rgba(26,23,20,.5);z-index:300;display:none;align-items:center;justify-content:center;padding:1rem;}
@@ -383,7 +383,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 </div>
 
 <!-- DASHBOARD -->
-<div class="page active" id="page-dashboard">
+<div class="page active" id="page-dashboard" style="display:block;">
   <div class="dash-header">
     <div>
       <div class="dash-greeting">Good <em id="timeOfDay">morning</em>, Walid 👋</div>
@@ -921,7 +921,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
     <p class="page-sub">Family moments, memories, milestones — big and small.</p>
   </div>
   <div class="diary-compose">
-        <div class="diary-compose-top">
+    <div class="diary-compose-top">
       <div class="diary-av" id="composeAvatar" style="overflow:hidden;"></div>
       <div style="flex:1;">
         <div style="display:flex;align-items:center;gap:.6rem;margin-bottom:.2rem;">
@@ -934,20 +934,18 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
         <div style="font-size:.72rem;color:var(--ink3);">Write a memory for the RAMKA archive</div>
       </div>
     </div>
-      <div><div style="font-size:.85rem;font-weight:500;">What happened today?</div><div style="font-size:.72rem;color:var(--ink3);">Write a memory for the RAMKA archive</div></div>
-    </div>
-    <textarea class="diary-textarea" id="diaryText" placeholder="Write something about today…"></textarea>
+    <textarea class="diary-textarea" id="diaryText" placeholder="Write something about today..."></textarea>
     <div class="diary-compose-foot">
       <div class="diary-actions">
         <select class="diary-tag-sel" id="diaryTag">
-          <option value="daily">📝 Daily</option>
-          <option value="health">🏥 Health</option>
-          <option value="milestone">⭐ Milestone</option>
-          <option value="school">🏫 School</option>
-          <option value="travel">✈️ Travel</option>
-          <option value="family">👨‍👩‍👧 Family</option>
+          <option value="daily">Daily</option>
+          <option value="health">Health</option>
+          <option value="milestone">Milestone</option>
+          <option value="school">School</option>
+          <option value="travel">Travel</option>
+          <option value="family">Family</option>
         </select>
-        <label class="diary-photo-lbl" for="diaryPhotoInput">📷 Add Photo</label>
+        <label class="diary-photo-lbl" for="diaryPhotoInput">Add Photo</label>
         <input type="file" id="diaryPhotoInput" accept="image/*" multiple style="display:none;" onchange="handlePhotos(this)"/>
         <span id="photoCount" style="font-size:.72rem;color:var(--ink3);"></span>
       </div>
@@ -956,60 +954,15 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
   </div>
   <div class="diary-filters">
     <button class="dfbtn active" onclick="filterDiary('all',this)">All</button>
-    <button class="dfbtn" onclick="filterDiary('health',this)">🏥 Health</button>
-    <button class="dfbtn" onclick="filterDiary('milestone',this)">⭐ Milestone</button>
-    <button class="dfbtn" onclick="filterDiary('school',this)">🏫 School</button>
-    <button class="dfbtn" onclick="filterDiary('travel',this)">✈️ Travel</button>
-    <button class="dfbtn" onclick="filterDiary('family',this)">👨‍👩‍👧 Family</button>
+    <button class="dfbtn" onclick="filterDiary('health',this)">Health</button>
+    <button class="dfbtn" onclick="filterDiary('milestone',this)">Milestone</button>
+    <button class="dfbtn" onclick="filterDiary('school',this)">School</button>
+    <button class="dfbtn" onclick="filterDiary('travel',this)">Travel</button>
+    <button class="dfbtn" onclick="filterDiary('family',this)">Family</button>
   </div>
   <div class="diary-entries" id="diaryEntries"></div>
 </div>
 
-<!-- EDIT DIARY MODAL -->
-<div class="edit-modal-overlay" id="editModalOverlay">
-  <div class="edit-modal">
-    <h3>Edit Entry</h3>
-    <div class="edit-modal-fields">
-      <div><div class="field-label">Posted by</div>
-        <select class="diary-tag-sel" id="editAuthor" style="width:100%;">
-          <option value="Walid">Walid</option>
-          <option value="Afiqah">Afiqah (Ummi)</option>
-        </select>
-      </div>
-      <div><div class="field-label">Entry Text</div>
-        <textarea class="diary-textarea" id="editText" style="min-height:120px;width:100%;"></textarea>
-      </div>
-      <div><div class="field-label">Tag</div>
-        <select class="diary-tag-sel" id="editTag" style="width:100%;">
-          <option value="daily">📝 Daily</option>
-          <option value="health">🏥 Health</option>
-          <option value="milestone">⭐ Milestone</option>
-          <option value="school">🏫 School</option>
-          <option value="travel">✈️ Travel</option>
-          <option value="family">👨‍👩‍👧 Family</option>
-        </select>
-      </div>
-      <div>
-        <div class="field-label">Current Photos</div>
-        <div class="edit-existing-photos" id="editExistingPhotos"></div>
-      </div>
-      <div>
-        <div class="field-label">Add More Photos</div>
-        <div style="display:flex;align-items:center;gap:.5rem;">
-          <label class="diary-photo-lbl" for="editPhotoInput">📷 Choose Photos</label>
-          <input type="file" id="editPhotoInput" accept="image/*" multiple style="display:none;" onchange="handleEditPhotos(this)"/>
-          <span id="editPhotoCount" style="font-size:.72rem;color:var(--ink3);"></span>
-        </div>
-      </div>
-    </div>
-    <div class="edit-modal-actions">
-      <button class="btn-cancel" onclick="closeEditModal()">Cancel</button>
-      <button class="btn-save" onclick="saveEditedEntry()">Save Changes</button>
-    </div>
-  </div>
-</div>
-
-<!-- SCHOOL -->
 <div class="page" id="page-school">
   <div class="page-header">
     <h1 class="page-title">GEMS <em>School</em></h1>
@@ -1034,6 +987,9 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
     </div>
   
 
+
+</div>
+
   <div class="school-card">
     <h4>📆 Full Year Overview · GEMS AAQ 2026–2027</h4>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:.5rem;">
@@ -1054,7 +1010,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
       <div class="timing-row"><span class="timing-day">28 Jun 2027</span><span class="timing-time" style="font-size:.7rem;">Last Day of School</span></div>
     </div>
   </div>
-</div>
+
 
   <!-- Today's Banner -->
   <div class="today-banner" id="todaySchoolBanner" style="display:none;">
@@ -1264,14 +1220,27 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 <script>
 // ── TABS ──
 function switchTab(name) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+  document.querySelectorAll('.page').forEach(function(p){
+    p.classList.remove('active');
+    p.style.display = 'none';
+    p.style.visibility = 'hidden';
+    p.style.position = 'absolute';
+    p.style.pointerEvents = 'none';
+  });
   var tabEl = document.querySelector('.tab[data-tab="' + name + '"]');
   var pageEl = document.getElementById('page-' + name);
   if (tabEl) tabEl.classList.add('active');
-  if (pageEl) pageEl.classList.add('active');
-  if (name === 'diary') renderDiary();
-  if (name === 'school') initSchoolTab();
+  if (pageEl) {
+    pageEl.classList.add('active');
+    pageEl.style.display = 'block';
+    pageEl.style.visibility = 'visible';
+    pageEl.style.position = 'relative';
+    pageEl.style.pointerEvents = 'auto';
+  }
+  window.scrollTo(0,0);
+  if (name==='diary') renderDiary();
+  if (name==='school') initSchoolTab();
 }
 
 // ── TRIP CARDS ──
@@ -1683,6 +1652,20 @@ function updateComposeAvatar() {
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', function(){
+  // Force hide all pages except active
+  document.querySelectorAll('.page').forEach(function(p){
+    if (!p.classList.contains('active')) {
+      p.style.display = 'none';
+      p.style.visibility = 'hidden';
+      p.style.position = 'absolute';
+      p.style.pointerEvents = 'none';
+    } else {
+      p.style.display = 'block';
+      p.style.visibility = 'visible';
+      p.style.position = 'relative';
+      p.style.pointerEvents = 'auto';
+    }
+  });
   updateComposeAvatar();
   // init school tab pre-loads handled on tab switch
   renderEvents();
