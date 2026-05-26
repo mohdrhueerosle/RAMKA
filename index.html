@@ -258,6 +258,19 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 .lightbox.open{display:flex;}
 .lightbox img{max-width:90vw;max-height:90vh;object-fit:contain;}
 @media(max-width:500px){.topbar{padding:0 1rem;}.topbar-logo{padding:.8rem .8rem .8rem 0;margin-right:.8rem;}.tab{padding:.9rem .7rem;font-size:.58rem;}.topbar-time{display:none;}.page{padding:1.2rem;}}
+
+/* ── EDIT DIARY MODAL ── */
+.edit-modal-overlay{position:fixed;inset:0;background:rgba(26,23,20,.5);z-index:300;display:none;align-items:center;justify-content:center;padding:1rem;}
+.edit-modal-overlay.open{display:flex;}
+.edit-modal{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(26,23,20,.2);}
+.edit-modal h3{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;margin-bottom:1.2rem;}
+.edit-modal-fields{display:flex;flex-direction:column;gap:.8rem;}
+.edit-existing-photos{display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:.5rem;margin-top:.5rem;}
+.edit-photo-thumb{position:relative;border-radius:var(--radius);overflow:hidden;}
+.edit-photo-thumb img{width:100%;aspect-ratio:1;object-fit:cover;display:block;}
+.edit-photo-remove{position:absolute;top:2px;right:2px;background:rgba(181,58,42,.9);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:.6rem;cursor:pointer;display:flex;align-items:center;justify-content:center;line-height:1;}
+.edit-modal-actions{display:flex;gap:.5rem;margin-top:1.2rem;}
+
 </style>
 </head>
 <body>
@@ -777,6 +790,44 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
   <div class="diary-entries" id="diaryEntries"></div>
 </div>
 
+<!-- EDIT DIARY MODAL -->
+<div class="edit-modal-overlay" id="editModalOverlay">
+  <div class="edit-modal">
+    <h3>Edit Entry</h3>
+    <div class="edit-modal-fields">
+      <div><div class="field-label">Entry Text</div>
+        <textarea class="diary-textarea" id="editText" style="min-height:120px;width:100%;"></textarea>
+      </div>
+      <div><div class="field-label">Tag</div>
+        <select class="diary-tag-sel" id="editTag" style="width:100%;">
+          <option value="daily">📝 Daily</option>
+          <option value="health">🏥 Health</option>
+          <option value="milestone">⭐ Milestone</option>
+          <option value="school">🏫 School</option>
+          <option value="travel">✈️ Travel</option>
+          <option value="family">👨‍👩‍👧 Family</option>
+        </select>
+      </div>
+      <div>
+        <div class="field-label">Current Photos</div>
+        <div class="edit-existing-photos" id="editExistingPhotos"></div>
+      </div>
+      <div>
+        <div class="field-label">Add More Photos</div>
+        <div style="display:flex;align-items:center;gap:.5rem;">
+          <label class="diary-photo-lbl" for="editPhotoInput">📷 Choose Photos</label>
+          <input type="file" id="editPhotoInput" accept="image/*" multiple style="display:none;" onchange="handleEditPhotos(this)"/>
+          <span id="editPhotoCount" style="font-size:.72rem;color:var(--ink3);"></span>
+        </div>
+      </div>
+    </div>
+    <div class="edit-modal-actions">
+      <button class="btn-cancel" onclick="closeEditModal()">Cancel</button>
+      <button class="btn-save" onclick="saveEditedEntry()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
 <!-- EVENT MODAL -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
@@ -1026,9 +1077,91 @@ function renderDiary() {
     var gc=pc===1?'p1':pc===2?'p2':pc===3?'p3':'p4';
     var ph=pc?'<div class="d-entry-photos '+gc+'">'+e.photos.map(function(p){return '<img class="d-photo" src="'+p+'" onclick="openLightbox(this.src)"/>';}).join('')+'</div>':'';
     var av='<img src="'+photoSrcs.rhuee+'" alt="Walid" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';
-    return '<div class="d-entry"><div class="d-entry-head"><div class="diary-av">'+av+'</div><div class="d-entry-meta"><div class="d-entry-author">'+e.author+'</div><div class="d-entry-date">'+dateStr+' · '+timeStr+'</div></div><span class="d-entry-tag '+e.tag+'">'+tagLabel(e.tag)+'</span></div><div class="d-entry-body">'+e.text+'</div>'+ph+'<div class="d-entry-foot"><span style="font-size:.72rem;color:var(--ink3);">RAMKA Diary</span><button class="d-del" onclick="deleteDiaryEntry('+e.id+')">Delete</button></div></div>';
+    return '<div class="d-entry"><div class="d-entry-head"><div class="diary-av">'+av+'</div><div class="d-entry-meta"><div class="d-entry-author">'+e.author+'</div><div class="d-entry-date">'+dateStr+' · '+timeStr+'</div></div><span class="d-entry-tag '+e.tag+'">'+tagLabel(e.tag)+'</span></div><div class="d-entry-body">'+e.text+'</div>'+ph+'<div class="d-entry-foot"><span style="font-size:.72rem;color:var(--ink3);">RAMKA Diary'+(e.edited?' · edited':'')+' </span><div style="display:flex;gap:.8rem;"><button class="d-del" style="color:var(--amber);" onclick="openEditModal('+e.id+')">Edit</button><button class="d-del" onclick="deleteDiaryEntry('+e.id+')">Delete</button></div></div></div>';
   }).join('');
 }
+
+
+// ── EDIT DIARY ENTRY ──
+var editingId = null;
+var editNewPhotos = [];
+var editKeepPhotos = [];
+
+function openEditModal(id) {
+  var entries = getDiary();
+  var entry = entries.find(function(e){ return e.id === id; });
+  if (!entry) return;
+  editingId = id;
+  editNewPhotos = [];
+  editKeepPhotos = entry.photos ? entry.photos.slice() : [];
+  document.getElementById('editText').value = entry.text;
+  document.getElementById('editTag').value = entry.tag;
+  document.getElementById('editPhotoCount').textContent = '';
+  document.getElementById('editPhotoInput').value = '';
+  renderEditPhotos();
+  document.getElementById('editModalOverlay').classList.add('open');
+}
+
+function renderEditPhotos() {
+  var container = document.getElementById('editExistingPhotos');
+  if (!editKeepPhotos.length) {
+    container.innerHTML = '<span style="font-size:.75rem;color:var(--ink3);font-style:italic;">No photos yet</span>';
+    return;
+  }
+  container.innerHTML = editKeepPhotos.map(function(p, i) {
+    return '<div class="edit-photo-thumb"><img src="' + p + '" onclick="openLightbox(this.src)"/><button class="edit-photo-remove" onclick="removeEditPhoto(' + i + ')">✕</button></div>';
+  }).join('');
+}
+
+function removeEditPhoto(idx) {
+  editKeepPhotos.splice(idx, 1);
+  renderEditPhotos();
+}
+
+function handleEditPhotos(input) {
+  var files = Array.from(input.files);
+  editNewPhotos = [];
+  var loaded = 0;
+  if (!files.length) { document.getElementById('editPhotoCount').textContent = ''; return; }
+  files.forEach(function(file) {
+    var r = new FileReader();
+    r.onload = function(e) {
+      editNewPhotos.push(e.target.result);
+      loaded++;
+      if (loaded === files.length) {
+        document.getElementById('editPhotoCount').textContent = editNewPhotos.length + ' new photo' + (editNewPhotos.length > 1 ? 's' : '') + ' ready';
+      }
+    };
+    r.readAsDataURL(file);
+  });
+}
+
+function saveEditedEntry() {
+  var text = document.getElementById('editText').value.trim();
+  var tag = document.getElementById('editTag').value;
+  if (!text) return;
+  var entries = getDiary();
+  var idx = entries.findIndex(function(e){ return e.id === editingId; });
+  if (idx === -1) return;
+  entries[idx].text = text;
+  entries[idx].tag = tag;
+  entries[idx].photos = editKeepPhotos.concat(editNewPhotos);
+  entries[idx].edited = true;
+  saveDiary(entries);
+  closeEditModal();
+  renderDiary();
+}
+
+function closeEditModal() {
+  document.getElementById('editModalOverlay').classList.remove('open');
+  editingId = null;
+  editNewPhotos = [];
+  editKeepPhotos = [];
+}
+
+document.getElementById('editModalOverlay').addEventListener('click', function(e) {
+  if (e.target === this) closeEditModal();
+});
 
 // ── INIT ──
 document.addEventListener('DOMContentLoaded', function(){
