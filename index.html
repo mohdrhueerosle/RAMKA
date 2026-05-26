@@ -449,7 +449,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
   <div class="dash-grid">
     <div class="card">
       <div class="card-label">Weather · Doha</div>
-      <div class="weather-main"><div class="weather-icon" id="wIcon">☀️</div><div><div class="weather-temp" id="wTemp">—°C</div><div class="weather-desc" id="wDesc">Loading…</div></div></div>
+      <div class="weather-main"><div class="weather-icon" id="wIcon">🌡️</div><div><div class="weather-temp" id="wTemp">—°C</div><div class="weather-desc" id="wDesc">Loading…</div></div></div>
       <div class="weather-row">
         <div class="w-stat"><strong id="wHum">—%</strong>Humidity</div>
         <div class="w-stat"><strong id="wWind">—</strong>Wind</div>
@@ -1349,8 +1349,9 @@ async function loadWeather() {
     document.getElementById('wHum').textContent = c.relative_humidity_2m + '%';
     document.getElementById('wWind').textContent = Math.round(c.wind_speed_10m) + ' km/h';
     var wc = c.weather_code;
-    var icons = {0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',51:'🌦️',61:'🌧️',80:'🌦️',95:'⛈️'};
-    var descs = {0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',51:'Light drizzle',61:'Rain',80:'Showers',95:'Thunderstorm'};
+    var isNight = new Date().getHours() >= 19 || new Date().getHours() < 6;
+    var icons = {0: isNight?'🌙':'☀️', 1: isNight?'🌙':'🌤️', 2:'⛅', 3:'☁️', 45:'🌫️', 51:'🌦️', 61:'🌧️', 80:'🌦️', 95:'⛈️'};
+    var descs = {0: isNight?'Clear night':'Clear sky', 1: isNight?'Mainly clear':'Mainly clear', 2:'Partly cloudy', 3:'Overcast', 45:'Foggy', 51:'Light drizzle', 61:'Rain', 80:'Showers', 95:'Thunderstorm'};
     var key = Object.keys(icons).reverse().find(function(k){return wc>=+k;})||0;
     document.getElementById('wIcon').textContent = icons[key]||'🌡️';
     document.getElementById('wDesc').textContent = descs[key]||'Doha';
