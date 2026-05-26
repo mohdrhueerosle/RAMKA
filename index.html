@@ -800,15 +800,413 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
     <div class="lock-footer">🔒 Private family site</div>
   </div>
 </div>
+<script>
+// ── PASSWORD LOCK ──
+const PASS = 'ramka0408';
+const SESSION_KEY = 'ramka_auth';
+
+function checkPassword() {
+  const input = document.getElementById('lockInput').value;
+  const error = document.getElementById('lockError');
+  if (input === PASS) {
+    sessionStorage.setItem(SESSION_KEY, 'true');
+    document.getElementById('lockScreen').style.display = 'none';
+    error.classList.remove('show');
+  } else {
+    error.classList.add('show');
+    document.getElementById('lockInput').value = '';
+    document.getElementById('lockInput').focus();
+    const box = document.querySelector('.lock-box');
+    box.style.transform = 'translateX(-6px)';
+    setTimeout(() => box.style.transform = 'translateX(6px)', 80);
+    setTimeout(() => box.style.transform = 'translateX(-4px)', 160);
+    setTimeout(() => box.style.transform = 'translateX(0)', 240);
+  }
+}
+
+if (sessionStorage.getItem(SESSION_KEY) === 'true') {
+  document.getElementById('lockScreen').style.display = 'none';
+}
+
+// ── SWITCH TAB (defined early so topbar onclick works) ──
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const tabEl = document.querySelector('.tab[data-tab="' + name + '"]');
+  if (tabEl) tabEl.classList.add('active');
+  const pageEl = document.getElementById('page-' + name);
+  if (pageEl) pageEl.classList.add('active');
+  if (name === 'diary' && typeof renderDiary === 'function') renderDiary();
+}
+
+// ── SHOWTRIP (defined early so trip cards work) ──
+function showTrip(name) {
+  document.querySelectorAll('.trip-detail').forEach(d => d.classList.remove('active'));
+  document.querySelectorAll('.trip-card').forEach(c => c.classList.remove('active-card'));
+  const detail = document.getElementById('detail-' + name);
+  const card = document.querySelector('.trip-card.' + name);
+  if (detail) {
+    detail.classList.add('active');
+    if (card) card.classList.add('active-card');
+    setTimeout(() => detail.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  }
+}
+function closeTrip() {
+  document.querySelectorAll('.trip-detail').forEach(d => d.classList.remove('active'));
+  document.querySelectorAll('.trip-card').forEach(c => c.classList.remove('active-card'));
+}
+</script>
+
+<script>
+// switchTab defined in early inline script
+
+// ── CLOCK ──
+function updateClock(){
+  const n=new Date();
+  document.getElementById('liveTime').textContent=n.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'})+' AST';
+  const h=n.getHours();
+  document.getElementById('timeOfDay').textContent=h<12?'morning':h<17?'afternoon':'evening';
+}
+setInterval(updateClock,1000);updateClock();
+
+// ── DATE ──
+document.getElementById('todayDate').textContent=
+  new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();
+
+// ── COUNTDOWN ──
+function updateCountdown(){
+  const dep=new Date('2026-06-29T17:35:00+03:00');
+  const diff=dep-new Date();
+  if(diff<=0){document.getElementById('cdDays').closest('.cd-nums').innerHTML='<span style="color:var(--green);font-family:Cormorant Garamond,serif;font-size:1.2rem;font-style:italic;">🇲🇾 Trip is on!</span>';return;}
+  document.getElementById('cdDays').textContent=String(Math.floor(diff/86400000)).padStart(2,'0');
+  document.getElementById('cdHours').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
+  document.getElementById('cdMins').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
+}
+setInterval(updateCountdown,60000);updateCountdown();
+
+// ── WEATHER ──
+async function loadWeather(){
+  try{
+    const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=25.2854&longitude=51.5310&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&wind_speed_unit=kmh&timezone=Asia%2FQatar');
+    const d=await r.json();const c=d.current;
+    document.getElementById('weatherTemp').textContent=Math.round(c.temperature_2m)+'°C';
+    document.getElementById('wFeels').textContent=Math.round(c.apparent_temperature)+'°C';
+    document.getElementById('wHumidity').textContent=c.relative_humidity_2m+'%';
+    document.getElementById('wWind').textContent=Math.round(c.wind_speed_10m)+' km/h';
+    const wc=c.weather_code;
+    const icons={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',51:'🌦️',61:'🌧️',80:'🌦️',95:'⛈️'};
+    const descs={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',51:'Light drizzle',61:'Rain',80:'Showers',95:'Thunderstorm'};
+    const key=Object.keys(icons).reverse().find(k=>wc>=+k)||0;
+    document.getElementById('weatherIcon').textContent=icons[key]||'🌡️';
+    document.getElementById('weatherDesc').textContent=descs[key]||'Doha weather';
+  }catch(e){document.getElementById('weatherDesc').textContent='Weather unavailable';}
+}
+loadWeather();
+
+// ── STORAGE ──
+const S={
+  get:k=>{try{return JSON.parse(localStorage.getItem('ramka_'+k))||null;}catch{return null;}},
+  set:(k,v)=>localStorage.setItem('ramka_'+k,JSON.stringify(v))
+};
+
+// ── EVENTS ──
+const defaultEvents=[
+  {id:0,title:"Khadeeja — Dr. Nathalie Abou Samra (Aman Hospital)",date:'2026-05-25',who:'Khadeeja',type:'urgent'},
+  {id:1,title:'Depart Doha — Malaysia Trip ✈️',date:'2026-06-29',who:'All Family',type:'trip'},
+  {id:2,title:'Arrive KL · Luksal delivers Honda CRV',date:'2026-06-30',who:'All Family',type:'trip'},
+  {id:3,title:"🎂 Khadeeja's Birthday — turning 8!",date:'2026-06-24',who:'Khadeeja',type:'soon'},
+  {id:4,title:'Legoland — Water Park + Theme Park 🧱',date:'2026-07-08',who:'All Family',type:'trip'},
+  {id:5,title:'Island Hopping with Epu — Mersing 🏝️',date:'2026-07-15',who:'All Family',type:'trip'},
+  {id:6,title:'Fly home to Doha ✈️',date:'2026-07-29',who:'All Family',type:'trip'},
+];
+function getEvents(){return S.get('events')||defaultEvents;}
+function saveEvents(e){S.set('events',e);}
+function daysUntil(ds){
+  const d=new Date(ds);d.setHours(0,0,0,0);
+  const t=new Date();t.setHours(0,0,0,0);
+  return Math.ceil((d-t)/86400000);
+}
+function renderEvents(){
+  const ev=getEvents().sort((a,b)=>new Date(a.date)-new Date(b.date));
+  const list=document.getElementById('eventsList');
+  list.innerHTML='';
+  const up=ev.filter(e=>daysUntil(e.date)>=0).slice(0,8);
+  if(!up.length){list.innerHTML='<div class="empty">No upcoming events. Add one!</div>';return;}
+  up.forEach(e=>{
+    const d=daysUntil(e.date);
+    const ds=d===0?'Today!':d===1?'Tomorrow':`in ${d} days`;
+    list.innerHTML+=`<div class="event-item ${e.type}">
+      <div class="event-info">
+        <div class="event-title">${e.title}</div>
+        <div class="event-who">${e.who}</div>
+      </div>
+      <div class="event-meta">
+        <div class="event-date">${new Date(e.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</div>
+        <div class="event-days">${ds}</div>
+      </div>
+    </div>`;
+  });
+}
+
+// ── SCHOOL ──
+const schoolEvents=[
+  {title:"Maryam — Grade 5 starts · GEMS AAQ",date:'2026-09-01',who:'Maryam',type:'soon'},
+  {title:"Khadeeja — Grade 2 starts · GEMS AAQ",date:'2026-09-01',who:'Khadeeja',type:'soon'},
+  {title:"Aeesya — Grade 1 starts · GEMS AAQ",date:'2026-09-01',who:'Aeesya',type:'soon'},
+];
+function renderSchool(){
+  const list=document.getElementById('schoolList');list.innerHTML='';
+  schoolEvents.forEach(e=>{
+    const d=daysUntil(e.date);if(d<0)return;
+    list.innerHTML+=`<div class="event-item ${e.type}">
+      <div class="event-info"><div class="event-title">${e.title}</div><div class="event-who">${e.who}</div></div>
+      <div class="event-meta"><div class="event-date">${new Date(e.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</div><div class="event-days">in ${d} days</div></div>
+    </div>`;
+  });
+}
+
+// ── BIRTHDAYS ──
+const birthdays=[
+  {name:'Rhuee',initial:'R',month:4,day:8},
+  {name:'Afiqah',initial:'A',month:4,day:8},
+  {name:'Rhuee & Afiqah — Nikah 💍',initial:'♥',month:4,day:8,anniversary:true},
+  {name:'Maryam',initial:'M',month:12,day:29},
+  {name:'Khadeeja',initial:'K',month:6,day:24},
+  {name:'Aeesya',initial:'A',month:1,day:15},
+];
+function nextBday(m,d){
+  const n=new Date();let nx=new Date(n.getFullYear(),m-1,d);
+  if(nx<=n)nx.setFullYear(n.getFullYear()+1);
+  return Math.ceil((nx-n)/86400000);
+}
+function renderBdays(){
+  const list=document.getElementById('bdayList');list.innerHTML='';
+  [...birthdays].sort((a,b)=>nextBday(a.month,a.day)-nextBday(b.month,b.day)).forEach(b=>{
+    const d=nextBday(b.month,b.day);
+    const dl=new Date(2000,b.month-1,b.day).toLocaleDateString('en-GB',{day:'numeric',month:'long'});
+    const ds=d===0?'🎂 Today!':d===1?'Tomorrow!':d<=7?`in ${d} days 🎉`:`in ${d} days`;
+    list.innerHTML+=`<div class="bday-item ${b.anniversary?'anniversary':''}">
+      <div class="bday-initial">${b.initial}</div>
+      <div style="flex:1;"><div class="bday-name">${b.name}</div><div class="bday-date-label">${dl}</div></div>
+      <div class="bday-countdown">${ds}</div>
+    </div>`;
+  });
+}
+
+// ── TASKS ──
+const defaultTasks=[
+  {id:1,text:"Book Lost World Hotel (MYR 824)",tag:'Malaysia',done:false},
+  {id:2,text:"Buy Legoland tickets online",tag:'Malaysia',done:false},
+  {id:3,text:"Get Touch 'n Go card at KLIA",tag:'Malaysia',done:false},
+  {id:4,text:"Check all 5 passport expiry dates",tag:'Travel',done:false},
+  {id:5,text:"Install Grab app",tag:'Malaysia',done:false},
+  {id:6,text:"Download Malaysia offline maps",tag:'Malaysia',done:false},
+];
+function getTasks(){return S.get('tasks')||defaultTasks;}
+function saveTasks(t){S.set('tasks',t);}
+function renderTasks(){
+  const tasks=getTasks();
+  document.getElementById('tasksList').innerHTML=tasks.slice(0,8).map(t=>`
+    <div class="task-item ${t.done?'done':''}" onclick="toggleTask(${t.id})">
+      <div class="task-check">${t.done?'✓':''}</div>
+      <div class="task-text">${t.text}</div>
+      <div class="task-tag">${t.tag}</div>
+    </div>`).join('');
+}
+function toggleTask(id){
+  const t=getTasks();const i=t.find(x=>x.id===id);if(i)i.done=!i.done;
+  saveTasks(t);renderTasks();
+}
+function addTask(){
+  const inp=document.getElementById('taskInput');const txt=inp.value.trim();if(!txt)return;
+  const t=getTasks();t.push({id:Date.now(),text:txt,tag:'General',done:false});
+  saveTasks(t);renderTasks();inp.value='';
+}
+
+// ── MODAL ──
+function openModal(){
+  document.getElementById('modalOverlay').classList.add('open');
+  const tmr=new Date();tmr.setDate(tmr.getDate()+1);
+  document.getElementById('evtDate').value=tmr.toISOString().split('T')[0];
+}
+function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
+function saveEvent(){
+  const title=document.getElementById('evtTitle').value.trim();
+  const date=document.getElementById('evtDate').value;
+  const who=document.getElementById('evtWho').value.trim()||'Family';
+  const type=document.getElementById('evtType').value;
+  if(!title||!date)return;
+  const ev=getEvents();ev.push({id:Date.now(),title,date,who,type});
+  saveEvents(ev);renderEvents();closeModal();
+  document.getElementById('evtTitle').value='';document.getElementById('evtWho').value='';
+}
+document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+
+
+
+
+// showTrip and closeTrip defined in early inline script
+
+
+// ── DIARY ──
+// Set avatar
+const rhueePhoto = document.querySelector('.member-photo[alt="rhuee"]');
+if (rhueePhoto) document.getElementById('diaryAvatarImg').src = rhueePhoto.src;
+
+let diaryPhotos = []; // base64 array for current compose
+
+function handleDiaryPhotos(input) {
+  const files = Array.from(input.files);
+  diaryPhotos = [];
+  let loaded = 0;
+  if (!files.length) { document.getElementById('diaryPhotoCount').textContent = ''; return; }
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = e => {
+      diaryPhotos.push(e.target.result);
+      loaded++;
+      if (loaded === files.length) {
+        document.getElementById('diaryPhotoCount').textContent = diaryPhotos.length + ' photo' + (diaryPhotos.length > 1 ? 's' : '') + ' ready';
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function getDiaryEntries() {
+  try { return JSON.parse(localStorage.getItem('ramka_diary')) || []; } catch { return []; }
+}
+function saveDiaryEntries(entries) {
+  localStorage.setItem('ramka_diary', JSON.stringify(entries));
+}
+
+function postDiaryEntry() {
+  const text = document.getElementById('diaryText').value.trim();
+  const tag  = document.getElementById('diaryTag').value;
+  if (!text) return;
+  const entries = getDiaryEntries();
+  const entry = {
+    id: Date.now(),
+    text,
+    tag,
+    photos: [...diaryPhotos],
+    date: new Date().toISOString(),
+    author: 'Rhuee'
+  };
+  entries.unshift(entry);
+  saveDiaryEntries(entries);
+  // reset
+  document.getElementById('diaryText').value = '';
+  document.getElementById('diaryPhotoCount').textContent = '';
+  document.getElementById('diaryPhotoInput').value = '';
+  diaryPhotos = [];
+  renderDiary();
+}
+
+let currentFilter = 'all';
+function filterDiary(tag, btn) {
+  currentFilter = tag;
+  document.querySelectorAll('.diary-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderDiary();
+}
+
+function deleteDiaryEntry(id) {
+  if (!confirm('Delete this entry?')) return;
+  const entries = getDiaryEntries().filter(e => e.id !== id);
+  saveDiaryEntries(entries);
+  renderDiary();
+}
+
+function renderDiary() {
+  const all = getDiaryEntries();
+  const filtered = currentFilter === 'all' ? all : all.filter(e => e.tag === currentFilter);
+  const container = document.getElementById('diaryEntries');
+  if (!filtered.length) {
+    container.innerHTML = '<div class="diary-empty">No entries yet' + (currentFilter !== 'all' ? ' in this category' : '') + '. Start writing! 📝</div>';
+    return;
+  }
+  container.innerHTML = filtered.map(e => {
+    const d = new Date(e.date);
+    const dateStr = d.toLocaleDateString('en-GB', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
+    const timeStr = d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
+    const photoCount = e.photos ? e.photos.length : 0;
+    const gridClass = photoCount === 1 ? 'one' : photoCount === 2 ? 'two' : photoCount === 3 ? 'three' : 'many';
+    const photosHtml = photoCount ? '<div class="diary-entry-photos ' + gridClass + '">' + e.photos.map(function(p,i){ return '<img class="diary-photo-img" src="' + p + '" onclick="openLightbox(this.src)" alt="photo ' + (i+1) + '"/>'; }).join('') + '</div>' : '';
+    const avatarSrc = rhueePhoto ? rhueePhoto.src : '';
+    return `<div class="diary-entry" data-tag="${e.tag}">
+      <div class="diary-entry-header">
+        <div class="diary-avatar"><img src="${avatarSrc}" onerror="this.style.display='none'"/></div>
+        '<div class="diary-entry-meta">' +
+          '<div class="diary-entry-author">' + (e.author || 'Rhuee') + '</div>' +
+          '<div class="diary-entry-date">' + dateStr + ' · ' + timeStr + '</div>' +
+        '</div>' +
+        '<span class="diary-entry-tag ' + e.tag + '">' + tagEmoji(e.tag) + '</span>' +
+      '</div>' +
+      '<div class="diary-entry-body">' + e.text + '</div>' +
+      photosHtml +
+      '<div class="diary-entry-footer">' +
+        '<span style="font-size:.72rem;color:var(--ink3);">RAMKA Diary</span>' +
+        '<button class="diary-delete-btn" onclick="deleteDiaryEntry(' + e.id + ')">Delete</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function tagEmoji(tag) {
+  const map = {daily:'📝 Daily', health:'🏥 Health', milestone:'⭐ Milestone', school:'🏫 School', travel:'✈️ Travel', family:'👨‍👩‍👧 Family'};
+  return map[tag] || tag;
+}
+
+function openLightbox(src) {
+  document.getElementById('lightboxImg').src = src;
+  document.getElementById('lightbox').classList.add('open');
+}
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+}
+
+// Pre-load today's two events
+function seedDiaryIfEmpty() {
+  const entries = getDiaryEntries();
+  if (entries.length === 0) {
+    const seeded = [
+      {
+        id: 2,
+        text: "Aeesya had a bad fall around 8pm tonight. There was a big cut on her forehead — we rushed to the hospital. She was so brave throughout. The doctor gave her 9 stitches on her forehead. Ya Allah, protect our Adik. She handled it better than all of us. Get well soon baby girl.",
+        tag: 'health',
+        photos: [],
+        date: new Date(2026, 4, 26, 21, 30).toISOString(),
+        author: 'Rhuee'
+      },
+      {
+        id: 1,
+        text: "Khadeeja had her dental appointment today at Aman Hospital with Dr. Nathalie Abou Samra. She had a crown done on one of her teeth. She was such a good girl throughout the whole procedure. So proud of our Tengah!",
+        tag: 'health',
+        photos: [],
+        date: new Date(2026, 4, 26, 15, 30).toISOString(),
+        author: 'Rhuee'
+      }
+    ];
+    saveDiaryEntries(seeded);
+  }
+}
+seedDiaryIfEmpty();
+renderDiary();
+
+// ── INIT ──
+renderEvents();renderTasks();renderBdays();renderSchool();
+</script>
 
 <!-- TOPBAR -->
 <div class="topbar">
   <div class="topbar-logo" onclick="switchTab('dashboard')" style="cursor:pointer;"><span style="-webkit-text-fill-color:var(--ink);">RA</span><span style="-webkit-text-fill-color:var(--amber);">MKA</span></div>
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('dashboard')">Dashboard</div>
-    <div class="tab" onclick="switchTab('trips')">Trips</div>
-    <div class="tab" onclick="switchTab('family')">Family</div>
-    <div class="tab" onclick="switchTab('diary')">Diary</div>
+    <div class="tab active" data-tab="dashboard" onclick="switchTab('dashboard')">Dashboard</div>
+    <div class="tab" data-tab="trips" onclick="switchTab('trips')">Trips</div>
+    <div class="tab" data-tab="family" onclick="switchTab('family')">Family</div>
+    <div class="tab" data-tab="diary" onclick="switchTab('diary')">Diary</div>
   </div>
   <div class="topbar-time">📍 Doha &nbsp;|&nbsp; <span id="liveTime"></span></div>
 </div>
@@ -1643,398 +2041,6 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
   </div>
 </div>
 
-<script>
-// ── TABS ──
-function switchTab(name){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-  document.querySelector(`.tab[onclick*="${name}"]`).classList.add('active');
-  document.getElementById('page-'+name).classList.add('active');
-  if(name==='diary') renderDiary();
-}
 
-// ── CLOCK ──
-function updateClock(){
-  const n=new Date();
-  document.getElementById('liveTime').textContent=n.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',second:'2-digit'})+' AST';
-  const h=n.getHours();
-  document.getElementById('timeOfDay').textContent=h<12?'morning':h<17?'afternoon':'evening';
-}
-setInterval(updateClock,1000);updateClock();
-
-// ── DATE ──
-document.getElementById('todayDate').textContent=
-  new Date().toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long',year:'numeric'}).toUpperCase();
-
-// ── COUNTDOWN ──
-function updateCountdown(){
-  const dep=new Date('2026-06-29T17:35:00+03:00');
-  const diff=dep-new Date();
-  if(diff<=0){document.getElementById('cdDays').closest('.cd-nums').innerHTML='<span style="color:var(--green);font-family:Cormorant Garamond,serif;font-size:1.2rem;font-style:italic;">🇲🇾 Trip is on!</span>';return;}
-  document.getElementById('cdDays').textContent=String(Math.floor(diff/86400000)).padStart(2,'0');
-  document.getElementById('cdHours').textContent=String(Math.floor((diff%86400000)/3600000)).padStart(2,'0');
-  document.getElementById('cdMins').textContent=String(Math.floor((diff%3600000)/60000)).padStart(2,'0');
-}
-setInterval(updateCountdown,60000);updateCountdown();
-
-// ── WEATHER ──
-async function loadWeather(){
-  try{
-    const r=await fetch('https://api.open-meteo.com/v1/forecast?latitude=25.2854&longitude=51.5310&current=temperature_2m,relative_humidity_2m,apparent_temperature,weather_code,wind_speed_10m&wind_speed_unit=kmh&timezone=Asia%2FQatar');
-    const d=await r.json();const c=d.current;
-    document.getElementById('weatherTemp').textContent=Math.round(c.temperature_2m)+'°C';
-    document.getElementById('wFeels').textContent=Math.round(c.apparent_temperature)+'°C';
-    document.getElementById('wHumidity').textContent=c.relative_humidity_2m+'%';
-    document.getElementById('wWind').textContent=Math.round(c.wind_speed_10m)+' km/h';
-    const wc=c.weather_code;
-    const icons={0:'☀️',1:'🌤️',2:'⛅',3:'☁️',45:'🌫️',51:'🌦️',61:'🌧️',80:'🌦️',95:'⛈️'};
-    const descs={0:'Clear sky',1:'Mainly clear',2:'Partly cloudy',3:'Overcast',45:'Foggy',51:'Light drizzle',61:'Rain',80:'Showers',95:'Thunderstorm'};
-    const key=Object.keys(icons).reverse().find(k=>wc>=+k)||0;
-    document.getElementById('weatherIcon').textContent=icons[key]||'🌡️';
-    document.getElementById('weatherDesc').textContent=descs[key]||'Doha weather';
-  }catch(e){document.getElementById('weatherDesc').textContent='Weather unavailable';}
-}
-loadWeather();
-
-// ── STORAGE ──
-const S={
-  get:k=>{try{return JSON.parse(localStorage.getItem('ramka_'+k))||null;}catch{return null;}},
-  set:(k,v)=>localStorage.setItem('ramka_'+k,JSON.stringify(v))
-};
-
-// ── EVENTS ──
-const defaultEvents=[
-  {id:0,title:"Khadeeja — Dr. Nathalie Abou Samra (Aman Hospital)",date:'2026-05-25',who:'Khadeeja',type:'urgent'},
-  {id:1,title:'Depart Doha — Malaysia Trip ✈️',date:'2026-06-29',who:'All Family',type:'trip'},
-  {id:2,title:'Arrive KL · Luksal delivers Honda CRV',date:'2026-06-30',who:'All Family',type:'trip'},
-  {id:3,title:"🎂 Khadeeja's Birthday — turning 8!",date:'2026-06-24',who:'Khadeeja',type:'soon'},
-  {id:4,title:'Legoland — Water Park + Theme Park 🧱',date:'2026-07-08',who:'All Family',type:'trip'},
-  {id:5,title:'Island Hopping with Epu — Mersing 🏝️',date:'2026-07-15',who:'All Family',type:'trip'},
-  {id:6,title:'Fly home to Doha ✈️',date:'2026-07-29',who:'All Family',type:'trip'},
-];
-function getEvents(){return S.get('events')||defaultEvents;}
-function saveEvents(e){S.set('events',e);}
-function daysUntil(ds){
-  const d=new Date(ds);d.setHours(0,0,0,0);
-  const t=new Date();t.setHours(0,0,0,0);
-  return Math.ceil((d-t)/86400000);
-}
-function renderEvents(){
-  const ev=getEvents().sort((a,b)=>new Date(a.date)-new Date(b.date));
-  const list=document.getElementById('eventsList');
-  list.innerHTML='';
-  const up=ev.filter(e=>daysUntil(e.date)>=0).slice(0,8);
-  if(!up.length){list.innerHTML='<div class="empty">No upcoming events. Add one!</div>';return;}
-  up.forEach(e=>{
-    const d=daysUntil(e.date);
-    const ds=d===0?'Today!':d===1?'Tomorrow':`in ${d} days`;
-    list.innerHTML+=`<div class="event-item ${e.type}">
-      <div class="event-info">
-        <div class="event-title">${e.title}</div>
-        <div class="event-who">${e.who}</div>
-      </div>
-      <div class="event-meta">
-        <div class="event-date">${new Date(e.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</div>
-        <div class="event-days">${ds}</div>
-      </div>
-    </div>`;
-  });
-}
-
-// ── SCHOOL ──
-const schoolEvents=[
-  {title:"Maryam — Grade 5 starts · GEMS AAQ",date:'2026-09-01',who:'Maryam',type:'soon'},
-  {title:"Khadeeja — Grade 2 starts · GEMS AAQ",date:'2026-09-01',who:'Khadeeja',type:'soon'},
-  {title:"Aeesya — Grade 1 starts · GEMS AAQ",date:'2026-09-01',who:'Aeesya',type:'soon'},
-];
-function renderSchool(){
-  const list=document.getElementById('schoolList');list.innerHTML='';
-  schoolEvents.forEach(e=>{
-    const d=daysUntil(e.date);if(d<0)return;
-    list.innerHTML+=`<div class="event-item ${e.type}">
-      <div class="event-info"><div class="event-title">${e.title}</div><div class="event-who">${e.who}</div></div>
-      <div class="event-meta"><div class="event-date">${new Date(e.date).toLocaleDateString('en-GB',{day:'numeric',month:'short'})}</div><div class="event-days">in ${d} days</div></div>
-    </div>`;
-  });
-}
-
-// ── BIRTHDAYS ──
-const birthdays=[
-  {name:'Rhuee',initial:'R',month:4,day:8},
-  {name:'Afiqah',initial:'A',month:4,day:8},
-  {name:'Rhuee & Afiqah — Nikah 💍',initial:'♥',month:4,day:8,anniversary:true},
-  {name:'Maryam',initial:'M',month:12,day:29},
-  {name:'Khadeeja',initial:'K',month:6,day:24},
-  {name:'Aeesya',initial:'A',month:1,day:15},
-];
-function nextBday(m,d){
-  const n=new Date();let nx=new Date(n.getFullYear(),m-1,d);
-  if(nx<=n)nx.setFullYear(n.getFullYear()+1);
-  return Math.ceil((nx-n)/86400000);
-}
-function renderBdays(){
-  const list=document.getElementById('bdayList');list.innerHTML='';
-  [...birthdays].sort((a,b)=>nextBday(a.month,a.day)-nextBday(b.month,b.day)).forEach(b=>{
-    const d=nextBday(b.month,b.day);
-    const dl=new Date(2000,b.month-1,b.day).toLocaleDateString('en-GB',{day:'numeric',month:'long'});
-    const ds=d===0?'🎂 Today!':d===1?'Tomorrow!':d<=7?`in ${d} days 🎉`:`in ${d} days`;
-    list.innerHTML+=`<div class="bday-item ${b.anniversary?'anniversary':''}">
-      <div class="bday-initial">${b.initial}</div>
-      <div style="flex:1;"><div class="bday-name">${b.name}</div><div class="bday-date-label">${dl}</div></div>
-      <div class="bday-countdown">${ds}</div>
-    </div>`;
-  });
-}
-
-// ── TASKS ──
-const defaultTasks=[
-  {id:1,text:"Book Lost World Hotel (MYR 824)",tag:'Malaysia',done:false},
-  {id:2,text:"Buy Legoland tickets online",tag:'Malaysia',done:false},
-  {id:3,text:"Get Touch 'n Go card at KLIA",tag:'Malaysia',done:false},
-  {id:4,text:"Check all 5 passport expiry dates",tag:'Travel',done:false},
-  {id:5,text:"Install Grab app",tag:'Malaysia',done:false},
-  {id:6,text:"Download Malaysia offline maps",tag:'Malaysia',done:false},
-];
-function getTasks(){return S.get('tasks')||defaultTasks;}
-function saveTasks(t){S.set('tasks',t);}
-function renderTasks(){
-  const tasks=getTasks();
-  document.getElementById('tasksList').innerHTML=tasks.slice(0,8).map(t=>`
-    <div class="task-item ${t.done?'done':''}" onclick="toggleTask(${t.id})">
-      <div class="task-check">${t.done?'✓':''}</div>
-      <div class="task-text">${t.text}</div>
-      <div class="task-tag">${t.tag}</div>
-    </div>`).join('');
-}
-function toggleTask(id){
-  const t=getTasks();const i=t.find(x=>x.id===id);if(i)i.done=!i.done;
-  saveTasks(t);renderTasks();
-}
-function addTask(){
-  const inp=document.getElementById('taskInput');const txt=inp.value.trim();if(!txt)return;
-  const t=getTasks();t.push({id:Date.now(),text:txt,tag:'General',done:false});
-  saveTasks(t);renderTasks();inp.value='';
-}
-
-// ── MODAL ──
-function openModal(){
-  document.getElementById('modalOverlay').classList.add('open');
-  const tmr=new Date();tmr.setDate(tmr.getDate()+1);
-  document.getElementById('evtDate').value=tmr.toISOString().split('T')[0];
-}
-function closeModal(){document.getElementById('modalOverlay').classList.remove('open');}
-function saveEvent(){
-  const title=document.getElementById('evtTitle').value.trim();
-  const date=document.getElementById('evtDate').value;
-  const who=document.getElementById('evtWho').value.trim()||'Family';
-  const type=document.getElementById('evtType').value;
-  if(!title||!date)return;
-  const ev=getEvents();ev.push({id:Date.now(),title,date,who,type});
-  saveEvents(ev);renderEvents();closeModal();
-  document.getElementById('evtTitle').value='';document.getElementById('evtWho').value='';
-}
-document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
-
-
-// ── PASSWORD LOCK ──
-const PASS = 'ramka0408';
-const SESSION_KEY = 'ramka_auth';
-
-function checkPassword() {
-  const input = document.getElementById('lockInput').value;
-  const error = document.getElementById('lockError');
-  if (input === PASS) {
-    sessionStorage.setItem(SESSION_KEY, 'true');
-    document.getElementById('lockScreen').style.display = 'none';
-    error.classList.remove('show');
-  } else {
-    error.classList.add('show');
-    document.getElementById('lockInput').value = '';
-    document.getElementById('lockInput').focus();
-    // shake animation
-    const box = document.querySelector('.lock-box');
-    box.style.transform = 'translateX(-6px)';
-    setTimeout(() => box.style.transform = 'translateX(6px)', 80);
-    setTimeout(() => box.style.transform = 'translateX(-4px)', 160);
-    setTimeout(() => box.style.transform = 'translateX(0)', 240);
-  }
-}
-
-// Check if already authenticated this session
-if (sessionStorage.getItem(SESSION_KEY) === 'true') {
-  document.getElementById('lockScreen').style.display = 'none';
-}
-
-
-// ── TRIP DETAIL ──
-function showTrip(name) {
-  // hide all details
-  document.querySelectorAll('.trip-detail').forEach(d => d.classList.remove('active'));
-  document.querySelectorAll('.trip-card').forEach(c => c.classList.remove('active-card'));
-  // show selected
-  const detail = document.getElementById('detail-' + name);
-  const card = document.querySelector('.trip-card.' + name);
-  if (detail) {
-    detail.classList.add('active');
-    card.classList.add('active-card');
-    // scroll to detail
-    setTimeout(() => detail.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
-  }
-}
-function closeTrip() {
-  document.querySelectorAll('.trip-detail').forEach(d => d.classList.remove('active'));
-  document.querySelectorAll('.trip-card').forEach(c => c.classList.remove('active-card'));
-}
-
-
-// ── DIARY ──
-// Set avatar
-const rhueePhoto = document.querySelector('.member-photo[alt="rhuee"]');
-if (rhueePhoto) document.getElementById('diaryAvatarImg').src = rhueePhoto.src;
-
-let diaryPhotos = []; // base64 array for current compose
-
-function handleDiaryPhotos(input) {
-  const files = Array.from(input.files);
-  diaryPhotos = [];
-  let loaded = 0;
-  if (!files.length) { document.getElementById('diaryPhotoCount').textContent = ''; return; }
-  files.forEach(file => {
-    const reader = new FileReader();
-    reader.onload = e => {
-      diaryPhotos.push(e.target.result);
-      loaded++;
-      if (loaded === files.length) {
-        document.getElementById('diaryPhotoCount').textContent = diaryPhotos.length + ' photo' + (diaryPhotos.length > 1 ? 's' : '') + ' ready';
-      }
-    };
-    reader.readAsDataURL(file);
-  });
-}
-
-function getDiaryEntries() {
-  try { return JSON.parse(localStorage.getItem('ramka_diary')) || []; } catch { return []; }
-}
-function saveDiaryEntries(entries) {
-  localStorage.setItem('ramka_diary', JSON.stringify(entries));
-}
-
-function postDiaryEntry() {
-  const text = document.getElementById('diaryText').value.trim();
-  const tag  = document.getElementById('diaryTag').value;
-  if (!text) return;
-  const entries = getDiaryEntries();
-  const entry = {
-    id: Date.now(),
-    text,
-    tag,
-    photos: [...diaryPhotos],
-    date: new Date().toISOString(),
-    author: 'Rhuee'
-  };
-  entries.unshift(entry);
-  saveDiaryEntries(entries);
-  // reset
-  document.getElementById('diaryText').value = '';
-  document.getElementById('diaryPhotoCount').textContent = '';
-  document.getElementById('diaryPhotoInput').value = '';
-  diaryPhotos = [];
-  renderDiary();
-}
-
-let currentFilter = 'all';
-function filterDiary(tag, btn) {
-  currentFilter = tag;
-  document.querySelectorAll('.diary-filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderDiary();
-}
-
-function deleteDiaryEntry(id) {
-  if (!confirm('Delete this entry?')) return;
-  const entries = getDiaryEntries().filter(e => e.id !== id);
-  saveDiaryEntries(entries);
-  renderDiary();
-}
-
-function renderDiary() {
-  const all = getDiaryEntries();
-  const filtered = currentFilter === 'all' ? all : all.filter(e => e.tag === currentFilter);
-  const container = document.getElementById('diaryEntries');
-  if (!filtered.length) {
-    container.innerHTML = '<div class="diary-empty">No entries yet' + (currentFilter !== 'all' ? ' in this category' : '') + '. Start writing! 📝</div>';
-    return;
-  }
-  container.innerHTML = filtered.map(e => {
-    const d = new Date(e.date);
-    const dateStr = d.toLocaleDateString('en-GB', {weekday:'long', day:'numeric', month:'long', year:'numeric'});
-    const timeStr = d.toLocaleTimeString('en-GB', {hour:'2-digit', minute:'2-digit'});
-    const photoCount = e.photos ? e.photos.length : 0;
-    const gridClass = photoCount === 1 ? 'one' : photoCount === 2 ? 'two' : photoCount === 3 ? 'three' : 'many';
-    const photosHtml = photoCount ? '<div class="diary-entry-photos ' + gridClass + '">' + e.photos.map(function(p,i){ return '<img class="diary-photo-img" src="' + p + '" onclick="openLightbox(this.src)" alt="photo ' + (i+1) + '"/>'; }).join('') + '</div>' : '';
-    const avatarSrc = rhueePhoto ? rhueePhoto.src : '';
-    return `<div class="diary-entry" data-tag="${e.tag}">
-      <div class="diary-entry-header">
-        <div class="diary-avatar"><img src="${avatarSrc}" onerror="this.style.display='none'"/></div>
-        '<div class="diary-entry-meta">' +
-          '<div class="diary-entry-author">' + (e.author || 'Rhuee') + '</div>' +
-          '<div class="diary-entry-date">' + dateStr + ' · ' + timeStr + '</div>' +
-        '</div>' +
-        '<span class="diary-entry-tag ' + e.tag + '">' + tagEmoji(e.tag) + '</span>' +
-      '</div>' +
-      '<div class="diary-entry-body">' + e.text + '</div>' +
-      photosHtml +
-      '<div class="diary-entry-footer">' +
-        '<span style="font-size:.72rem;color:var(--ink3);">RAMKA Diary</span>' +
-        '<button class="diary-delete-btn" onclick="deleteDiaryEntry(' + e.id + ')">Delete</button>' +
-      '</div>' +
-    '</div>';
-  }).join('');
-}
-
-function tagEmoji(tag) {
-  const map = {daily:'📝 Daily', health:'🏥 Health', milestone:'⭐ Milestone', school:'🏫 School', travel:'✈️ Travel', family:'👨‍👩‍👧 Family'};
-  return map[tag] || tag;
-}
-
-function openLightbox(src) {
-  document.getElementById('lightboxImg').src = src;
-  document.getElementById('lightbox').classList.add('open');
-}
-function closeLightbox() {
-  document.getElementById('lightbox').classList.remove('open');
-}
-
-// Pre-load today's two events
-function seedDiaryIfEmpty() {
-  const entries = getDiaryEntries();
-  if (entries.length === 0) {
-    const seeded = [
-      {
-        id: 2,
-        text: "Aeesya had a bad fall around 8pm tonight. There was a big cut on her forehead — we rushed to the hospital. She was so brave throughout. The doctor gave her 9 stitches on her forehead. Ya Allah, protect our Adik. She handled it better than all of us. Get well soon baby girl.",
-        tag: 'health',
-        photos: [],
-        date: new Date(2026, 4, 26, 21, 30).toISOString(),
-        author: 'Rhuee'
-      },
-      {
-        id: 1,
-        text: "Khadeeja had her dental appointment today at Aman Hospital with Dr. Nathalie Abou Samra. She had a crown done on one of her teeth. She was such a good girl throughout the whole procedure. So proud of our Tengah!",
-        tag: 'health',
-        photos: [],
-        date: new Date(2026, 4, 26, 15, 30).toISOString(),
-        author: 'Rhuee'
-      }
-    ];
-    saveDiaryEntries(seeded);
-  }
-}
-seedDiaryIfEmpty();
-renderDiary();
-
-// ── INIT ──
-renderEvents();renderTasks();renderBdays();renderSchool();
-</script>
 </body>
 </html>
