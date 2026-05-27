@@ -422,6 +422,22 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 }
 
 </style>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script>
+    var firebaseConfig = {
+      apiKey: "AIzaSyCPQhjBeBDg_PKSScQeX_Knxf_wmpP8DSY",
+      authDomain: "ramka-family.firebaseapp.com",
+      databaseURL: "https://ramka-family-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "ramka-family",
+      storageBucket: "ramka-family.firebasestorage.app",
+      messagingSenderId: "103210466255",
+      appId: "1:103210466255:web:b4cfd8a011970d344530ba"
+    };
+    firebase.initializeApp(firebaseConfig);
+    var db = firebase.database();
+  </script>
 </head>
 <body>
 
@@ -1385,19 +1401,8 @@ var defaultEvents = [
   {id:6, title:'Island Hopping - Mersing',date:'2026-07-15',who:'All Family',type:'trip'},
   {id:7, title:'Fly home to Doha ✈️',date:'2026-07-29',who:'All Family',type:'trip'}
 ];
-function getEvents(){
-  var s = S.get('events');
-  if (!s || s.length === 0) return defaultEvents;
-  // If all stored events are in the past, use defaults merged with stored
-  var hasUpcoming = s.some(function(e){ return daysUntil(e.date) >= 0; });
-  if (!hasUpcoming) {
-    // Keep any user-added events but merge with fresh defaults
-    var userAdded = s.filter(function(e){ return e.id > 100; }); // user added events have timestamp IDs
-    return defaultEvents.concat(userAdded);
-  }
-  return s;
-}
-function saveEvents(e){ S.set('events',e); }
+// getEvents moved to Firebase
+// saveEvents moved to Firebase
 function daysUntil(ds){ var d=new Date(ds); d.setHours(0,0,0,0); var t=new Date(); t.setHours(0,0,0,0); return Math.ceil((d-t)/86400000); }
 function renderEvents() {
   var ev = getEvents().filter(function(e){return daysUntil(e.date)>=0;}).sort(function(a,b){return new Date(a.date)-new Date(b.date);}).slice(0,8);
@@ -1511,12 +1516,8 @@ var defaultTasks = [
   {id:5,text:"Install Grab app",tag:'Malaysia',done:false},
   {id:6,text:"Download Malaysia offline maps",tag:'Malaysia',done:false}
 ];
-function getTasks(){
-  var s = S.get('tasks');
-  if (!s || s.length === 0) return defaultTasks;
-  return s;
-}
-function saveTasks(t){ S.set('tasks',t); }
+// getTasks moved to Firebase
+// saveTasks moved to Firebase
 function renderTasks() {
   var list = document.getElementById('tasksList');
   if (!list) return;
@@ -1555,8 +1556,8 @@ function handlePhotos(input) {
   if (!files.length) { document.getElementById('photoCount').textContent=''; return; }
   files.forEach(function(file){ var r=new FileReader(); r.onload=function(e){ diaryPhotos.push(e.target.result); loaded++; if(loaded===files.length) document.getElementById('photoCount').textContent=diaryPhotos.length+' photo'+(diaryPhotos.length>1?'s':'')+' ready'; }; r.readAsDataURL(file); });
 }
-function getDiary(){ try{return JSON.parse(localStorage.getItem('ramka_diary'))||[];}catch{return [];} }
-function saveDiary(e){ try{localStorage.setItem('ramka_diary',JSON.stringify(e));}catch(err){} }
+// moved to Firebase
+// moved to Firebase
 function postEntry() {
   var text=document.getElementById('diaryText').value.trim();
   var tag=document.getElementById('diaryTag').value;
@@ -1572,13 +1573,7 @@ var currentFilter='all';
 function filterDiary(tag,btn){ currentFilter=tag; document.querySelectorAll('.dfbtn').forEach(function(b){b.classList.remove('active');}); btn.classList.add('active'); renderDiary(); }
 function deleteDiaryEntry(id){ if(!confirm('Delete this entry?')) return; saveDiary(getDiary().filter(function(e){return e.id!==id;})); renderDiary(); }
 function tagLabel(tag){ var m={daily:'📝 Daily',health:'🏥 Health',milestone:'⭐ Milestone',school:'🏫 School',travel:'✈️ Travel',family:'👨‍👩‍👧 Family'}; return m[tag]||tag; }
-function seedDiary() {
-  if (getDiary().length>0) return;
-  saveDiary([
-    {id:2,text:'Aeesya had a bad fall around 8pm. Big cut on forehead - rushed to the hospital. She was so brave throughout. The doctor gave her 9 stitches on her forehead. Ya Allah, protect our Adik. She handled it better than all of us. Get well soon baby girl.',tag:'health',photos:[],date:new Date(2026,4,26,21,30).toISOString(),author:'Walid'},
-    {id:1,text:"Khadeeja had her dental appointment today at Aman Hospital with Dr. Nathalie Abou Samra. She had a crown done on one of her teeth. She was such a good girl throughout the whole procedure. So proud of our Tengah!",tag:'health',photos:[],date:new Date(2026,4,26,15,30).toISOString(),author:'Walid'}
-  ]);
-}
+// seedDiary moved to Firebase
 function renderDiary() {
   seedDiary();
   var all=getDiary();
@@ -1668,22 +1663,7 @@ function handleEditPhotos(input) {
   });
 }
 
-function saveEditedEntry() {
-  var text = document.getElementById('editText').value.trim();
-  var tag = document.getElementById('editTag').value;
-  if (!text) return;
-  var entries = getDiary();
-  var idx = entries.findIndex(function(e){ return e.id === editingId; });
-  if (idx === -1) return;
-  entries[idx].text = text;
-  entries[idx].tag = tag;
-  if (document.getElementById('editAuthor')) entries[idx].author = document.getElementById('editAuthor').value;
-  entries[idx].photos = editKeepPhotos.concat(editNewPhotos);
-  entries[idx].edited = true;
-  saveDiary(entries);
-  closeEditModal();
-  renderDiary();
-}
+// saveEditedEntry moved to Firebase
 
 function closeEditModal() {
   var emo = document.getElementById('editModalOverlay');
@@ -1970,6 +1950,188 @@ function buildSchoolCalendar() {
 function setCalFilter(f) {
   calFilter = f;
   buildSchoolCalendar();
+}
+
+
+// ── FIREBASE DIARY ──
+var diaryRef = db.ref('ramka/diary');
+var eventsRef = db.ref('ramka/events');
+var tasksRef = db.ref('ramka/tasks');
+
+// Listen to diary in realtime
+diaryRef.orderByChild('date').on('value', function(snapshot) {
+  var entries = [];
+  snapshot.forEach(function(child) {
+    entries.push(child.val());
+  });
+  // Sort newest first
+  entries.sort(function(a,b){ return new Date(b.date) - new Date(a.date); });
+  window._diaryEntries = entries;
+  // Re-render if diary tab is active
+  var diaryPage = document.getElementById('page-diary');
+  if (diaryPage && diaryPage.style.display !== 'none') {
+    renderDiary();
+  }
+});
+
+// Listen to events in realtime
+eventsRef.on('value', function(snapshot) {
+  var events = [];
+  snapshot.forEach(function(child) {
+    events.push(child.val());
+  });
+  if (events.length > 0) {
+    window._cloudEvents = events;
+    renderEvents();
+  }
+});
+
+// Listen to tasks in realtime
+tasksRef.on('value', function(snapshot) {
+  var tasks = [];
+  snapshot.forEach(function(child) {
+    tasks.push(child.val());
+  });
+  if (tasks.length > 0) {
+    window._cloudTasks = tasks;
+    renderTasks();
+  }
+});
+
+function getDiary() {
+  return window._diaryEntries || [];
+}
+
+function saveDiary(entries) {
+  window._diaryEntries = entries;
+  // Save all to Firebase
+  var obj = {};
+  entries.forEach(function(e) {
+    obj['entry_' + e.id] = e;
+  });
+  diaryRef.set(obj);
+}
+
+function getEvents() {
+  if (window._cloudEvents && window._cloudEvents.length > 0) {
+    var hasUpcoming = window._cloudEvents.some(function(e){ return daysUntil(e.date) >= 0; });
+    if (hasUpcoming) return window._cloudEvents;
+  }
+  var s = S.get('events');
+  if (s && s.length > 0) {
+    var hasUpcoming = s.some(function(e){ return daysUntil(e.date) >= 0; });
+    if (hasUpcoming) return s;
+  }
+  return defaultEvents;
+}
+
+function saveEvents(events) {
+  S.set('events', events);
+  var obj = {};
+  events.forEach(function(e) {
+    obj['event_' + e.id] = e;
+  });
+  eventsRef.set(obj);
+}
+
+function getTasks() {
+  if (window._cloudTasks && window._cloudTasks.length > 0) return window._cloudTasks;
+  var s = S.get('tasks');
+  return (s && s.length > 0) ? s : defaultTasks;
+}
+
+function saveTasks(tasks) {
+  S.set('tasks', tasks);
+  var obj = {};
+  tasks.forEach(function(t) {
+    obj['task_' + t.id] = t;
+  });
+  tasksRef.set(obj);
+}
+
+function seedDiary() {
+  // Only seed if Firebase has no data yet
+  diaryRef.once('value', function(snapshot) {
+    if (!snapshot.exists()) {
+      var seeded = [
+        {id:2, text:'Aeesya had a bad fall around 8pm. Big cut on forehead - rushed to the hospital. She was so brave throughout. The doctor gave her 9 stitches on her forehead. Ya Allah, protect our Adik. She handled it better than all of us. Get well soon baby girl.', tag:'health', photos:[], date:new Date(2026,4,26,21,30).toISOString(), author:'Walid'},
+        {id:1, text:'Khadeeja had her dental appointment today at Aman Hospital with Dr. Nathalie Abou Samra. She had a crown done on one of her teeth. She was such a good girl throughout the whole procedure. So proud of our Tengah!', tag:'health', photos:[], date:new Date(2026,4,26,15,30).toISOString(), author:'Walid'}
+      ];
+      var obj = {};
+      seeded.forEach(function(e){ obj['entry_' + e.id] = e; });
+      diaryRef.set(obj);
+    }
+  });
+}
+
+function postEntry() {
+  var text = document.getElementById('diaryText').value.trim();
+  var tag = document.getElementById('diaryTag').value;
+  if (!text) return;
+  var author = document.getElementById('diaryAuthor').value;
+  var id = Date.now();
+  var entry = {id:id, text:text, tag:tag, photos:diaryPhotos.slice(), date:new Date().toISOString(), author:author};
+  // Save to Firebase
+  diaryRef.child('entry_' + id).set(entry);
+  // Reset form
+  document.getElementById('diaryText').value = '';
+  document.getElementById('photoCount').textContent = '';
+  document.getElementById('diaryPhotoInput').value = '';
+  diaryPhotos = [];
+}
+
+function deleteDiaryEntry(id) {
+  if (!confirm('Delete this entry?')) return;
+  diaryRef.child('entry_' + id).remove();
+}
+
+function saveEditedEntry() {
+  var text = document.getElementById('editText').value.trim();
+  var tag = document.getElementById('editTag').value;
+  if (!text) return;
+  var author = document.getElementById('editAuthor') ? document.getElementById('editAuthor').value : 'Walid';
+  var photos = editKeepPhotos.concat(editNewPhotos);
+  diaryRef.child('entry_' + editingId).update({
+    text: text,
+    tag: tag,
+    author: author,
+    photos: photos,
+    edited: true
+  });
+  closeEditModal();
+}
+
+function toggleTask(id) {
+  var tasks = getTasks();
+  var task = tasks.find(function(x){ return x.id === id; });
+  if (task) {
+    task.done = !task.done;
+    saveTasks(tasks);
+  }
+}
+
+function addTask() {
+  var inp = document.getElementById('taskInput');
+  var txt = inp.value.trim();
+  if (!txt) return;
+  var tasks = getTasks();
+  tasks.push({id:Date.now(), text:txt, tag:'General', done:false});
+  saveTasks(tasks);
+  inp.value = '';
+}
+
+function saveEvent() {
+  var title = document.getElementById('evtTitle').value.trim();
+  var date = document.getElementById('evtDate').value;
+  var who = document.getElementById('evtWho').value.trim() || 'Family';
+  var type = document.getElementById('evtType').value;
+  if (!title || !date) return;
+  var events = getEvents();
+  events.push({id:Date.now(), title:title, date:date, who:who, type:type});
+  saveEvents(events);
+  closeModal();
+  document.getElementById('evtTitle').value = '';
+  document.getElementById('evtWho').value = '';
 }
 
 // ── INIT ──
