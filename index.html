@@ -421,6 +421,66 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
   flex-shrink:0;padding-top:.1rem;
 }
 
+
+/* ── LOCK SCREEN ── */
+.lock-screen{
+  position:fixed;inset:0;
+  background:var(--bg);
+  z-index:9999;
+  display:flex;align-items:center;justify-content:center;
+  padding:2rem;
+}
+.lock-box{
+  width:100%;max-width:340px;
+  background:var(--surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:2.5rem 2rem;
+  box-shadow:0 8px 40px rgba(26,23,20,.08);
+  text-align:center;
+  transition:transform .15s;
+}
+.lock-logo{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.2rem;font-weight:700;
+  letter-spacing:.08em;margin-bottom:.3rem;
+}
+.lock-tagline{
+  font-size:.78rem;color:var(--ink3);
+  margin-bottom:2rem;font-style:italic;
+}
+.lock-label{
+  font-family:'DM Mono',monospace;font-size:.58rem;
+  letter-spacing:.18em;text-transform:uppercase;
+  color:var(--ink3);text-align:left;margin-bottom:.4rem;
+}
+.lock-input{
+  width:100%;background:var(--bg);border:1px solid var(--border);
+  color:var(--ink);font-family:'DM Sans',sans-serif;font-size:1.2rem;
+  padding:.7rem .9rem;border-radius:var(--radius);outline:none;
+  transition:border-color .2s;letter-spacing:.3em;text-align:center;
+  margin-bottom:.8rem;
+}
+.lock-input:focus{border-color:var(--amber);}
+.lock-btn{
+  width:100%;background:var(--amber);color:#fff;border:none;
+  font-family:'DM Mono',monospace;font-size:.65rem;letter-spacing:.18em;
+  text-transform:uppercase;padding:.75rem;border-radius:var(--radius);
+  cursor:pointer;transition:background .2s;margin-bottom:.8rem;
+}
+.lock-btn:hover{background:var(--amber2);}
+.lock-error{
+  font-size:.75rem;color:var(--red);
+  height:1rem;transition:opacity .2s;
+  font-family:'DM Mono',monospace;letter-spacing:.08em;
+  opacity:0;
+}
+.lock-error.show{opacity:1;}
+.lock-footer{
+  margin-top:1.5rem;font-family:'DM Mono',monospace;
+  font-size:.55rem;letter-spacing:.12em;color:var(--ink3);
+}
+
 </style>
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -440,6 +500,60 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
   </script>
 </head>
 <body>
+
+<!-- LOCK SCREEN -->
+<div class="lock-screen" id="lockScreen">
+  <div class="lock-box" id="lockBox">
+    <div class="lock-logo"><span style="color:var(--ink)">RA</span><span style="color:var(--amber)">MKA</span></div>
+    <div class="lock-tagline">Family · Adventures · Memories</div>
+    <div class="lock-label">Passcode</div>
+    <input class="lock-input" type="password" id="lockInput" placeholder="······" maxlength="6"
+      onkeydown="if(event.key==='Enter') checkPassword()"/>
+    <button class="lock-btn" onclick="checkPassword()">Enter</button>
+    <div class="lock-error" id="lockError">Incorrect passcode</div>
+    <div class="lock-footer">🔒 Private family site</div>
+  </div>
+</div>
+
+
+<script>
+(function(){
+  var PASS = '120408';
+  var KEY  = 'ramka_auth';
+
+  function checkPassword() {
+    var val = document.getElementById('lockInput').value;
+    var err = document.getElementById('lockError');
+    if (val === PASS) {
+      sessionStorage.setItem(KEY, '1');
+      document.getElementById('lockScreen').style.display = 'none';
+      err.classList.remove('show');
+    } else {
+      err.classList.add('show');
+      document.getElementById('lockInput').value = '';
+      document.getElementById('lockInput').focus();
+      var box = document.getElementById('lockBox');
+      box.style.transform = 'translateX(-8px)';
+      setTimeout(function(){ box.style.transform = 'translateX(8px)'; }, 80);
+      setTimeout(function(){ box.style.transform = 'translateX(-5px)'; }, 160);
+      setTimeout(function(){ box.style.transform = 'translateX(0)'; }, 240);
+    }
+  }
+  window.checkPassword = checkPassword;
+
+  // Auto-unlock if already authenticated this session
+  if (sessionStorage.getItem(KEY) === '1') {
+    document.getElementById('lockScreen').style.display = 'none';
+  }
+
+  // Allow Enter key
+  document.addEventListener('DOMContentLoaded', function(){
+    var inp = document.getElementById('lockInput');
+    if (inp) inp.focus();
+  });
+})();
+</script>
+
 
 <!-- TOPBAR -->
 <div class="topbar">
@@ -1098,6 +1212,8 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
     </div>
   </div>
 
+  <div id="schoolCalendarSection"></div>
+
   <!-- Child Tabs -->
   <div class="child-tabs">
     <div class="child-tab active" data-child="maryam" onclick="switchChild('maryam', this)">
@@ -1401,8 +1517,6 @@ var defaultEvents = [
   {id:6, title:'Island Hopping - Mersing',date:'2026-07-15',who:'All Family',type:'trip'},
   {id:7, title:'Fly home to Doha ✈️',date:'2026-07-29',who:'All Family',type:'trip'}
 ];
-// getEvents moved to Firebase
-// saveEvents moved to Firebase
 function daysUntil(ds){ var d=new Date(ds); d.setHours(0,0,0,0); var t=new Date(); t.setHours(0,0,0,0); return Math.ceil((d-t)/86400000); }
 function renderEvents() {
   var ev = getEvents().filter(function(e){return daysUntil(e.date)>=0;}).sort(function(a,b){return new Date(a.date)-new Date(b.date);}).slice(0,8);
@@ -1516,8 +1630,6 @@ var defaultTasks = [
   {id:5,text:"Install Grab app",tag:'Malaysia',done:false},
   {id:6,text:"Download Malaysia offline maps",tag:'Malaysia',done:false}
 ];
-// getTasks moved to Firebase
-// saveTasks moved to Firebase
 function renderTasks() {
   var list = document.getElementById('tasksList');
   if (!list) return;
@@ -1539,13 +1651,12 @@ function renderTasks() {
     list.appendChild(item);
   });
 }
-function toggleTask(id){ var t=getTasks(); var i=t.find(function(x){return x.id===id;}); if(i) i.done=!i.done; saveTasks(t); renderTasks(); }
-function addTask(){ var inp=document.getElementById('taskInput'); var txt=inp.value.trim(); if(!txt) return; var t=getTasks(); t.push({id:Date.now(),text:txt,tag:'General',done:false}); saveTasks(t); renderTasks(); inp.value=''; }
+
 
 // ── MODAL ──
 function openModal(){ document.getElementById('modalOverlay').classList.add('open'); var tmr=new Date(); tmr.setDate(tmr.getDate()+1); document.getElementById('evtDate').value=tmr.toISOString().split('T')[0]; }
 function closeModal(){ document.getElementById('modalOverlay').classList.remove('open'); }
-function saveEvent(){ var title=document.getElementById('evtTitle').value.trim(); var date=document.getElementById('evtDate').value; var who=document.getElementById('evtWho').value.trim()||'Family'; var type=document.getElementById('evtType').value; if(!title||!date) return; var ev=getEvents(); ev.push({id:Date.now(),title:title,date:date,who:who,type:type}); saveEvents(ev); renderEvents(); closeModal(); document.getElementById('evtTitle').value=''; document.getElementById('evtWho').value=''; }
+
 // modalOverlay listener moved to initDashboard
 
 // ── DIARY ──
@@ -1556,24 +1667,12 @@ function handlePhotos(input) {
   if (!files.length) { document.getElementById('photoCount').textContent=''; return; }
   files.forEach(function(file){ var r=new FileReader(); r.onload=function(e){ diaryPhotos.push(e.target.result); loaded++; if(loaded===files.length) document.getElementById('photoCount').textContent=diaryPhotos.length+' photo'+(diaryPhotos.length>1?'s':'')+' ready'; }; r.readAsDataURL(file); });
 }
-// moved to Firebase
-// moved to Firebase
-function postEntry() {
-  var text=document.getElementById('diaryText').value.trim();
-  var tag=document.getElementById('diaryTag').value;
-  if (!text) return;
-  var entries=getDiary();
-  var author = document.getElementById('diaryAuthor').value;
-  entries.unshift({id:Date.now(),text:text,tag:tag,photos:diaryPhotos.slice(),date:new Date().toISOString(),author:author});
-  saveDiary(entries);
-  document.getElementById('diaryText').value=''; document.getElementById('photoCount').textContent=''; document.getElementById('diaryPhotoInput').value=''; diaryPhotos=[];
-  renderDiary();
-}
+
+
 var currentFilter='all';
 function filterDiary(tag,btn){ currentFilter=tag; document.querySelectorAll('.dfbtn').forEach(function(b){b.classList.remove('active');}); btn.classList.add('active'); renderDiary(); }
-function deleteDiaryEntry(id){ if(!confirm('Delete this entry?')) return; saveDiary(getDiary().filter(function(e){return e.id!==id;})); renderDiary(); }
+
 function tagLabel(tag){ var m={daily:'📝 Daily',health:'🏥 Health',milestone:'⭐ Milestone',school:'🏫 School',travel:'✈️ Travel',family:'👨‍👩‍👧 Family'}; return m[tag]||tag; }
-// seedDiary moved to Firebase
 function renderDiary() {
   seedDiary();
   var all=getDiary();
@@ -1663,7 +1762,6 @@ function handleEditPhotos(input) {
   });
 }
 
-// saveEditedEntry moved to Firebase
 
 function closeEditModal() {
   var emo = document.getElementById('editModalOverlay');
@@ -1980,10 +2078,8 @@ eventsRef.on('value', function(snapshot) {
   snapshot.forEach(function(child) {
     events.push(child.val());
   });
-  if (events.length > 0) {
-    window._cloudEvents = events;
-    renderEvents();
-  }
+  window._cloudEvents = events.length > 0 ? events : null;
+  renderEvents();
 });
 
 // Listen to tasks in realtime
@@ -1992,10 +2088,8 @@ tasksRef.on('value', function(snapshot) {
   snapshot.forEach(function(child) {
     tasks.push(child.val());
   });
-  if (tasks.length > 0) {
-    window._cloudTasks = tasks;
-    renderTasks();
-  }
+  window._cloudTasks = tasks.length > 0 ? tasks : null;
+  renderTasks();
 });
 
 function getDiary() {
@@ -2148,42 +2242,35 @@ if (document.readyState === 'complete' || document.readyState === 'interactive')
   setTimeout(initDashboard, 100);
 }
 
+
+
+
+// ── INIT ──
 function initDashboard() {
-  var dbg = document.getElementById('debugBox');
-  var log = function(msg) { if(dbg){ dbg.style.display='block'; dbg.innerHTML += msg + '<br/>'; } };
-
-  // Version check
-  var ver = localStorage.getItem('ramka_ver');
-  log('ver: ' + ver);
-  if (ver !== '4') {
-    localStorage.clear();
-    localStorage.setItem('ramka_ver', '4');
-    log('cleared localStorage');
+  if (localStorage.getItem('ramka_ver') !== '5') {
+    localStorage.removeItem('ramka_events');
+    localStorage.removeItem('ramka_tasks');
+    localStorage.setItem('ramka_ver', '5');
   }
-
-  log('defaultEvents length: ' + defaultEvents.length);
-  log('getEvents length: ' + getEvents().length);
-  log('daysUntil 2026-05-31: ' + daysUntil('2026-05-31'));
-
-  var evList = document.getElementById('eventsList');
-  var taskList = document.getElementById('tasksList');
-  var bdayList = document.getElementById('bdayList');
-  log('eventsList el: ' + (evList ? 'found' : 'NOT FOUND'));
-  log('tasksList el: ' + (taskList ? 'found' : 'NOT FOUND'));
-  log('bdayList el: ' + (bdayList ? 'found' : 'NOT FOUND'));
-
-  try { updateComposeAvatar(); log('avatar ok'); } catch(e) { log('avatar err: '+e); }
-  try { renderEvents(); log('events ok, children: '+(evList?evList.children.length:0)); } catch(e) { log('events err: '+e); }
-  try { renderTasks(); log('tasks ok'); } catch(e) { log('tasks err: '+e); }
-  try { renderBdays(); log('bdays ok'); } catch(e) { log('bdays err: '+e); }
-  try { renderSchool(); log('school ok'); } catch(e) { log('school err: '+e); }
-
-  // Attach modal listeners
+  try { updateComposeAvatar(); } catch(e) {}
+  try { renderEvents(); } catch(e) {}
+  try { renderTasks(); } catch(e) {}
+  try { renderBdays(); } catch(e) {}
+  try { renderSchool(); } catch(e) {}
+  try { seedDiary(); } catch(e) {}
   var mo = document.getElementById('modalOverlay');
   if (mo) mo.addEventListener('click', function(e){ if(e.target===this) closeModal(); });
   var emo = document.getElementById('editModalOverlay');
   if (emo) emo.addEventListener('click', function(e){ if(e.target===this) closeEditModal(); });
 }
+
+document.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.page').forEach(function(p){
+    p.style.display = p.classList.contains('active') ? 'block' : 'none';
+  });
+  initDashboard();
+});
+
 </script>
 
 <!-- EDIT DIARY MODAL -->
@@ -2191,36 +2278,31 @@ function initDashboard() {
   <div style="background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;width:100%;max-width:520px;max-height:90vh;overflow-y:auto;box-shadow:0 20px 60px rgba(26,23,20,.2);">
     <h3 style="font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:500;margin-bottom:1.2rem;">Edit Entry</h3>
     <div style="display:flex;flex-direction:column;gap:.8rem;">
-      <div>
-        <div class="field-label">Posted by</div>
+      <div><div class="field-label">Posted by</div>
         <select class="add-input" id="editAuthor" style="width:100%;">
           <option value="Walid">Walid</option>
           <option value="Afiqah">Afiqah (Ummi)</option>
         </select>
       </div>
-      <div>
-        <div class="field-label">Tag</div>
+      <div><div class="field-label">Tag</div>
         <select class="add-input" id="editTag" style="width:100%;">
-          <option value="daily">📝 Daily</option>
-          <option value="health">🏥 Health</option>
-          <option value="milestone">⭐ Milestone</option>
-          <option value="school">🏫 School</option>
-          <option value="travel">✈️ Travel</option>
-          <option value="family">👨‍👩‍👧 Family</option>
+          <option value="daily">Daily</option>
+          <option value="health">Health</option>
+          <option value="milestone">Milestone</option>
+          <option value="school">School</option>
+          <option value="travel">Travel</option>
+          <option value="family">Family</option>
         </select>
       </div>
-      <div>
-        <div class="field-label">Entry Text</div>
+      <div><div class="field-label">Entry Text</div>
         <textarea class="diary-textarea" id="editText" style="min-height:120px;width:100%;"></textarea>
       </div>
-      <div>
-        <div class="field-label">Current Photos</div>
+      <div><div class="field-label">Current Photos</div>
         <div id="editExistingPhotos" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(80px,1fr));gap:.5rem;margin-top:.5rem;"></div>
       </div>
-      <div>
-        <div class="field-label">Add More Photos</div>
+      <div><div class="field-label">Add More Photos</div>
         <div style="display:flex;align-items:center;gap:.5rem;">
-          <label class="add-btn" for="editPhotoInput" style="cursor:pointer;">📷 Choose Photos</label>
+          <label class="add-btn" for="editPhotoInput" style="cursor:pointer;">Add Photo</label>
           <input type="file" id="editPhotoInput" accept="image/*" multiple style="display:none;" onchange="handleEditPhotos(this)"/>
           <span id="editPhotoCount" style="font-size:.72rem;color:var(--ink3);"></span>
         </div>
@@ -2232,6 +2314,5 @@ function initDashboard() {
     </div>
   </div>
 </div>
-
 </body>
 </html>
