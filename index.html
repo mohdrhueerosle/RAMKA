@@ -605,7 +605,10 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
       </div>
     </div>
     <div class="card">
-      <div class="card-label">Next Trip</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.2rem;">
+        <div class="card-label" style="margin-bottom:0;">Next Trip</div>
+        <button onclick="switchTab('trips');showTrip('malaysia')" style="background:var(--amber);color:#fff;border:none;border-radius:var(--radius);padding:.25rem .65rem;font-size:.68rem;font-weight:600;cursor:pointer;letter-spacing:.03em;opacity:.85;">🇲🇾 Details →</button>
+      </div>
       <div class="cd-dest">Malaysia 🇲🇾 · Jun–Jul 2026</div>
       <div class="cd-nums">
         <div class="cd-block"><div class="cd-num" id="cdD">—</div><div class="cd-unit">Days</div></div>
@@ -879,14 +882,22 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
           <div class="trip-detail-row"><span>Lost World of Tambun</span><strong>Included with hotel (Free Access)</strong></div>
           <div class="trip-detail-row"><span>Island Hopping</span><strong>15 Jul · Mersing · with Epu</strong></div>
         </div>
-        <div class="trip-detail-section"><h4>💰 Ground Budget</h4>
-          <div class="trip-detail-row"><span>Transport</span><strong>QAR ~4,230</strong></div>
-          <div class="trip-detail-row"><span>Accommodation</span><strong>QAR ~2,823 confirmed + KL TBC</strong></div>
-          <div class="trip-detail-row"><span>Food</span><strong>QAR ~7,500</strong></div>
-          <div class="trip-detail-row"><span>Activities</span><strong>MYR 1,330 Legoland + others</strong></div>
-          <div class="trip-detail-row"><span>Shopping</span><strong>QAR ~4,500</strong></div>
-          <div class="trip-detail-row"><span>Gifts (pre-trip)</span><strong>QAR 1,538.60 · 5 orders · 36 items</strong></div>
-          <div class="trip-detail-row highlight"><span>Est. Total</span><strong>~QAR 23,500</strong></div>
+        <div class="trip-detail-section"><h4>💰 Ground Budget (Excl. Flights)</h4>
+          <div class="trip-detail-row"><span>🚗 Car Rental — Luksal</span><strong>MYR 4,700 ✅ paid</strong></div>
+          <div class="trip-detail-row"><span>🏨 Lost World Hotel</span><strong>MYR 824 ✅ paid</strong></div>
+          <div class="trip-detail-row"><span>🧱 Legoland x5</span><strong>MYR 1,330 ✅ paid</strong></div>
+          <div class="trip-detail-row"><span>🏠 Nusajaya Airbnb</span><strong>QAR 867.31 ✅ paid</strong></div>
+          <div class="trip-detail-row"><span>🏖️ Desaru Airbnb</span><strong>QAR 1,583.44 ✅ paid</strong></div>
+          <div class="trip-detail-row"><span>🎁 Gifts + chocolates</span><strong>QAR 2,100 ✅ paid</strong></div>
+          <div class="trip-detail-row"><span>🏠 KL stays</span><strong>QAR 0 (Afiqah's parents 🏡)</strong></div>
+          <div class="trip-detail-row"><span>🍽️ Food (incl. family gatherings)</span><strong>QAR ~7,500 budgeted</strong></div>
+          <div class="trip-detail-row"><span>🚤 Island hopping (whole boat w/ Epu)</span><strong>MYR ~1,000 budgeted</strong></div>
+          <div class="trip-detail-row"><span>🛍️ Shopping</span><strong>QAR ~6,500 budgeted</strong></div>
+          <div class="trip-detail-row"><span>⛽ Petrol, tolls & snacks</span><strong>QAR ~800 budgeted</strong></div>
+          <div class="trip-detail-row"><span>🏨 Kuantan (1 night)</span><strong>QAR ~150 budgeted</strong></div>
+          <div class="trip-detail-row"><span>Total Paid (ground)</span><strong>~QAR 10,782</strong></div>
+          <div class="trip-detail-row"><span>Total Budgeted</span><strong>~QAR 16,520</strong></div>
+          <div class="trip-detail-row highlight"><span>Set Budget · Buffer</span><strong>QAR 30,000 · ~QAR 2,558 remaining</strong></div>
         </div>
       </div>
       <div>
@@ -918,7 +929,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
           <div class="trip-detail-row"><span>Order #263686662</span><strong>QAR 308.92 · 8 items</strong></div>
           <div class="trip-detail-row"><span>Items</span><strong>Fusion Bundle x2, Reef 33 Body Spray x2, Summer Tiffany Perfume x2, Reef 27 Perfume x2, Arab Obaya Body Spray x2</strong></div>
           <div class="trip-detail-row"><span>All orders</span><strong>5 orders · 36 items total</strong></div>
-          <div class="trip-detail-row highlight"><span>Total gifts spend</span><strong>QAR 1,538.60</strong></div>
+          <div class="trip-detail-row highlight"><span>Total gifts spend</span><strong>QAR ~2,100 (incl. chocolates)</strong></div>
         </div>
         <div class="highlight-box">31 days · ~2,500km in a Honda CRV · Legoland ✅ · Lost World ✅ · Desaru ✅ · Mersing ✅ · beaches · kampung life · island hopping. The biggest RAMKA adventure yet. 🇲🇾</div>
       </div>
