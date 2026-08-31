@@ -430,6 +430,55 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 }
 
 
+/* ── ARABIC JOURNEY TAB ── */
+.arabic-hero{
+  background:linear-gradient(135deg,#5c1a2e 0%,#8c2a4a 100%);
+  border-radius:var(--radius);padding:1.5rem 2rem;margin-bottom:1.5rem;
+  color:#fff;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;
+}
+.arabic-hero-left h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:500;margin-bottom:.2rem;direction:rtl;}
+.arabic-hero-left p{font-size:.8rem;opacity:.7;letter-spacing:.05em;}
+.arabic-hero-right{text-align:right;}
+.arabic-score-display{background:rgba(255,255,255,.1);border-radius:var(--radius);padding:.8rem 1.2rem;text-align:center;}
+.arabic-score-label{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;opacity:.6;margin-bottom:.3rem;}
+.arabic-score-val{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:700;line-height:1;}
+
+.arabic-mode-row{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;margin-bottom:1rem;}
+.arabic-mode-tabs{display:flex;gap:.5rem;}
+.arabic-mode-btn{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;padding:.5rem 1rem;border-radius:var(--radius);border:1px solid var(--border2);background:var(--surface);color:var(--ink2);cursor:pointer;transition:all .15s;}
+.arabic-mode-btn.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+.arabic-cat-select{font-family:'DM Sans',sans-serif;font-size:.8rem;padding:.5rem .7rem;border-radius:var(--radius);border:1px solid var(--border2);background:var(--surface);color:var(--ink);}
+
+.arabic-cat-chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.5rem;}
+.arabic-cat-chip{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;padding:.25rem .6rem;border-radius:2px;border:1px solid var(--border2);opacity:.4;}
+.arabic-cat-chip.on{opacity:1;}
+
+.flashcard-wrap{display:flex;flex-direction:column;align-items:center;gap:1.2rem;}
+.flashcard-count{font-family:'DM Mono',monospace;font-size:.62rem;color:var(--ink3);letter-spacing:.1em;}
+.flashcard{width:100%;max-width:420px;min-height:260px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;cursor:pointer;text-align:center;box-shadow:0 4px 20px rgba(26,23,20,.05);}
+.flashcard-arabic{font-family:'Cormorant Garamond',serif;font-size:3rem;direction:rtl;line-height:1.4;color:var(--ink);}
+.flashcard-hint{margin-top:1.2rem;font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--amber);}
+.flashcard-translit{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4rem;color:var(--ink);}
+.flashcard-english{margin-top:.6rem;font-size:1rem;color:var(--ink2);}
+.flashcard-note{margin-top:1rem;font-size:.78rem;color:var(--ink3);max-width:280px;}
+.flashcard-nav{display:flex;gap:.6rem;}
+
+.quiz-wrap{display:flex;flex-direction:column;align-items:center;gap:1.2rem;}
+.quiz-card{width:100%;max-width:460px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);padding:1.8rem;box-shadow:0 4px 20px rgba(26,23,20,.05);}
+.quiz-prompt-label{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.15em;text-transform:uppercase;color:var(--amber);text-align:center;margin-bottom:1rem;}
+.quiz-prompt-arabic{font-family:'Cormorant Garamond',serif;font-size:2.6rem;direction:rtl;text-align:center;color:var(--ink);}
+.quiz-prompt-text{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.4rem;text-align:center;color:var(--ink);}
+.quiz-options{display:flex;flex-direction:column;gap:.6rem;margin-top:1.5rem;}
+.quiz-opt{text-align:left;padding:.7rem 1rem;border-radius:var(--radius);border:1px solid var(--border2);background:var(--bg);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--ink);}
+.quiz-opt:hover{border-color:var(--amber);}
+.quiz-opt.correct{background:var(--green-light);border-color:var(--green);color:var(--green);}
+.quiz-opt.wrong{background:var(--red-light);border-color:var(--red);color:var(--red);}
+.quiz-opt-arabic{font-family:'Cormorant Garamond',serif;font-size:1.3rem;direction:rtl;}
+.quiz-feedback{margin-top:1rem;text-align:center;font-size:.85rem;color:var(--ink2);}
+.quiz-feedback .note{font-size:.75rem;color:var(--ink3);margin-top:.2rem;}
+.arabic-next-btn{background:var(--ink);color:#fff;border:none;padding:.6rem 1.3rem;border-radius:var(--radius);font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;}
+.arabic-next-btn:disabled{opacity:.3;cursor:default;}
+
 /* ── LOCK SCREEN ── */
 .lock-screen{
   position:fixed;inset:0;
@@ -581,6 +630,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
     <div class="tab" data-tab="family" onclick="switchTab('family')">Family</div>
     <div class="tab" data-tab="diary" onclick="switchTab('diary')">Diary</div>
     <div class="tab" data-tab="school" onclick="switchTab('school')">School</div>
+    <div class="tab" data-tab="arabic" onclick="switchTab('arabic')">Arabic Journey</div>
   </div>
   <div class="topbar-time">📍 Doha &nbsp;|&nbsp; <span id="liveTime"></span></div>
   <button onclick="logout()" style="flex-shrink:0;margin-left:.5rem;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.12em;text-transform:uppercase;background:transparent;border:1px solid var(--border);color:var(--ink3);padding:.3rem .7rem;border-radius:var(--radius);cursor:pointer;" title="Log out">Lock</button>
@@ -1553,6 +1603,43 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 
 </div>
 
+<div class="page" id="page-arabic">
+  <div class="page-header">
+    <h1 class="page-title">Arabic <em>Journey</em></h1>
+    <p class="page-sub">Afiqah's spoken Arabic class · Gulf colloquial · Sun–Wed 10:30–12:00</p>
+  </div>
+
+  <div class="arabic-hero">
+    <div class="arabic-hero-left">
+      <h2>مرحباً</h2>
+      <p>Salutatio &amp; Greetings — class material, in proper script</p>
+    </div>
+    <div class="arabic-hero-right">
+      <div class="arabic-score-display">
+        <div class="arabic-score-label">Quiz Score</div>
+        <div class="arabic-score-val" id="arabicScoreVal">0 / 0</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arabic-mode-row">
+    <div class="arabic-mode-tabs">
+      <button class="arabic-mode-btn active" data-mode="study" onclick="setArabicMode('study')">Study</button>
+      <button class="arabic-mode-btn" data-mode="quiz" onclick="setArabicMode('quiz')">Quiz</button>
+    </div>
+    <select class="arabic-cat-select" id="arabicCatSelect" onchange="setArabicCategory(this.value)">
+      <option value="all">All categories</option>
+    </select>
+  </div>
+
+  <div class="arabic-cat-chips" id="arabicCatChips"></div>
+
+  <div id="arabicStudyView" class="flashcard-wrap"></div>
+  <div id="arabicQuizView" class="quiz-wrap" style="display:none;"></div>
+
+  <p style="margin-top:2rem;font-size:.72rem;color:var(--ink3);text-align:center;">Built from class slide 1 (Salutatio &amp; Greetings). New slides get added as a new category here.</p>
+</div>
+
 <!-- EVENT MODAL -->
 <div class="modal-overlay" id="modalOverlay">
   <div class="modal">
@@ -1598,6 +1685,7 @@ function switchTab(name) {
   window.scrollTo(0,0);
   if (name==='diary') renderDiary();
   if (name==='school') initSchoolTab();
+  if (name==='arabic') initArabicTab();
 }
 
 // ── TRIP CARDS ──
@@ -1950,6 +2038,215 @@ function switchChild(name, btn) {
   document.querySelectorAll('.child-panel').forEach(function(p){p.classList.remove('active');});
   btn.classList.add('active');
   document.getElementById('panel-' + name).classList.add('active');
+}
+
+// ── ARABIC JOURNEY ──
+// Extend ARABIC_PHRASES with new objects as Afiqah shares more class slides.
+// Each needs: id (unique), category (must match an ARABIC_CATEGORIES id),
+// arabic (script), translit, english, note (optional).
+var ARABIC_CATEGORIES = [
+  { id: 'greetings', label: 'Greetings' },
+  { id: 'time', label: 'Time of Day' },
+  { id: 'smalltalk', label: 'How Are You' },
+  { id: 'farewell', label: 'Farewell' },
+  { id: 'manners', label: 'Manners & Requests' },
+  { id: 'titles', label: 'Titles' }
+];
+
+var ARABIC_PHRASES = [
+  { id:1, category:'greetings', arabic:'السلام عليكم', translit:'Assalamu alaikoum', english:'Peace be upon you', note:'The universal Muslim greeting — said first.' },
+  { id:2, category:'greetings', arabic:'وعليكم السلام', translit:'Wa alaikoumu ssalaam', english:'And upon you peace', note:'The required reply to Assalamu alaikoum.' },
+  { id:3, category:'time', arabic:'صباح الخير', translit:"Sabahul khair", english:'Good morning', note:'Said first, to open a morning greeting.' },
+  { id:4, category:'time', arabic:'صباح النور', translit:'Sabahun noor', english:'Good morning (reply)', note:'The reply to Sabahul khair.' },
+  { id:5, category:'time', arabic:'مساء الخير', translit:"Masaa'ul khair", english:'Good evening', note:'Said first, to open an evening greeting.' },
+  { id:6, category:'time', arabic:'مساء النور', translit:"Masaa'un noor", english:'Good evening (reply)', note:'The reply to Masaa\'ul khair.' },
+  { id:7, category:'smalltalk', arabic:'مرحباً', translit:'Marhaban', english:'Hello / welcome', note:'Casual, works with anyone.' },
+  { id:8, category:'smalltalk', arabic:'أهلاً وسهلاً', translit:'Ahlan wa sahlan', english:'Welcome', note:'Warmer than marhaban, often used to receive guests.' },
+  { id:9, category:'smalltalk', arabic:'كيف الحال؟', translit:'Kaif al hal?', english:'How are you?', note:"Add the person's name after it, e.g. Kaif al hal Sara?" },
+  { id:10, category:'smalltalk', arabic:'بخير والحمد لله، وأنتَ؟', translit:'Bekhair wa alhamdulillah, wa anta?', english:"I'm well, praise be to God — and you?", note:'Reply used when speaking to a man (anta).' },
+  { id:11, category:'smalltalk', arabic:'بخير والحمد لله، وأنتِ؟', translit:'Bekhair wa alhamdulillah, wa anti?', english:"I'm well, praise be to God — and you?", note:'Reply used when speaking to a woman (anti).' },
+  { id:12, category:'smalltalk', arabic:'تمام شكراً', translit:'Temam shukran', english:'All good, thanks', note:'Short closing reply, said by a man in the dialogue.' },
+  { id:13, category:'smalltalk', arabic:'زينة الحمد لله، شكراً', translit:'Zaina alhamdulillah, shukran', english:'Good, praise be to God, thanks', note:'The equivalent closing reply said by a woman.' },
+  { id:14, category:'farewell', arabic:'مع السلامة', translit:"Ma'as-salama", english:'Goodbye', note:"Literally 'with safety' — said to someone leaving." },
+  { id:15, category:'manners', arabic:'لو سمحتِ ما فيه جوال', translit:'Low samaht(i) ma fee jawal', english:'Excuse me, no phones', note:'Gulf colloquial. Samaht = to a man, samahti = to a woman.' },
+  { id:16, category:'manners', arabic:'ما فيه مشكلة', translit:'Ma fee mushkilah', english:'No problem', note:'Very common Gulf filler reply.' },
+  { id:17, category:'manners', arabic:'تفضل', translit:'Tafaddal', english:'Go ahead / here you are', note:'Said to a man; tafaddali to a woman.' },
+  { id:18, category:'manners', arabic:'من فضلك ممكن ألعب؟', translit:"Min fadlik, mumkin al'ab?", english:'Please, may I play?', note:'A child politely asking permission from his father.' },
+  { id:19, category:'manners', arabic:'شكراً', translit:'Shukran', english:'Thank you', note:'' },
+  { id:20, category:'manners', arabic:'عفواً', translit:'Afwan', english:"You're welcome", note:"Also used to mean 'excuse me' / 'pardon'." },
+  { id:21, category:'titles', arabic:'السيد المدير', translit:"As'sayyid al-mudeer", english:'Mr. Director', note:'Formal address for a male manager/director.' },
+  { id:22, category:'titles', arabic:'السيدة الوزيرة', translit:"As'sayyida al-wazeerah", english:'Madam Minister', note:'Formal address for a female minister.' }
+];
+
+var arabicState = {
+  mode: 'study',
+  category: 'all',
+  studyIndex: 0,
+  flipped: false,
+  quizAnswer: null,
+  quizOptions: [],
+  quizDirection: 'toEnglish',
+  score: { correct: 0, total: 0 }
+};
+
+function arabicFiltered() {
+  if (arabicState.category === 'all') return ARABIC_PHRASES;
+  return ARABIC_PHRASES.filter(function(p){ return p.category === arabicState.category; });
+}
+
+function initArabicTab() {
+  var sel = document.getElementById('arabicCatSelect');
+  if (sel && sel.options.length <= 1) {
+    ARABIC_CATEGORIES.forEach(function(c){
+      var opt = document.createElement('option');
+      opt.value = c.id; opt.textContent = c.label;
+      sel.appendChild(opt);
+    });
+  }
+  renderArabicCatChips();
+  renderArabicScore();
+  setArabicMode(arabicState.mode);
+}
+
+function renderArabicCatChips() {
+  var wrap = document.getElementById('arabicCatChips');
+  if (!wrap) return;
+  wrap.innerHTML = ARABIC_CATEGORIES.map(function(c){
+    var on = arabicState.category === 'all' || arabicState.category === c.id;
+    return '<span class="arabic-cat-chip' + (on ? ' on' : '') + '">' + c.label + '</span>';
+  }).join('');
+}
+
+function renderArabicScore() {
+  var el = document.getElementById('arabicScoreVal');
+  if (el) el.textContent = arabicState.score.correct + ' / ' + arabicState.score.total;
+}
+
+function setArabicMode(mode) {
+  arabicState.mode = mode;
+  document.querySelectorAll('.arabic-mode-btn').forEach(function(b){
+    b.classList.toggle('active', b.getAttribute('data-mode') === mode);
+  });
+  document.getElementById('arabicStudyView').style.display = mode === 'study' ? 'flex' : 'none';
+  document.getElementById('arabicQuizView').style.display = mode === 'quiz' ? 'flex' : 'none';
+  if (mode === 'study') { arabicState.studyIndex = 0; arabicState.flipped = false; renderArabicStudy(); }
+  else { newArabicQuestion(); }
+}
+
+function setArabicCategory(catId) {
+  arabicState.category = catId;
+  arabicState.studyIndex = 0;
+  arabicState.flipped = false;
+  renderArabicCatChips();
+  if (arabicState.mode === 'study') renderArabicStudy();
+  else newArabicQuestion();
+}
+
+function renderArabicStudy() {
+  var view = document.getElementById('arabicStudyView');
+  var list = arabicFiltered();
+  if (!list.length) { view.innerHTML = '<p style="color:var(--ink3);padding:2rem 0;">No phrases in this category yet.</p>'; return; }
+  var card = list[arabicState.studyIndex % list.length];
+  var inner = arabicState.flipped
+    ? '<div class="flashcard-translit">' + card.translit + '</div>' +
+      '<div class="flashcard-english">' + card.english + '</div>' +
+      (card.note ? '<div class="flashcard-note">' + card.note + '</div>' : '')
+    : '<div class="flashcard-arabic">' + card.arabic + '</div>' +
+      '<div class="flashcard-hint">Tap to reveal</div>';
+  view.innerHTML =
+    '<div class="flashcard-count">' + (arabicState.studyIndex % list.length + 1) + ' of ' + list.length + '</div>' +
+    '<div class="flashcard" onclick="flipArabicCard()">' + inner + '</div>' +
+    '<div class="flashcard-nav">' +
+      '<button class="arabic-next-btn" style="background:transparent;color:var(--ink);border:1px solid var(--ink);" onclick="navArabicStudy(-1)">Previous</button>' +
+      '<button class="arabic-next-btn" onclick="navArabicStudy(1)">Next</button>' +
+    '</div>';
+}
+
+function flipArabicCard() {
+  arabicState.flipped = !arabicState.flipped;
+  renderArabicStudy();
+}
+
+function navArabicStudy(delta) {
+  var list = arabicFiltered();
+  arabicState.flipped = false;
+  arabicState.studyIndex = (arabicState.studyIndex + delta + list.length) % list.length;
+  renderArabicStudy();
+}
+
+function shuffleArr(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function newArabicQuestion() {
+  var list = arabicFiltered();
+  var view = document.getElementById('arabicQuizView');
+  if (list.length < 4) {
+    view.innerHTML = '<p style="color:var(--ink3);padding:2rem 0;">Need at least 4 phrases in this category to quiz. Try "All categories".</p>';
+    return;
+  }
+  var answer = list[Math.floor(Math.random() * list.length)];
+  var distractors = shuffleArr(list.filter(function(p){ return p.id !== answer.id; })).slice(0, 3);
+  var options = shuffleArr([answer].concat(distractors));
+  var direction = Math.random() < 0.5 ? 'toEnglish' : 'toArabic';
+  arabicState.quizAnswer = answer;
+  arabicState.quizOptions = options;
+  arabicState.quizDirection = direction;
+  arabicState.answered = false;
+  renderArabicQuiz();
+}
+
+function renderArabicQuiz() {
+  var view = document.getElementById('arabicQuizView');
+  var answer = arabicState.quizAnswer;
+  var direction = arabicState.quizDirection;
+  var promptHtml = direction === 'toEnglish'
+    ? '<div class="quiz-prompt-arabic">' + answer.arabic + '</div>'
+    : '<div class="quiz-prompt-text">' + answer.translit + '</div>';
+  var label = direction === 'toEnglish' ? 'What does this mean?' : 'Which is the Arabic for this?';
+
+  var optsHtml = arabicState.quizOptions.map(function(opt){
+    var content = direction === 'toEnglish' ? opt.english : '<span class="quiz-opt-arabic">' + opt.arabic + '</span>';
+    return '<div class="quiz-opt" data-id="' + opt.id + '" onclick="chooseArabicOption(' + opt.id + ')">' + content + '</div>';
+  }).join('');
+
+  view.innerHTML =
+    '<div class="quiz-card">' +
+      '<div class="quiz-prompt-label">' + label + '</div>' +
+      promptHtml +
+      '<div class="quiz-options">' + optsHtml + '</div>' +
+      '<div class="quiz-feedback" id="arabicQuizFeedback"></div>' +
+    '</div>' +
+    '<button class="arabic-next-btn" id="arabicNextBtn" disabled onclick="newArabicQuestion()">Next question</button>';
+}
+
+function chooseArabicOption(optId) {
+  if (arabicState.answered) return;
+  arabicState.answered = true;
+  var answer = arabicState.quizAnswer;
+  var correct = optId === answer.id;
+  arabicState.score.total += 1;
+  if (correct) arabicState.score.correct += 1;
+  renderArabicScore();
+
+  document.querySelectorAll('.quiz-opt').forEach(function(el){
+    var id = parseInt(el.getAttribute('data-id'), 10);
+    if (id === answer.id) el.classList.add('correct');
+    else if (id === optId) el.classList.add('wrong');
+  });
+
+  var fb = document.getElementById('arabicQuizFeedback');
+  if (fb) {
+    fb.innerHTML = answer.translit + ' — ' + answer.english +
+      (answer.note ? '<div class="note">' + answer.note + '</div>' : '');
+  }
+  var nextBtn = document.getElementById('arabicNextBtn');
+  if (nextBtn) nextBtn.disabled = false;
 }
 
 function initSchoolTab() {
