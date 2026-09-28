@@ -571,10 +571,10 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 .wm-c.visited{fill:var(--amber);cursor:pointer;}
 .wm-c.planned{fill:var(--blue);cursor:pointer;}
 .wm-c.dreaming{fill:#c9bda3;cursor:pointer;}
-.wm-c.home{fill:var(--green);cursor:pointer;}
+.wm-c.home{fill:#8A1538;cursor:pointer;}
 .wm-c.hl{stroke:var(--ink);stroke-width:1.4;}
 .wm-pin{stroke:#fff;stroke-width:1.2;vector-effect:non-scaling-stroke;cursor:pointer;}
-.wm-pin.visited{fill:var(--amber);} .wm-pin.planned{fill:var(--blue);} .wm-pin.dreaming{fill:#a89a7c;} .wm-pin.home{fill:var(--green);}
+.wm-pin.visited{fill:var(--amber);} .wm-pin.planned{fill:var(--blue);} .wm-pin.dreaming{fill:#a89a7c;} .wm-pin.home{fill:#8A1538;}
 .wm-pin.hl{stroke:var(--ink);stroke-width:2;}
 .wm-tip{position:absolute;z-index:5;display:none;pointer-events:none;max-width:250px;background:var(--surface);border:1px solid var(--border2);border-radius:var(--radius);box-shadow:0 8px 28px rgba(26,23,20,.16);padding:.7rem .85rem;font-size:.76rem;line-height:1.5;color:var(--ink2);}
 .wm-tip h5,.wm-panel h5{font-family:'Cormorant Garamond',serif;font-size:1.15rem;font-weight:600;color:var(--ink);margin-bottom:.15rem;}
@@ -582,7 +582,7 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
 .wm-badge.visited{background:var(--amber-light);color:var(--amber);}
 .wm-badge.planned{background:var(--blue-light);color:var(--blue);}
 .wm-badge.dreaming{background:var(--bg2);color:var(--ink3);}
-.wm-badge.home{background:var(--green-light);color:var(--green);}
+.wm-badge.home{background:#f6e6eb;color:#8A1538;}
 .wm-row{display:flex;justify-content:space-between;gap:.8rem;padding:.15rem 0;border-bottom:1px solid var(--bg2);}
 .wm-row:last-of-type{border-bottom:none;}
 .wm-row span{color:var(--ink3);flex-shrink:0;}
@@ -3051,7 +3051,7 @@ var MAP_CENT = {"191":[520.3,104,49],"268":[587.2,112.8,58],"398":[640.7,94.6,24
 
   var cnt={visited:0,planned:0,dreaming:0}, days=0;
   MAP_PLACES.forEach(function(p){ if(cnt[p.status]!==undefined) cnt[p.status]++; if(p.status==='visited'&&p.days) days+=p.days; });
-  var col={home:'var(--green)',visited:'var(--amber)',planned:'var(--blue)',dreaming:'#c9bda3'};
+  var col={home:'#8A1538',visited:'var(--amber)',planned:'var(--blue)',dreaming:'#c9bda3'};
   document.getElementById('wmLegend').innerHTML =
     '<span><i style="background:'+col.home+'"></i>Home</span>'+
     '<span><i style="background:'+col.visited+'"></i>Visited ('+cnt.visited+')</span>'+
