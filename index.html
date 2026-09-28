@@ -538,6 +538,25 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
   font-size:.55rem;letter-spacing:.12em;color:var(--ink3);
 }
 
+
+/* -- SCHOOL PLANNER (events + tasks) -- */
+.sp-filters{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;}
+.spbtn{font-family:'DM Mono',monospace;font-size:.58rem;letter-spacing:.12em;text-transform:uppercase;padding:.3rem .7rem;border-radius:2px;border:1px solid var(--border);background:var(--surface);color:var(--ink2);cursor:pointer;}
+.spbtn.active,.spbtn:hover{background:var(--amber);color:#fff;border-color:var(--amber);}
+.sp-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem;}
+@media(max-width:700px){.sp-grid{grid-template-columns:1fr;}}
+.sp-col-title{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.18em;text-transform:uppercase;color:var(--ink2);margin-bottom:.6rem;display:flex;justify-content:space-between;align-items:center;}
+.sp-list{display:flex;flex-direction:column;gap:.5rem;max-height:320px;overflow-y:auto;padding-right:.2rem;}
+.sp-empty{color:var(--ink3);font-style:italic;font-size:.8rem;padding:.4rem 0;}
+.sp-form{display:flex;flex-direction:column;gap:.5rem;margin-top:.9rem;padding-top:.9rem;border-top:1px solid var(--border);}
+.sp-form-row{display:flex;gap:.5rem;}
+.sp-form-row>*{min-width:0;flex:1;}
+.sp-del{background:none;border:none;color:var(--ink3);cursor:pointer;font-size:.9rem;padding:0 .2rem;flex-shrink:0;line-height:1;}
+.sp-del:hover{color:var(--red);}
+.sp-link{background:none;border:none;color:var(--ink3);cursor:pointer;font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.1em;text-transform:uppercase;}
+.sp-link:hover{color:var(--red);}
+.sp-due{font-family:'DM Mono',monospace;font-size:.56rem;color:var(--ink3);white-space:nowrap;}
+.sp-due.over{color:var(--red);font-weight:500;}
 </style>
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -1428,6 +1447,46 @@ body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;font
   </div>
 
   <div id="schoolCalendarSection"></div>
+
+  <!-- School Planner: events + tasks -->
+  <div class="school-card" style="padding:1.4rem;margin-bottom:1.5rem;" id="schoolPlanner">
+    <h4>School Events &amp; Tasks</h4>
+    <div class="sp-filters" id="spFilters">
+      <button class="spbtn active" data-f="all" onclick="spSetFilter('all')">All</button>
+      <button class="spbtn" data-f="Maryam" onclick="spSetFilter('Maryam')">Maryam</button>
+      <button class="spbtn" data-f="Khadeeja" onclick="spSetFilter('Khadeeja')">Khadeeja</button>
+      <button class="spbtn" data-f="Aeesya" onclick="spSetFilter('Aeesya')">Aeesya</button>
+    </div>
+    <div class="sp-grid">
+      <div>
+        <div class="sp-col-title"><span>Events</span></div>
+        <div class="sp-list" id="spEvents"></div>
+        <div class="sp-form">
+          <input class="add-input" id="spEvTitle" placeholder="Event (e.g. Science fair, wear red day)"/>
+          <div class="sp-form-row">
+            <input class="add-input" id="spEvDate" type="date"/>
+            <select class="add-input" id="spEvChild"><option>All</option><option>Maryam</option><option>Khadeeja</option><option>Aeesya</option></select>
+          </div>
+          <div class="sp-form-row">
+            <select class="add-input" id="spEvType"><option value="normal">Normal</option><option value="soon">Soon / prep needed</option><option value="urgent">Urgent</option></select>
+            <button class="add-btn" onclick="spAddEvent()">+ Add Event</button>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="sp-col-title"><span>Tasks</span><button class="sp-link" onclick="spClearDone()">Clear done</button></div>
+        <div class="sp-list" id="spTasks"></div>
+        <div class="sp-form">
+          <input class="add-input" id="spTkText" placeholder="Task (e.g. Sign permission slip, bring costume)" onkeydown="if(event.key==='Enter')spAddTask()"/>
+          <div class="sp-form-row">
+            <input class="add-input" id="spTkDue" type="date" title="Due date (optional)"/>
+            <select class="add-input" id="spTkChild"><option>All</option><option>Maryam</option><option>Khadeeja</option><option>Aeesya</option></select>
+          </div>
+          <button class="add-btn" onclick="spAddTask()">+ Add Task</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Child Tabs -->
   <div class="child-tabs">
@@ -2781,5 +2840,119 @@ document.addEventListener('DOMContentLoaded', function(){
     </div>
   </div>
 </div>
+<script>
+// -- SCHOOL PLANNER (Firebase: ramka/schoolEvents, ramka/schoolTasks) --
+(function(){
+  var evRef = db.ref('ramka/schoolEvents');
+  var tkRef = db.ref('ramka/schoolTasks');
+  var filter = 'all';
+  window._schoolEv = [];
+  window._schoolTk = [];
+
+  function esc(t){ return String(t==null?'':t).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];}); }
+  function fmt(ds){ return new Date(ds).toLocaleDateString('en-GB',{day:'numeric',month:'short'}); }
+  function when(ds){ var d=daysUntil(ds); return d===0?'Today!':d===1?'Tomorrow':'in '+d+' days'; }
+  function show(item){ return filter==='all' || item.child===filter || item.child==='All'; }
+  function fail(e){ if(e){ console.error(e); alert('Could not save. Check Firebase rules allow ramka/schoolEvents and ramka/schoolTasks.'); } }
+  function listen(ref, key){
+    ref.on('value', function(snap){
+      var arr=[]; snap.forEach(function(c){ var v=c.val(); v._key=c.key; arr.push(v); });
+      window[key]=arr; renderPlanner(); try{renderSchool();}catch(e){}
+    });
+  }
+  listen(evRef,'_schoolEv'); listen(tkRef,'_schoolTk');
+
+  function upcomingEvents(){
+    return window._schoolEv.filter(function(e){return daysUntil(e.date)>=0;}).sort(function(a,b){return new Date(a.date)-new Date(b.date);});
+  }
+  function sortedTasks(){
+    return window._schoolTk.slice().sort(function(a,b){
+      if(!!a.done!==!!b.done) return a.done?1:-1;
+      var ad=a.due?new Date(a.due):new Date('2999-01-01'), bd=b.due?new Date(b.due):new Date('2999-01-01');
+      return ad-bd;
+    });
+  }
+  function taskRow(t){
+    var over = t.due && !t.done && daysUntil(t.due)<0;
+    return '<div class="task-item'+(t.done?' done':'')+'" onclick="spToggleTask(\''+t._key+'\')">'
+      +'<div class="task-check">'+(t.done?'\u2713':'')+'</div>'
+      +'<div class="task-text">'+esc(t.text)+'</div>'
+      +(t.due?'<div class="sp-due'+(over?' over':'')+'">'+(over?'overdue ':'')+fmt(t.due)+'</div>':'')
+      +'<div class="task-tag">'+esc(t.child||'All')+'</div>'
+      +'<button class="sp-del" title="Delete" onclick="event.stopPropagation();spDelTask(\''+t._key+'\')">&times;</button></div>';
+  }
+
+  function renderPlanner(){
+    var ev=document.getElementById('spEvents'), tk=document.getElementById('spTasks');
+    if(!ev||!tk) return;
+    var evs=upcomingEvents().filter(show);
+    ev.innerHTML = evs.length ? evs.map(function(e){
+      return '<div class="event-item '+esc(e.type||'normal')+'"><div class="event-info"><div class="event-title" style="white-space:normal;">'+esc(e.title)+'</div><div class="event-who">'+esc(e.child||'All')+'</div></div>'
+        +'<div class="event-meta"><div class="event-date">'+fmt(e.date)+'</div><div class="event-days">'+when(e.date)+'</div></div>'
+        +'<button class="sp-del" title="Delete" onclick="spDelEvent(\''+e._key+'\')">&times;</button></div>';
+    }).join('') : '<div class="sp-empty">No upcoming school events.</div>';
+    var tks=sortedTasks().filter(show);
+    tk.innerHTML = tks.length ? tks.map(taskRow).join('') : '<div class="sp-empty">No school tasks.</div>';
+    document.querySelectorAll('#spFilters .spbtn').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-f')===filter); });
+  }
+
+  // Dashboard "School & Milestones" card
+  window.renderSchool = function(){
+    var list=document.getElementById('schoolList');
+    if(!list) return;
+    var evs=upcomingEvents().slice(0,4);
+    var tks=sortedTasks().filter(function(t){return !t.done;}).slice(0,5);
+    var out='';
+    evs.forEach(function(e){
+      out+='<div class="event-item '+esc(e.type||'normal')+'"><div class="event-info"><div class="event-title">'+esc(e.title)+'</div><div class="event-who">'+esc(e.child||'All')+'</div></div>'
+        +'<div class="event-meta"><div class="event-date">'+fmt(e.date)+'</div><div class="event-days">'+when(e.date)+'</div></div></div>';
+    });
+    tks.forEach(function(t){ out+=taskRow(t); });
+    list.innerHTML = out || '<div style="color:var(--ink3);font-style:italic;font-size:.8rem;">No school events or tasks. Add them in the School tab.</div>';
+  };
+
+  window.spSetFilter=function(f){ filter=f; renderPlanner(); };
+  window.spAddEvent=function(){
+    var t=document.getElementById('spEvTitle'), d=document.getElementById('spEvDate');
+    var title=t.value.trim(), date=d.value;
+    if(!title||!date) return;
+    evRef.push({id:Date.now(), title:title, date:date, child:document.getElementById('spEvChild').value, type:document.getElementById('spEvType').value}, fail);
+    t.value=''; d.value='';
+  };
+  window.spAddTask=function(){
+    var t=document.getElementById('spTkText'), d=document.getElementById('spTkDue');
+    var text=t.value.trim();
+    if(!text) return;
+    tkRef.push({id:Date.now(), text:text, due:d.value||'', child:document.getElementById('spTkChild').value, done:false}, fail);
+    t.value=''; d.value='';
+  };
+  window.spToggleTask=function(key){
+    var t=window._schoolTk.filter(function(x){return x._key===key;})[0];
+    if(t) tkRef.child(key).update({done:!t.done}, fail);
+  };
+  window.spDelEvent=function(key){ if(confirm('Delete this event?')) evRef.child(key).remove(fail); };
+  window.spDelTask=function(key){ tkRef.child(key).remove(fail); };
+  window.spClearDone=function(){
+    window._schoolTk.forEach(function(t){ if(t.done) tkRef.child(t._key).remove(fail); });
+  };
+
+  // One-time seed (runs once across all devices, guarded by a Firebase flag)
+  db.ref('ramka/schoolSeedV1').transaction(function(cur){ return cur ? undefined : true; }, function(err, committed){
+    if(err || !committed) return;
+    var events=[
+      {id:1, title:'Field trip', date:'2026-10-06', child:'Khadeeja', type:'soon'},
+      {id:2, title:'Grade 1 Parent Day - Animal Habitats (Grade 1 Hall, 11:10AM-12:00PM)', date:'2026-10-07', child:'Aeesya', type:'soon'}
+    ];
+    var tasks=[
+      {id:3, text:'Bird feeder - optional science project (bring to school)', due:'2026-10-01', child:'Khadeeja', done:false},
+      {id:4, text:'Press My Paw - Animal Habitat Museum project (diorama + PRESS MY PAW sign)', due:'2026-10-05', child:'Aeesya', done:false}
+    ];
+    events.forEach(function(e){ evRef.push(e); });
+    tasks.forEach(function(t){ tkRef.push(t); });
+  });
+
+  renderPlanner();
+})();
+</script>
 </body>
 </html>
